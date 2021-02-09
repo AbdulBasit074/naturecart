@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.naturescart">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NaturesCart"
+        tools:ignore="AllowBackup">
+        <activity android:name=".ui.EditProfileActivity"></activity>
+        <activity android:name=".ui.UserDetailActivity" />
+        <activity android:name=".ui.NotificationActivity" />
+        <activity android:name=".ui.OrderDetailActivity" />
+        <activity android:name=".ui.AddNewAddress" />
+        <activity android:name=".ui.OrderPlacedActivity" />
+        <activity android:name=".ui.CartOrderDetailActivity" />
+        <activity android:name=".ui.AddressActivity" />
+        <activity android:name=".ui.MenuActivity" />
+        <activity android:name=".ui.CategoryDetail" />
+        <activity android:name=".ui.LanguageSelectionActivity" />
+        <activity
+            android:name=".ui.HomeActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".ui.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.IntroductionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_api" />
+    </application>
+
+</manifest>

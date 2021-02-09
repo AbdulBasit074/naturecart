@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Nature\'s Cart</string>
+    <string name="icon">icon</string>
+    <string name="intro_second_title">Organic &amp; Fresh</string>
+    <string name="intro_second_detail">Fresh &amp; Organic food as your fingertips</string>
+
+    <string name="intro_third_title">Fast &amp; Reliable Delivery</string>
+    <string name="intro_third_detail">Get it Delivered it to anywhere in the UAE</string>
+
+    <string name="intro_first_title">We are one with the nature</string>
+    <string name="intro_first_detail">Skip the store and enjoy farm-fresh fruit &amp; vegetable delivered at your home</string>
+
+
+    <string name="home">Home</string>
+    <string name="favourite">Favourite</string>
+    <string name="cart">Cart</string>
+    <string name="orders">Orders</string>
+    <string name="about">About</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="google_maps_api">AIzaSyALQ4yq5lKp_ZS4OTSsaq0QNdxcHop3DrI</string>
+
+
+</resources>

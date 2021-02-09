@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_silver"
+            tools:context=".ui.MenuActivity"
+            tools:ignore="HardcodedText">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/backBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_back_arrow"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/helloTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/roboto_slab_semi_bold"
+                android:text="Greetings,"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/backBtn" />
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/roboto_slab_semi_bold"
+                android:text="Elon Mask"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/helloTitle" />
+
+
+            <ImageView
+                android:id="@+id/profileBtn"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/backBtn" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/changeBtn"
+                android:text="Change"
+                android:fontFamily="@font/nunito_semi_bold"
+                android:textColor="@color/saleem_green"
+                app:layout_constraintTop_toBottomOf="@id/profileBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/appOptionTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/border_white_round"
+                android:paddingTop="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_20sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/changeBtn">
+
+                <TextView
+                    android:id="@+id/editProfileBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+
+                    android:fontFamily="@font/roboto_slab_regular"
+
+                    android:text="View and edit profile"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    app:drawableEndCompat="@drawable/ic_next_black"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/dividerEditProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@color/divider"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    app:layout_constraintTop_toBottomOf="@id/editProfileBtn" />
+
+
+                <TextView
+                    android:id="@+id/manageAddressBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_slab_regular"
+                    android:text="Manage addresses"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    app:drawableEndCompat="@drawable/ic_next_black"
+                    app:layout_constraintTop_toBottomOf="@id/dividerEditProfile" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/appOption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/border_white_round"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_20sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appOptionTop">
+
+                <TextView
+                    android:id="@+id/contactUsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+
+                    android:fontFamily="@font/roboto_slab_regular"
+
+                    android:text="Contact us"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    app:drawableEndCompat="@drawable/ic_next_black"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@color/divider"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    app:layout_constraintTop_toBottomOf="@id/contactUsBtn" />
+
+                <TextView
+                    android:id="@+id/rateUsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_slab_regular"
+                    android:text="Rate us in the App store"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    app:drawableEndCompat="@drawable/ic_next_black"
+                    app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@color/divider"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    app:layout_constraintTop_toBottomOf="@id/rateUsBtn" />
+
+                <TextView
+                    android:id="@+id/langBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_slab_regular"
+                    android:text="Language"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    app:drawableEndCompat="@drawable/ic_next_black"
+                    app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@color/divider"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    app:layout_constraintTop_toBottomOf="@id/langBtn" />
+
+                <TextView
+                    android:id="@+id/aboutBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+
+                    android:fontFamily="@font/roboto_slab_regular"
+                    android:text="About Nature’s Cart"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    app:drawableEndCompat="@drawable/ic_next_black"
+                    app:layout_constraintTop_toBottomOf="@id/divider3" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:background="@drawable/green_light_border"
+                android:fontFamily="@font/roboto_slab_regular"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingTop="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_12sdp"
+                android:textColor="@color/black"
+                android:text="Log out"
+                android:drawableEnd="@drawable/ic_next_black"
+                android:paddingEnd="@dimen/_10sdp"
+                android:textSize="@dimen/_15ssp"
+                app:layout_constraintTop_toBottomOf="@id/appOption"
+                tools:ignore="RtlSymmetry" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</layout>

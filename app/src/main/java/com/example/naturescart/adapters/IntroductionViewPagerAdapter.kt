@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
 import com.example.naturescart.databinding.LiViewPagerBinding
+import com.example.naturescart.model.OnBoarding
 
-class IntroductionViewPagerAdapter() :
+class IntroductionViewPagerAdapter(private val onBoard: ArrayList<OnBoarding>) :
     RecyclerView.Adapter<IntroductionViewPagerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -22,45 +23,21 @@ class IntroductionViewPagerAdapter() :
     }
 
     override fun getItemCount(): Int {
-        return 3
+        return onBoard.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindViews()
+        holder.bindViews(onBoard[position])
     }
 
     inner class ViewHolder(private val binding: LiViewPagerBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindViews() {
-            when (adapterPosition) {
-                0 -> {
-                    Glide.with(binding.root.context).load(R.drawable.introduction_first)
+        fun bindViews(board: OnBoarding) {
+                   Glide.with(binding.root.context).load(board.image)
                         .into(binding.iconIntroduction)
-                    binding.titleIntroduction.text =
-                        binding.root.context.getString(R.string.intro_first_title)
-                    binding.detailIntroduction.text =
-                        binding.root.context.getString(R.string.intro_first_detail)
-                }
-                1 -> {
-                    Glide.with(binding.root.context).load(R.drawable.introduction_second)
-                        .into(binding.iconIntroduction)
-                    binding.titleIntroduction.text =
-                        binding.root.context.getString(R.string.intro_second_title)
-                    binding.detailIntroduction.text =
-                        binding.root.context.getString(R.string.intro_second_detail)
-
-                }
-                2 -> {
-                    Glide.with(binding.root.context).load(R.drawable.introduction_third)
-                        .into(binding.iconIntroduction)
-                    binding.titleIntroduction.text =
-                        binding.root.context.getString(R.string.intro_third_title)
-                    binding.detailIntroduction.text =
-                        binding.root.context.getString(R.string.intro_third_detail)
-                }
-
-            }
+                    binding.titleIntroduction.text = board.name
+                    binding.detailIntroduction.text = board.description
         }
 
     }

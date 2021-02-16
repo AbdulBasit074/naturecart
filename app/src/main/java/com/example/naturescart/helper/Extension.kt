@@ -77,6 +77,14 @@ fun AppCompatActivity.snackBarAbove(
     snack.show()
 }
 
+fun Context.showToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+fun Fragment.showToast(message: String) {
+    Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
+}
+
 fun Context.customTextView(text: String): TextView {
     val textView = TextView(this)
     textView.setTextColor(getColor(R.color.black))

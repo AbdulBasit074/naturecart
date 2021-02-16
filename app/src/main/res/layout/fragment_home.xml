@@ -9,10 +9,11 @@
         android:background="@color/background_silver"
         tools:ignore="HardcodedText">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -31,8 +32,9 @@
                 android:background="@drawable/ic_search_field"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="@dimen/_5sdp"
+                android:focusableInTouchMode="true"
                 android:hint="Search fruits, herbs, spices…"
-                android:inputType="text"
+                android:inputType="none"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,24 +43,24 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/searchEt">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:id="@+id/nestedMainContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp">
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/batchRv"
+                        android:id="@+id/collectionRv"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_60sdp"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:listitem="@layout/li_batch" />
+                        tools:listitem="@layout/li_collection" />
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/topSliderVp"
@@ -67,12 +69,13 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        app:layout_constraintTop_toBottomOf="@id/batchRv" />
+                        app:layout_constraintTop_toBottomOf="@id/collectionRv" />
 
                     <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
                         android:id="@+id/topSliderIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         app:dotsColor="@color/saleem_green"
                         app:dotsSize="@dimen/_7sdp"
                         app:dotsStrokeColor="@color/transparent_black"
@@ -99,129 +102,28 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
+                        android:minHeight="@dimen/_70sdp"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintTop_toBottomOf="@id/categoryLabel"
                         tools:listitem="@layout/li_category" />
 
-                    <TextView
-                        android:id="@+id/fruitLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_8sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_8sdp"
-
-                        android:fontFamily="@font/roboto_slab_bold"
-                        android:text="Fruits"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_18ssp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/categoryRv" />
-
-                    <TextView
-                        android:id="@+id/seeAllFruits"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_14sdp"
-                        android:layout_marginEnd="@dimen/_8sdp"
-                        android:fontFamily="@font/roboto_slab_regular"
-                        android:text="See all >"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/categoryRv" />
-
-
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/fruitRv"
+                        android:id="@+id/categoryProductRvDetail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintTop_toBottomOf="@id/fruitLabel"
-                        tools:listitem="@layout/li_item" />
+                        app:layout_constraintTop_toBottomOf="@id/categoryRv"
+                        tools:listitem="@layout/li_category_detail" />
 
-
-                    <TextView
-                        android:id="@+id/vegetableLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_8sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_8sdp"
-                        android:fontFamily="@font/roboto_slab_bold"
-                        android:text="Vegetable"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_18ssp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/fruitRv" />
-
-                    <TextView
-                        android:id="@+id/seeAllVegetable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_14sdp"
-                        android:layout_marginEnd="@dimen/_8sdp"
-                        android:fontFamily="@font/roboto_slab_regular"
-                        android:text="See all >"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/fruitRv" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/vegetableRv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintTop_toBottomOf="@id/vegetableLabel"
-                        tools:listitem="@layout/li_item" />
-
-                    <TextView
-                        android:id="@+id/freshHerbsLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_8sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_8sdp"
-                        android:fontFamily="@font/roboto_slab_bold"
-                        android:text="Fruits"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_18ssp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/vegetableRv" />
-
-                    <TextView
-                        android:id="@+id/seeAllfreshHerbs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_14sdp"
-                        android:layout_marginEnd="@dimen/_8sdp"
-                        android:fontFamily="@font/roboto_slab_regular"
-                        android:text="See all >"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/vegetableRv" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/freshHerbsRv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintTop_toBottomOf="@id/freshHerbsLabel"
-                        tools:listitem="@layout/li_item" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
 
             </androidx.core.widget.NestedScrollView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

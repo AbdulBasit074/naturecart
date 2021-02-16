@@ -4,6 +4,8 @@
     <string name="intro_second_title">Organic &amp; Fresh</string>
     <string name="intro_second_detail">Fresh &amp; Organic food as your fingertips</string>
 
+    <string name="country_phone_code">+971</string>
+    <string name="aed_price">AED %1$s</string>
     <string name="intro_third_title">Fast &amp; Reliable Delivery</string>
     <string name="intro_third_detail">Get it Delivered it to anywhere in the UAE</string>
 

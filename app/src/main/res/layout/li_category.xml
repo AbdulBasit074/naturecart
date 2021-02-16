@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="category"
+            type="com.example.naturescart.model.Category" />
+    </data>
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/_110sdp"
         app:cardElevation="@dimen/_2sdp"
@@ -17,7 +22,7 @@
                 android:id="@+id/categoryImage"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
-                android:src="@drawable/dummy_fruit"
+                setImage="@{category.image}"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -27,6 +32,7 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/roboto_slab_bold"
                 android:layout_width="@dimen/_80sdp"
+                android:text="@{category.name}"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="@dimen/_10sdp"

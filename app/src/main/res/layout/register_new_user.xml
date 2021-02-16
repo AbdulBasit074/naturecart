@@ -48,7 +48,6 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
-
             android:fontFamily="@font/nunito_regular"
             android:backgroundTint="@color/divider"
             android:hint="Full Name"
@@ -79,7 +78,6 @@
             android:layout_marginEnd="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
             android:fontFamily="@font/nunito_regular"
-
             android:hint="Email"
             app:layout_constraintTop_toBottomOf="@id/emailLabel"
             tools:ignore="MissingConstraints" />
@@ -159,7 +157,6 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:fontFamily="@font/nunito_regular"
             android:backgroundTint="@color/divider"
-
             app:layout_constraintStart_toEndOf="@id/countryCodeLabel"
             app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
         <TextView
@@ -190,7 +187,7 @@
             android:textColor="@color/saleem_green2"
             />
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/loginBtn"
+            android:id="@+id/registerBtn"
             android:layout_width="@dimen/_110sdp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_40sdp"
@@ -198,7 +195,7 @@
             android:fontFamily="@font/nunito_semi_bold"
             android:paddingStart="@dimen/_20sdp"
             android:paddingEnd="@dimen/_20sdp"
-            android:text="Sign In"
+            android:text="Sign Up"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/_13ssp"
@@ -207,7 +204,7 @@
             app:layout_constraintTop_toBottomOf="@id/privacyLabel1" />
 
         <TextView
-            android:id="@+id/registerNewBtn"
+            android:id="@+id/loginBtn"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_20sdp"
@@ -220,7 +217,7 @@
             app:drawableEndCompat="@drawable/ic_next_black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loginBtn" />
+            app:layout_constraintTop_toBottomOf="@id/registerBtn" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

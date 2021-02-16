@@ -6,6 +6,7 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#252424</color>
+    <color name="red">#D80404</color>
     <color name="new_light_green">#cdedcb</color>
     <color name="white">#FFFFFFFF</color>
     <color name="saleem_green">#1A804D</color>
@@ -19,6 +20,7 @@
     <color name="background_silver">#85EBEEF0</color>
     <color name="light_pink">#F9F4E4</color>
     <color name="light_pink_back">#FAF1D2</color>
+    <color name="border_button_grey">#D3D3D3</color>
     <color name="divider">#40707070</color>
 
     <color name="confirm">#FFFDC9</color>

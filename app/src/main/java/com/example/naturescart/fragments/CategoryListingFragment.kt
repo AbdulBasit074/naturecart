@@ -29,7 +29,7 @@ class CategoryListingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         dataSet()
         binding.categoryRvDetail.layoutManager = GridLayoutManager(activity, 2)
-        binding.categoryRvDetail.adapter = ItemAdapterRv(listItems)
+//        binding.categoryRvDetail.adapter = ItemAdapterRv(listItems)
         binding.categoryRvDetail.addItemDecoration(HorizantalDoubleDivider())
     }
 

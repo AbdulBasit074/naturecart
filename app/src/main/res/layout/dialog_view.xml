@@ -8,8 +8,10 @@
         android:background="#00000000">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_200sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/_200sdp"
+            android:minWidth="@dimen/_200sdp"
             android:layout_gravity="center"
             app:cardCornerRadius="@dimen/_24sdp"
             app:cardElevation="@dimen/_24sdp"
@@ -37,6 +39,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:layout_marginEnd="@dimen/_3sdp"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:fontFamily="@font/roboto_slab_regular"
                     android:textColor="@android:color/black" />

@@ -17,9 +17,9 @@
                 android:id="@+id/topContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
-                android:background="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -151,21 +151,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/paymenttitle">
 
-                        <RadioButton
-                            android:id="@+id/cash"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/border_white_round"
-                            android:drawableStart="@drawable/ic_cash"
-                            android:drawablePadding="@dimen/_7sdp"
-                            android:fontFamily="@font/roboto_slab_regular"
-                            android:paddingStart="@dimen/_5sdp"
-                            android:paddingTop="@dimen/_10sdp"
-                            android:paddingBottom="@dimen/_10sdp"
-                            android:text="Cash On Delivery"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12ssp"
-                            tools:ignore="RtlSymmetry" />
 
                         <RadioButton
                             android:id="@+id/online"
@@ -173,9 +158,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:background="@drawable/border_white_round"
+                            android:buttonTint="@color/saleem_green"
                             android:drawableStart="@drawable/ic_credit"
                             android:paddingTop="@dimen/_10sdp"
                             android:paddingBottom="@dimen/_10sdp"
+                            android:checked="true"
                             android:drawablePadding="@dimen/_7sdp"
                             android:fontFamily="@font/roboto_slab_regular"
                             android:paddingStart="@dimen/_5sdp"
@@ -200,6 +187,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="gone"
                         android:paddingStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:background="@drawable/border_white_round"
@@ -244,7 +232,7 @@
                         android:fontFamily="@font/roboto_slab_regular"
                         android:gravity="start"
                         android:hint="Add Instruction"
-                        android:minHeight="@dimen/_60sdp"
+                        android:minHeight="@dimen/_80sdp"
                         android:padding="@dimen/_10sdp"
                         android:singleLine="true"
                         android:textAlignment="textStart"
@@ -268,7 +256,7 @@
         <include
             android:id="@+id/bottomSheetCO"
             layout="@layout/checkout_bottom_sheet"
-            app:behavior_peekHeight="@dimen/_160sdp"
+            app:behavior_peekHeight="@dimen/_150sdp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

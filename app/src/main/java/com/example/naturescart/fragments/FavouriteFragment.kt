@@ -8,11 +8,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.naturescart.R
-import com.example.naturescart.adapters.CategoryViewPagerAdapter
+import com.example.naturescart.adapters.FavouriteViewPagerAdapter
 import com.example.naturescart.databinding.FragmentFavouriteBinding
 import com.example.naturescart.helper.moveFromFragment
+import com.example.naturescart.model.Category
+import com.example.naturescart.model.Product
+import com.example.naturescart.model.User
+import com.example.naturescart.model.room.NatureDb
 import com.example.naturescart.ui.MenuActivity
 import com.example.naturescart.ui.NotificationActivity
+import com.example.naturescart.ui.UserDetailActivity
 import com.google.android.material.tabs.TabLayout
 
 class FavouriteFragment : Fragment(), TabLayout.OnTabSelectedListener,
@@ -20,7 +25,9 @@ class FavouriteFragment : Fragment(), TabLayout.OnTabSelectedListener,
 
     private lateinit var binding: FragmentFavouriteBinding
     private var list: ArrayList<String> = ArrayList()
-
+    private var loggedUser: User? = null
+    private  var allCategoryList: ArrayList<Category> = ArrayList()
+    private lateinit var allProductList: ArrayList<Product>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,52 +39,64 @@ class FavouriteFragment : Fragment(), TabLayout.OnTabSelectedListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loggedUser = NatureDb.newInstance(requireActivity()).userDao().getLoggedUser()
+        if (loggedUser == null)
+            getVisitorFavourite()
 
-        setData()
-        tabLayoutSetting()
         setListeners()
     }
 
+    private fun getVisitorFavourite() {
+        allCategoryList.add(Category())
+        allCategoryList.addAll(
+            NatureDb.newInstance(requireActivity()).favouriteDao()
+                .getAllCategory() as ArrayList<Category>
+        )
+        allProductList = NatureDb.newInstance(requireActivity()).favouriteDao()
+            .getAllProduct() as ArrayList<Product>
+        tabLayoutSetting()
+    }
+
+
     private fun setListeners() {
         binding.toolBar.notificationBtn.setOnClickListener {
-            moveFromFragment(activity!!, NotificationActivity::class.java)
+            moveFromFragment(requireActivity(), NotificationActivity::class.java)
         }
         binding.toolBar.profileBtn.setOnClickListener {
-            moveFromFragment(activity!!, MenuActivity::class.java)
+            if (loggedUser == null)
+                moveFromFragment(requireActivity(), MenuActivity::class.java)
+            else
+                moveFromFragment(requireActivity(), UserDetailActivity::class.java)
         }
     }
 
-    private fun setData() {
-        list.add("All")
-        list.add("Fruit")
-        list.add("Vegetable")
-        list.add("Fresh Herbs")
+    override fun onResume() {
+        super.onResume()
+        loggedUser = NatureDb.newInstance(requireActivity()).userDao().getLoggedUser()
     }
+
 
     private fun tabLayoutSetting() {
 
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
-        list.forEach {
+        allCategoryList.forEach {
 
-            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it).setTag(it))
-
+            if (it.name == "All")
+                binding.tabLayout.addTab(binding.tabLayout.newTab().setText("All").setTag(it.id))
+            else
+                binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it.name).setTag(it.id))
         }
 
-
         binding.tabLayout.addOnTabSelectedListener(this)
-
-        binding.viewPager.adapter =
-            CategoryViewPagerAdapter(activity!!, childFragmentManager, list.size)
-
+        binding.viewPager.adapter = FavouriteViewPagerAdapter(
+            requireActivity(),
+            childFragmentManager,
+            allCategoryList.size,
+            allCategoryList
+        )
 
         binding.viewPager.addOnPageChangeListener(this)
         onPageSelected(0)
-
-
-
-
-
-
         binding.viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout))
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -103,7 +122,7 @@ class FavouriteFragment : Fragment(), TabLayout.OnTabSelectedListener,
     override fun onTabSelected(tab: TabLayout.Tab?) {
         var selectedIndex = 0
         for (i in 0 until list.size) {
-            if (list[i] == tab!!.tag)
+            if (allCategoryList[i] == tab!!.tag)
                 selectedIndex = i
         }
         binding.viewPager.currentItem = selectedIndex
@@ -118,6 +137,5 @@ class FavouriteFragment : Fragment(), TabLayout.OnTabSelectedListener,
 
     override fun onPageSelected(position: Int) {
         binding.tabLayout.getTabAt(position)!!.select()
-
     }
 }

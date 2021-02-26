@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
@@ -26,9 +27,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
+
+                    android:id="@+id/productImage"
                     android:layout_width="@dimen/_80sdp"
                     android:layout_height="@dimen/_80sdp"
                     android:layout_gravity="center"
+                    android:contentDescription="@string/icon"
                     android:scaleType="centerCrop"
                     android:src="@drawable/dummy_vegetable" />
 
@@ -45,6 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/roboto_slab_regular"
                     android:singleLine="true"
                     android:text="Guava Fruit  - App.  Wt. 1 Kg"
@@ -85,6 +90,7 @@
                         app:layout_constraintTop_toBottomOf="@id/itemPrice" />
 
                     <TextView
+                        android:id="@+id/totalItemPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

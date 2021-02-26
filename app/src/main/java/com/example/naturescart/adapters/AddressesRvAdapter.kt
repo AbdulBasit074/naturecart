@@ -18,10 +18,11 @@ import com.example.naturescart.services.address.AddressService
 
 class AddressesRvAdapter(
     private val items: ArrayList<Address>,
-    private val selection: Boolean
+    private val selection: Boolean,
+    private var addressClick: (Address) -> Unit
 ) :
     RecyclerView.Adapter<AddressesRvAdapter.ViewHolder>() {
-    private var positionSelect = 0
+    private var positionSelect = Constants.selectAddressId
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -71,7 +72,11 @@ class AddressesRvAdapter(
             binding.parentView.setOnClickListener {
                 if (selection) {
                     positionSelect = adapterPosition
+                    Constants.selectAddressId = adapterPosition
                     notifyDataSetChanged()
+                    addressClick(item)
+                } else {
+                    addressClick(item)
                 }
 
             }

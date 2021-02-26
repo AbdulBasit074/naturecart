@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:background="@color/background_silver"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             >
 
             <include
@@ -31,17 +32,14 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/orderRv"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="vertical"
+                android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                 android:layout_marginEnd="@dimen/_10sdp"
                 app:layout_constraintTop_toBottomOf="@id/orderTitle"
                 tools:listitem="@layout/li_order"
-                app:layout_constraintStart_toStartOf="parent"
                 />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
 </layout>

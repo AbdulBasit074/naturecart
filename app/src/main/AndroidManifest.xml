@@ -17,9 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NaturesCart"
         tools:ignore="AllowBackup">
-        <activity android:name=".ui.SearchActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            />
+        <activity android:name=".ui.PaymentWebView"></activity>
+        <activity
+            android:name=".ui.SearchActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".ui.EditProfileActivity" />
         <activity android:name=".ui.UserDetailActivity" />
         <activity android:name=".ui.NotificationActivity" />

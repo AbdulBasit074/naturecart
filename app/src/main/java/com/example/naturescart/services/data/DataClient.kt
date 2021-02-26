@@ -37,10 +37,15 @@ interface DataClient {
 
     @GET("search")
     fun getSearchResult(
-        @Header("Authorization") authToken: String,
+        @Header("Authorization") authToken: String?,
         @Query("keyword") keyWord:String,
         @Query("limit") limit:Int,
         @Query("page") page:Int
     ): Call<ResponseBody>
+
+
+
+
+
 
 }

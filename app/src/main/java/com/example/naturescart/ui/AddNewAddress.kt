@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityAddNewAddressBinding
 import com.example.naturescart.helper.*
+import com.example.naturescart.model.Address
 import com.example.naturescart.model.NickAddress
 import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
@@ -42,14 +43,19 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
 
     companion object {
-        fun newInstance(context: Context, isUpdate: Boolean): Intent {
+        fun newInstance(context: Context, isUpdate: Boolean, addressUpdate: Address): Intent {
             return Intent(context, AddNewAddress::class.java).putExtra(Constants.isUpdate, isUpdate)
+                .putExtra(Constants.updateAddress, addressUpdate)
         }
     }
 
 
     private lateinit var binding: ActivityAddNewAddressBinding
     private val autocompleteRequestCode = 62839
+
+    private val addRequest: Int = 32
+    private val updateRequest: Int = 22
+
 
     private var latLng: LatLng? = null
     private var fields = arrayListOf(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)
@@ -59,7 +65,9 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
     private val addressAddRequest: Int = 1412
     private val addressUpdateRequest: Int = 4412
     private var positionNick: Int = 0
+    private var positionNickKey: String = ""
 
+    private var addressSave: Address = Address()
     private var citiesList: ArrayList<String> = ArrayList()
     private var nickList: ArrayList<String> = ArrayList()
     private var nickListObject: ArrayList<NickAddress> = ArrayList()
@@ -70,6 +78,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_new_address)
         loggedUser = NatureDb.newInstance(this).userDao().getLoggedUser()
         isUpdate = intent.getBooleanExtra(Constants.isUpdate, false)
+        showToast("Loading Map...")
 
         AddressService(nickRequestGet, this).getNickAddress(loggedUser.accessToken)
         AddressService(citiesRequest, this).getCities(loggedUser.accessToken)
@@ -77,7 +86,6 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         setListeners()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
         if (!isGpsEnable()) {
             askToEnableGPS { requestCode, resultCode, data ->
                 onActivityResult(
@@ -90,10 +98,22 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         } else {
             checkPermissionAndGetLocation()
         }
+
     }
 
     private fun updateUI() {
         if (isUpdate) {
+            addressSave = intent.getParcelableExtra(Constants.updateAddress)!!
+            binding.addressNickEt.text = addressSave.addressNick
+            binding.addressEt.setText(addressSave.address)
+            binding.phoneNo.setText(addressSave.phone?.replace("+971", ""))
+            binding.cityEt.setText(addressSave.city)
+            binding.addressAddBtn.text = "Update"
+            positionNickKey = addressSave.addressNick.toString().toLowerCase()
+
+        } else {
+
+
         }
     }
 
@@ -101,7 +121,9 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
         binding.addressNickEt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (nickListObject.get(positionNick).key == "other")
+
+                positionNickKey = nickListObject[positionNick].key!!
+                if (nickListObject[positionNick].key == "other")
                     binding.addressNickOther.visibility = View.VISIBLE
             }
 
@@ -117,14 +139,74 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             onBackPressed()
         }
         binding.addressAddBtn.setOnClickListener {
-            setResult(Activity.RESULT_OK)
-            finish()
+
+            if (isInputOk()) {
+                addressSave.city = binding.cityEt.text.toString()
+                addressSave.phone = getString(R.string.country_phone_code) + binding.phoneNo.text
+                addressSave.address = binding.addressEt.text.toString()
+                if (positionNickKey == "other")
+                    addressSave.addressNick = binding.addressNickOther.text.toString()
+                else
+                    addressSave.addressNick = binding.addressNickEt.text.toString()
+
+                addressSave.city = binding.cityEt.text.toString()
+                if (latLng == null) {
+                    showToast("Map location not updated now...")
+                } else {
+                    addressSave.latitude = latLng!!.latitude
+                    addressSave.longitude = latLng!!.longitude
+                    if (isUpdate)
+                        AddressService(addressUpdateRequest, this).updateAddress(
+                            loggedUser.accessToken, addressSave,
+                            addressSave.id!!
+                        )
+                    else
+                        AddressService(addressAddRequest, this).addAddress(
+                            loggedUser.accessToken,
+                            addressSave
+                        )
+                }
+            }
         }
         binding.addressNickEt.setOnClickListener {
             setDataList("Select Nick", nickList, binding.addressNickEt)
+            binding.addressNickOther.visibility = View.GONE
         }
         binding.cityEt.setOnClickListener {
             setDataList("Select City", citiesList, binding.cityEt)
+        }
+    }
+
+    private fun isInputOk(): Boolean {
+
+        when {
+
+            binding.addressNickEt.text.isEmpty() -> {
+                showToast("Nick Address Field is Empty")
+                return false
+            }
+            binding.addressEt.text.isEmpty() -> {
+                showToast("Address Field is Empty")
+                return false
+            }
+            binding.phoneNo.text.isEmpty() -> {
+                showToast("Phone Field is Empty")
+                return false
+            }
+            binding.cityEt.text.isEmpty() -> {
+                showToast("City Field is Empty")
+                return false
+            }
+            positionNickKey == "other" -> {
+                if (binding.addressNickOther.text.isEmpty()) {
+                    showToast("Nick Other address is empty")
+                    return false
+                }
+                return true
+            }
+            else -> {
+                return true
+            }
         }
     }
 
@@ -197,15 +279,22 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             nickRequestGet -> {
                 nickListObject =
                     Gson().fromJson(data, object : TypeToken<ArrayList<NickAddress>>() {}.type)
-                for (i in 0 until nickListObject.size - 1) {
+                for (i in 0 until nickListObject.size) {
                     nickList.add(nickListObject[i].type!!)
                 }
 
             }
             addressAddRequest -> {
+                // DialogCustom(this, R.drawable.ic_thumb, data).show()
+                setResult(Activity.RESULT_OK)
+                finish()
 
             }
             addressUpdateRequest -> {
+                //DialogCustom(this, R.drawable.ic_thumb, data).show()
+                setResult(Activity.RESULT_OK)
+                finish()
+
             }
         }
     }
@@ -214,8 +303,8 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         val builder = AlertDialog.Builder(this)
         val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list)
         builder.setAdapter(adapter) { _, which ->
-            textView.text = list[which]
             positionNick = which
+            textView.text = list[which]
         }
         val dialog = builder.create()
         dialog.setCustomTitle(binding.root.context.customTextView(title))

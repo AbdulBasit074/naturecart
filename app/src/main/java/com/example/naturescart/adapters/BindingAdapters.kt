@@ -9,18 +9,37 @@ import com.mikhaellopez.circularimageview.CircularImageView
 
 
 @BindingAdapter("setCircularImage")
-fun setCircularImage(imageView: CircularImageView,src:String)
-{
-    Glide.with(imageView.context).load(src).into(imageView)
-}
-@BindingAdapter("setImage")
-fun setImage(imageView: ImageView,src:String)
-{
+fun setCircularImage(imageView: CircularImageView, src: String) {
     Glide.with(imageView.context).load(src).into(imageView)
 }
 
+@BindingAdapter("setImage")
+fun setImage(imageView: ImageView, src: String) {
+    Glide.with(imageView.context).load(src).into(imageView)
+}
+
+@BindingAdapter("setTextOrder")
+fun setTextOrder(textView: TextView, text: String) {
+    textView.text = textView.context.getString(R.string.order_no, text)
+}
+
+@BindingAdapter("setText")
+fun setText(textView: TextView, text: String) {
+    textView.text = text
+}
+
+@BindingAdapter("setAddressOrder")
+fun setAddressOrder(textView: TextView, address: com.example.naturescart.model.Address) {
+    textView.text = address.address
+}
+
+
 @BindingAdapter("textPrice")
-fun setTextPrice(textView: TextView, src:Int)
-{
-    textView.text = textView.context.getString(R.string.aed_price,src.toString())
+fun setTextPrice(textView: TextView, src: String) {
+    textView.text = textView.context.getString(R.string.aed_price, src)
+}
+
+@BindingAdapter("textNoItems")
+fun setTextNoItems(textView: TextView, src: Int) {
+    textView.text = textView.context.getString(R.string.no_items, src.toString())
 }

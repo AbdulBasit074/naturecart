@@ -24,8 +24,8 @@ class DataService(requestCode: Int, callBack: Results) : BaseService(requestCode
         RetrofitClient.getInstance().create(DataClient::class.java).getUserHistory("Bearer $authToken").enqueue(this)
     }
 
-    fun getSearchResult(authToken:String,keyWord:String,limit:Int,pageNo:Int) {
-        RetrofitClient.getInstance().create(DataClient::class.java).getSearchResult("Bearer $authToken",keyWord,limit,pageNo).enqueue(this)
+    fun getSearchResult(authToken: String?, keyWord:String, limit:Int, pageNo:Int) {
+        RetrofitClient.getInstance().create(DataClient::class.java).getSearchResult(authToken,keyWord,limit,pageNo).enqueue(this)
     }
 
 

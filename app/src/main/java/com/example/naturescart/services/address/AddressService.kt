@@ -1,5 +1,6 @@
 package com.example.naturescart.services.address
 
+import com.example.naturescart.model.Address
 import com.example.naturescart.services.BaseService
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.RetrofitClient
@@ -17,14 +18,14 @@ class AddressService(requestCode: Int, callBack: Results) : BaseService(requestC
             .getCities("Bearer $authToken").enqueue(this)
     }
 
-    fun updateAddress(authToken: String) {
+    fun updateAddress(authToken: String, address: Address, id: Int) {
         RetrofitClient.getInstance().create(AddressClient::class.java)
-            .getCities("Bearer $authToken").enqueue(this)
+            .updateAddress(id, "Bearer $authToken", address).enqueue(this)
     }
 
-    fun addAddress(authToken: String) {
+    fun addAddress(authToken: String, address: Address) {
         RetrofitClient.getInstance().create(AddressClient::class.java)
-            .getCities("Bearer $authToken").enqueue(this)
+            .addAddress("Bearer $authToken", address).enqueue(this)
     }
 
     fun getAddress(authToken: String) {

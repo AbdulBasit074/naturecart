@@ -7,6 +7,7 @@
 
 
     <data>
+
         <variable
             name="product"
             type="com.example.naturescart.model.Product" />
@@ -26,12 +27,12 @@
 
             <ImageView
                 android:id="@+id/itemImage"
+                setImage="@{product.image}"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:contentDescription="@string/icon"
                 android:scaleType="centerCrop"
-                setImage="@{product.image}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -52,10 +53,10 @@
 
             <ImageView
                 android:id="@+id/favouriteImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
                 android:contentDescription="@string/icon"
                 android:padding="@dimen/_5sdp"
                 android:scaleType="centerCrop"
@@ -69,8 +70,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:ellipsize="end"
                 android:fontFamily="@font/roboto_slab_regular"
-                android:singleLine="false"
+                android:singleLine="true"
                 android:text="@{product.name}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
@@ -93,6 +95,7 @@
 
             <TextView
                 android:id="@+id/itemPrice"
+                textPrice="@{product.sellPrice.toString()}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -100,7 +103,6 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_slab_semi_bold"
                 android:singleLine="false"
-                textPrice="@{product.sellPrice}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9ssp"
                 app:layout_constraintStart_toStartOf="parent"

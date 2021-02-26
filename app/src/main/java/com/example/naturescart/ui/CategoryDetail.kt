@@ -1,26 +1,53 @@
 package com.example.naturescart.ui
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.example.naturescart.R
 import com.example.naturescart.adapters.CategoryViewPagerAdapter
+import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.databinding.ActivityCategoryDetailBinding
+import com.example.naturescart.helper.Constants
+import com.example.naturescart.helper.PaginationListeners
+import com.example.naturescart.model.Product
+import com.example.naturescart.services.Results
+import com.example.naturescart.services.category.CategoryService
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
 
 class CategoryDetail : AppCompatActivity(), TabLayout.OnTabSelectedListener,
-    ViewPager.OnPageChangeListener {
+    ViewPager.OnPageChangeListener, Results {
+
+
+    companion object {
+        fun newInstance(context: Context, categoryId: Long?): Intent {
+            return Intent(context, CategoryDetail::class.java).putExtra(
+                Constants.categoryID,
+                categoryId
+            )
+        }
+    }
 
 
     private lateinit var binding: ActivityCategoryDetailBinding
-    private var list: ArrayList<String> = ArrayList()
+    private var list: ArrayList<com.example.naturescart.model.CategoryDetail.Child> = ArrayList()
+    private var categoryId: Long = 0
+    private var categoryDetail: com.example.naturescart.model.CategoryDetail =
+        com.example.naturescart.model.CategoryDetail()
 
+    private var categoryDetailRequest: Int = 1122
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_category_detail)
-        setData()
-        tabLayoutSetting()
+        categoryId = intent.getLongExtra(Constants.categoryID, 0)
+        CategoryService(categoryDetailRequest, this).getCategory(categoryId,PaginationListeners.pageSize,
+            withProducts = true,
+            isChild = false,pageNo = 1)
         setListeners()
     }
 
@@ -30,36 +57,26 @@ class CategoryDetail : AppCompatActivity(), TabLayout.OnTabSelectedListener,
         }
     }
 
-    private fun setData() {
-        list.add("All")
-        list.add("Fruit")
-        list.add("Vegetable")
-        list.add("Fresh Herbs")
-    }
 
     private fun tabLayoutSetting() {
 
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+
         list.forEach {
-
-            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it).setTag(it))
-
+            if (it.name == "All")
+                binding.tabLayout.addTab(
+                    binding.tabLayout.newTab().setText(getString(R.string.all)).setTag(it.name)
+                )
+            else
+                binding.tabLayout.addTab(
+                    binding.tabLayout.newTab().setText(it.name).setTag(it.name)
+                )
         }
-
-
         binding.tabLayout.addOnTabSelectedListener(this)
-
         binding.viewPager.adapter =
-            CategoryViewPagerAdapter(this, supportFragmentManager, list.size)
-
-
+            CategoryViewPagerAdapter(this, supportFragmentManager, list.size, list,categoryId)
         binding.viewPager.addOnPageChangeListener(this)
         onPageSelected(0)
-
-
-
-
-
 
         binding.viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout))
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -86,7 +103,7 @@ class CategoryDetail : AppCompatActivity(), TabLayout.OnTabSelectedListener,
     override fun onTabSelected(tab: TabLayout.Tab?) {
         var selectedIndex = 0
         for (i in 0 until list.size) {
-            if (list[i] == tab!!.tag)
+            if (list[i].name == tab!!.tag)
                 selectedIndex = i
         }
         binding.viewPager.currentItem = selectedIndex
@@ -101,6 +118,24 @@ class CategoryDetail : AppCompatActivity(), TabLayout.OnTabSelectedListener,
 
     override fun onPageSelected(position: Int) {
         binding.tabLayout.getTabAt(position)!!.select()
+    }
+
+    override fun onSuccess(requestCode: Int, data: String) {
+        when (requestCode) {
+            categoryDetailRequest -> {
+                categoryDetail =
+                    Gson().fromJson(data, com.example.naturescart.model.CategoryDetail::class.java)
+                Glide.with(this).load(categoryDetail.image).into(binding.tabHeader)
+                binding.title.text = categoryDetail.name
+                list.add(com.example.naturescart.model.CategoryDetail.Child())
+                list.addAll(categoryDetail.childs!!)
+                tabLayoutSetting()
+            }
+        }
+    }
+
+    override fun onFailure(requestCode: Int, data: String) {
+
 
     }
 }

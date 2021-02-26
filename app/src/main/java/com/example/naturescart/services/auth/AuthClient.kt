@@ -29,6 +29,7 @@ interface AuthClient {
     ): Call<ResponseBody>
 
 
+
     @DELETE("auth/logout")
     fun logout(
         @Header("Authorization") authToken: String

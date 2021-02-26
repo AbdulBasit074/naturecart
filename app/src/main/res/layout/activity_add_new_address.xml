@@ -212,6 +212,7 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:backgroundTint="@color/divider"
+                android:inputType="number"
                 android:fontFamily="@font/nunito_regular"
                 android:hint="50505050"
                 app:layout_constraintStart_toEndOf="@id/countryCodeLabel"

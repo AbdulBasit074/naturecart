@@ -75,7 +75,7 @@ dependencies {
     implementation 'com.github.henkhenken:StickyScrollView:1.1.2'
 
 
-    //Google Map
+    //Google Mapssssss
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.1.0'
     implementation 'com.google.android.libraries.places:places:2.4.0'
@@ -103,5 +103,10 @@ dependencies {
 
     // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
+
+    //Preference Manager
+    implementation 'androidx.preference:preference-ktx:1.1.1'
+
+
 
 }

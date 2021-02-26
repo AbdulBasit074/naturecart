@@ -19,10 +19,10 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/design_bottom_navigation_height"
             android:layout_gravity="bottom"
             android:background="@color/saleem_green"
-            app:itemIconSize="@dimen/_26sdp"
+            app:itemIconSize="@dimen/design_bottom_navigation_icon_size"
             app:itemIconTint="@color/white"
             app:itemRippleColor="@color/white"
             app:itemTextColor="@color/white"

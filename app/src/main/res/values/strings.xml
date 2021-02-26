@@ -6,6 +6,11 @@
 
     <string name="country_phone_code">+971</string>
     <string name="aed_price">AED %1$s</string>
+    <string name="order_no">OrderNo: %1$s</string>
+
+    <string name="all">All</string>
+    <string name="total_cart">Total %1$s Items</string>
+    <string name="no_items">%1$s Items</string>
     <string name="intro_third_title">Fast &amp; Reliable Delivery</string>
     <string name="intro_third_detail">Get it Delivered it to anywhere in the UAE</string>
 

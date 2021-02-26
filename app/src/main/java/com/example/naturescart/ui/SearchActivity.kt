@@ -11,6 +11,7 @@ import com.example.naturescart.R
 import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.adapters.SearchAdapterRv
 import com.example.naturescart.databinding.ActivitySearchBinding
+import com.example.naturescart.helper.HorizantalDoubleDivider
 import com.example.naturescart.helper.PaginationListeners
 import com.example.naturescart.helper.showToast
 import com.example.naturescart.model.Product
@@ -33,6 +34,7 @@ class SearchActivity : AppCompatActivity(), Results {
     private var searchProductList: ArrayList<Product> = ArrayList()
     private var isLastPage: Boolean = false
     private var isLoading: Boolean = false
+
     private lateinit var paginationListener: PaginationListeners
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapterProduct: ItemAdapterRv
@@ -56,13 +58,14 @@ class SearchActivity : AppCompatActivity(), Results {
     }
 
     private fun setAdapterForProducts() {
-        adapterProduct = ItemAdapterRv(this, searchProductList) { forLogin() }
+        adapterProduct = ItemAdapterRv(this, searchProductList)
         layoutManager = GridLayoutManager(this, 2)
         binding.searchResultRv.layoutManager = layoutManager
         binding.searchResultRv.adapter = adapterProduct
+        binding.searchResultRv.addItemDecoration(HorizantalDoubleDivider())
     }
 
-    private fun forLogin() {
+    private fun seeALL() {
 
     }
 
@@ -80,11 +83,23 @@ class SearchActivity : AppCompatActivity(), Results {
 
     private fun performSearch() {
         isLoading = true
-        DataService(searchRequest, this).getSearchResult(
-            loggedUser!!.accessToken,
-            binding.searchEt.text.toString(),
-            PaginationListeners.pageSize, pageNo
-        )
+        pageNo = 1
+
+        if (loggedUser != null) {
+            val authToken = loggedUser!!.accessToken
+            DataService(searchRequest, this).getSearchResult(
+                "Bearer $authToken"
+                ,
+                binding.searchEt.text.toString(),
+                PaginationListeners.pageSize, pageNo
+            )
+        } else {
+            DataService(searchRequest, this).getSearchResult(
+                null,
+                binding.searchEt.text.toString(),
+                PaginationListeners.pageSize, pageNo
+            )
+        }
         binding.searchHistory.clearFocus()
     }
 
@@ -96,6 +111,7 @@ class SearchActivity : AppCompatActivity(), Results {
                 setAdapter()
             }
             searchRequest -> {
+                adapterProduct.stopLoading()
                 binding.searchHistory.visibility = View.GONE
                 binding.searchResultRv.visibility = View.VISIBLE
                 isLoading = false
@@ -107,11 +123,10 @@ class SearchActivity : AppCompatActivity(), Results {
                     )
                 )
                 if (searchProductList.size < PaginationListeners.pageSize)
-                     isLastPage = true
-//                initPageListener()
-//                binding.searchResultRv.addOnScrollListener(paginationListener)
+                    isLastPage = true
+                initPageListener()
+                binding.searchResultRv.addOnScrollListener(paginationListener)
                 binding.searchResultRv.adapter?.notifyDataSetChanged()
-
             }
             loadMoreRequest -> {
                 adapterProduct.stopLoading()
@@ -133,21 +148,31 @@ class SearchActivity : AppCompatActivity(), Results {
     private fun initPageListener() {
         paginationListener = object : PaginationListeners(layoutManager) {
             override fun isLoading(): Boolean {
-                return isLoading()
+                return isLoading
             }
 
             override fun isLastPage(): Boolean {
-                return isLastPage()
+                return isLastPage
             }
 
             override fun loadMoreItems() {
                 isLoading = true
                 pageNo++
-                DataService(searchRequest, this@SearchActivity).getSearchResult(
-                    loggedUser!!.accessToken,
-                    binding.searchEt.text.toString(),
-                    pageSize, pageNo
-                )
+                if (loggedUser != null) {
+                    val authToken = loggedUser!!.accessToken
+                    DataService(searchRequest, this@SearchActivity).getSearchResult(
+                        "Bearer $authToken"
+                        ,
+                        binding.searchEt.text.toString(),
+                        PaginationListeners.pageSize, pageNo
+                    )
+                } else {
+                    DataService(loadMoreRequest, this@SearchActivity).getSearchResult(
+                        null,
+                        binding.searchEt.text.toString(),
+                        PaginationListeners.pageSize, pageNo
+                    )
+                }
                 adapterProduct.startLoading()
             }
         }

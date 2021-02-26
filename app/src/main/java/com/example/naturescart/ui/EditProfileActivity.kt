@@ -33,7 +33,11 @@ class EditProfileActivity : AppCompatActivity(), Results {
             onBackPressed()
         }
         binding.changePasswordBtn.setOnClickListener {
-            DialogCustomPasswordChange(this,loggedUser!!.accessToken) { data -> onPasswordChange(data) }.show()
+            DialogCustomPasswordChange(this, loggedUser!!.accessToken) { data ->
+                onPasswordChange(
+                    data
+                )
+            }.show()
         }
         binding.saveBtn.setOnClickListener {
             if (isInputOk()) {
@@ -87,7 +91,6 @@ class EditProfileActivity : AppCompatActivity(), Results {
         NatureDb.newInstance(this).userDao().logOut()
         NatureDb.newInstance(this).userDao().login(loggedUser!!)
     }
-
     override fun onFailure(requestCode: Int, data: String) {
         showToast(data)
     }

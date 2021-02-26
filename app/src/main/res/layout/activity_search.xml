@@ -43,16 +43,13 @@
             android:background="@drawable/border_white_round"
             android:orientation="vertical"
             android:padding="@dimen/_10sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/li_search" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchResultRv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:visibility="gone"
             android:padding="@dimen/_5sdp"
             tools:listitem="@layout/li_item" />

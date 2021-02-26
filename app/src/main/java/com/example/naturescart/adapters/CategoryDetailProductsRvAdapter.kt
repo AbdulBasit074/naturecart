@@ -1,7 +1,6 @@
 package com.example.naturescart.adapters
 
 import android.app.Activity
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,7 +10,11 @@ import com.example.naturescart.databinding.LiCategoryDetailBinding
 import com.example.naturescart.helper.HorizantalDivider
 import com.example.naturescart.model.CategoryProducts
 
-class CategoryDetailProductsRvAdapter(private val context: Activity,private val items: ArrayList<CategoryProducts>,private val forLogin:()->Unit) :
+class CategoryDetailProductsRvAdapter(
+    private val context: Activity,
+    private val items: ArrayList<CategoryProducts>,
+    private val seeAll: (CategoryProducts) -> Unit
+) :
     RecyclerView.Adapter<CategoryDetailProductsRvAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -37,8 +40,12 @@ class CategoryDetailProductsRvAdapter(private val context: Activity,private val 
 
         fun bindView(item: CategoryProducts) {
             binding.categoryProduct = item
-            binding.productRv.adapter = ItemAdapterRv(context ,item.products!!){forLogin() }
+            binding.productRv.adapter = ItemAdapterRv(context, item.products!!)
             binding.productRv.addItemDecoration(HorizantalDivider())
+            binding.seeAll.setOnClickListener {
+                seeAll(item)
+            }
+
         }
     }
 

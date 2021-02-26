@@ -29,14 +29,13 @@
                 app:titleEnabled="false">
 
                 <ImageView
-                    android:id="@+id/htab_header"
+                    android:id="@+id/tabHeader"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/_40sdp"
                     android:contentDescription="@string/icon"
                     android:fitsSystemWindows="true"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/dummy_new"
                     app:layout_collapseMode="parallax" />
 
 
@@ -69,7 +68,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_slab_semi_bold"
-                            android:text="Fruits"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_15ssp"
                             app:layout_constraintBottom_toBottomOf="parent"

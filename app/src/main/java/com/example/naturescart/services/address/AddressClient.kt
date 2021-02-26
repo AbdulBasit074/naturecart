@@ -1,12 +1,10 @@
 package com.example.naturescart.services.address
 
 
+import com.example.naturescart.model.Address
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface AddressClient {
 
@@ -30,6 +28,20 @@ interface AddressClient {
     fun deleteAddress(
         @Header("Authorization") authToken: String,
         @Path("id") id: Int
+    ): Call<ResponseBody>
+
+
+    @POST("addresses")
+    fun addAddress(
+        @Header("Authorization") authToken: String,
+        @Body body: Address
+    ): Call<ResponseBody>
+
+    @PUT("addresses/{id}")
+    fun updateAddress(
+        @Path("id") id: Int,
+        @Header("Authorization") authToken: String,
+        @Body body: Address
     ): Call<ResponseBody>
 
 

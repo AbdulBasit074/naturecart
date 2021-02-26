@@ -9,23 +9,32 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityHomeBinding
 import com.example.naturescart.fragments.*
+import com.example.naturescart.helper.moveTo
+import com.example.naturescart.model.User
+import com.example.naturescart.model.room.NatureDb
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
 
-
-    private lateinit var currentFragment: Fragment
     private lateinit var binding: ActivityHomeBinding
     private var previous: MenuItem? = null
+    var loggedUser: User? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        loggedUser = NatureDb.newInstance(this).userDao().getLoggedUser()
+
         //default fragment home open
-//        currentFragment = HomeFragment()
+
 
         loadFragment(HomeFragment())
         previous = binding.bottomNavigation.menu.findItem(binding.bottomNavigation.selectedItemId)
         binding.bottomNavigation.itemIconTintList = null
+        val badge = binding.bottomNavigation.getOrCreateBadge(R.id.cart)
+        badge.backgroundColor = getColor(R.color.red)
+        badge.badgeTextColor = getColor(R.color.white)
+        badge.number = 2
+        badge.isVisible = true
         bottomNavigationFragments()
 
     }
@@ -64,9 +73,12 @@ class HomeActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.order -> {
-                    loadFragment(OrderFragment())
-                    it.setIcon(R.drawable.ic_order_checked)
-                    return@OnNavigationItemSelectedListener true
+                    if (loggedUser != null) {
+                        loadFragment(OrderFragment())
+                        it.setIcon(R.drawable.ic_order_checked)
+                        return@OnNavigationItemSelectedListener true
+                    } else
+                        moveTo(MenuActivity::class.java)
                 }
                 R.id.about -> {
                     loadFragment(AboutFragment())
@@ -108,6 +120,7 @@ class HomeActivity : AppCompatActivity() {
             }
 
         }
+
     }
 
     override fun onBackPressed() {

@@ -18,6 +18,7 @@ class AuthService(requestCode: Int, callBack: Results) : BaseService(requestCode
             .enqueue(this)
     }
 
+
     fun userLogout(authToken:String) {
         RetrofitClient.getInstance().create(AuthClient::class.java).logout("Bearer $authToken")
             .enqueue(this)

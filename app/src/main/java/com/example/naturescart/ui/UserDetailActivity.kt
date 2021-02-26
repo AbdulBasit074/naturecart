@@ -31,9 +31,7 @@ class UserDetailActivity : AppCompatActivity(), Results {
         binding.editProfileBtn.setOnClickListener {
             moveTo(EditProfileActivity::class.java)
         }
-        binding.logout.setOnClickListener {
 
-        }
         binding.manageAddressBtn.setOnClickListener {
             moveToIntent(AddressActivity.newInstance(this, false))
         }
@@ -48,11 +46,11 @@ class UserDetailActivity : AppCompatActivity(), Results {
         when (requestCode) {
             logoutRequest -> {
                 NatureDb.newInstance(this).userDao().logOut()
-                onBackPressed()
+                moveTo(HomeActivity::class.java)
+                finishAffinity()
             }
         }
     }
-
     override fun onFailure(requestCode: Int, data: String) {
         showToast(data)
     }

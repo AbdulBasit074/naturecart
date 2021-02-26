@@ -22,6 +22,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -33,6 +34,10 @@ fun AppCompatActivity.moveTo(clazz: Class<*>) {
 fun Fragment.moveFromFragment(activity: Activity, clazz: Class<*>) {
     startActivity(Intent(activity, clazz))
 }
+fun Fragment.moveFromFragment(intent: Intent) {
+    startActivity(intent)
+}
+
 
 fun AppCompatActivity.moveToIntent(intent: Intent) {
     startActivity(intent)
@@ -41,6 +46,10 @@ fun AppCompatActivity.moveToIntent(intent: Intent) {
 
 fun AppCompatActivity.moveForResult(clazz: Class<*>, requestCode: Int) {
     startActivityForResult(Intent(this, clazz), requestCode)
+}
+
+fun AppCompatActivity.moveForResult(intent: Intent, requestCode: Int) {
+    startActivityForResult(intent, requestCode)
 }
 
 fun AppCompatActivity.moveToAndFinish(clazz: Class<*>) {
@@ -84,6 +93,7 @@ fun Context.showToast(message: String) {
 fun Fragment.showToast(message: String) {
     Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
 }
+
 
 fun Context.customTextView(text: String): TextView {
     val textView = TextView(this)
@@ -134,6 +144,13 @@ fun AppCompatActivity.askToEnableGPS(onActivityResult: (Int, Int, Intent?) -> Un
             }
         }
     }
+}
+fun convertDate(dateString: String?): String {
+    val sourceSdf = SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.ENGLISH)
+    sourceSdf.timeZone = TimeZone.getTimeZone("GMT")
+    val destSdf = SimpleDateFormat("MMM dd yyyy", Locale.ENGLISH)
+    val date = sourceSdf.parse(dateString ?: "")!!
+    return destSdf.format(date)
 }
 
 fun AppCompatActivity.getCurrentLocation(

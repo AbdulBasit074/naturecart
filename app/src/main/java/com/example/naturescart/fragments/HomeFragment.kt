@@ -25,10 +25,7 @@ import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.data.DataService
-import com.example.naturescart.ui.MenuActivity
-import com.example.naturescart.ui.NotificationActivity
-import com.example.naturescart.ui.SearchActivity
-import com.example.naturescart.ui.UserDetailActivity
+import com.example.naturescart.ui.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -64,7 +61,7 @@ class HomeFragment : Fragment(), Results {
         savedInstanceState: Bundle?
     ): View? {
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-        loggedUser = NatureDb.newInstance(activity!!).userDao().getLoggedUser()
+        loggedUser = NatureDb.newInstance(requireActivity()).userDao().getLoggedUser()
         return homeBinding.root
     }
 
@@ -75,7 +72,6 @@ class HomeFragment : Fragment(), Results {
         setDummyData()
         setListeners()
     }
-
     private fun getData() {
         DataService(collectionRequest, this).getCollections(pageNo, limit)
         DataService(categoriesRequest, this).getCategories(limit, false)
@@ -85,16 +81,16 @@ class HomeFragment : Fragment(), Results {
     private fun setListeners() {
 
         homeBinding.toolBar.notificationBtn.setOnClickListener {
-            moveFromFragment(activity!!, NotificationActivity::class.java)
+            moveFromFragment(requireActivity(), NotificationActivity::class.java)
         }
         homeBinding.toolBar.profileBtn.setOnClickListener {
             if (loggedUser == null)
-                moveFromFragment(activity!!, MenuActivity::class.java)
+                moveFromFragment(requireActivity(), MenuActivity::class.java)
             else
-                moveFromFragment(activity!!, UserDetailActivity::class.java)
+                moveFromFragment(requireActivity(), UserDetailActivity::class.java)
         }
         homeBinding.searchEt.setOnClickListener {
-            moveFromFragment(activity!!, SearchActivity::class.java)
+            moveFromFragment(requireActivity(), SearchActivity::class.java)
         }
 
     }
@@ -122,13 +118,13 @@ class HomeFragment : Fragment(), Results {
 
         homeBinding.categoryProductRvDetail.adapter =
             CategoryDetailProductsRvAdapter(
-                activity!!,
+                requireActivity(),
                 categoryProductData
-            ) { forLogin() }
+            ) { data -> seeAll(data) }
     }
 
-    private fun forLogin() {
-        moveFromFragment(activity!!, MenuActivity::class.java)
+    private fun seeAll(categoryClick: CategoryProducts) {
+        moveFromFragment(CategoryDetail.newInstance(requireActivity(), categoryClick.id))
     }
 
     private fun setDummyData() {
@@ -143,7 +139,7 @@ class HomeFragment : Fragment(), Results {
 
     override fun onResume() {
         super.onResume()
-        loggedUser = NatureDb.newInstance(activity!!).userDao().getLoggedUser()
+        loggedUser = NatureDb.newInstance(requireActivity()).userDao().getLoggedUser()
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
@@ -166,7 +162,8 @@ class HomeFragment : Fragment(), Results {
             loadMoreCollectionRC -> {
                 adapterCollection.stopLoading()
                 isLoading = false
-                val dataList: ArrayList<CollectionModel> = Gson().fromJson(data, object : TypeToken<ArrayList<CollectionModel>>() {}.type)
+                val dataList: ArrayList<CollectionModel> =
+                    Gson().fromJson(data, object : TypeToken<ArrayList<CollectionModel>>() {}.type)
                 if (dataList.size < PaginationListeners.pageSize)
                     isLast = true
                 collectionData.addAll(dataList)
@@ -207,6 +204,7 @@ class HomeFragment : Fragment(), Results {
             override fun isLastPage(): Boolean {
                 return isLast
             }
+
             override fun loadMoreItems() {
                 pageNo++
                 isLoading = true
@@ -214,8 +212,7 @@ class HomeFragment : Fragment(), Results {
                 adapterCollection.startLoading()
             }
         }
-
-
     }
+
 
 }

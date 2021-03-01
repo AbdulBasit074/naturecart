@@ -62,8 +62,6 @@ class PaymentWebView : AppCompatActivity() {
 
             }
         }
-
-
     }
 
 

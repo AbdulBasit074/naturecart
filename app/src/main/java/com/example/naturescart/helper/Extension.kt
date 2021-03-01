@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
-import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -52,39 +51,12 @@ fun AppCompatActivity.moveForResult(intent: Intent, requestCode: Int) {
     startActivityForResult(intent, requestCode)
 }
 
-fun AppCompatActivity.moveToAndFinish(clazz: Class<*>) {
-    startActivity(Intent(this, clazz))
-    finish()
-}
-
 fun AppCompatActivity.showToast(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_LONG).show()
 }
 
 
-fun AppCompatActivity.snackBar(view: View, message: String, buttonText: String) {
 
-    val snack: Snackbar = Snackbar
-        .make(view, message, Snackbar.LENGTH_LONG)
-        .setAction(buttonText) {
-        }
-    snack.show()
-}
-
-fun AppCompatActivity.snackBarAbove(
-    view: View,
-    aboveView: View,
-    message: String,
-    buttonText: String
-) {
-
-    val snack: Snackbar = Snackbar
-        .make(view, message, Snackbar.LENGTH_LONG)
-        .setAction(buttonText) {
-        }
-    snack.anchorView = aboveView
-    snack.show()
-}
 
 fun Context.showToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()

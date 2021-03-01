@@ -51,7 +51,6 @@ class HomeFragment : Fragment(), Results {
     private var isLoading: Boolean = true
     private var isLast: Boolean = false
     private lateinit var paginationListener: PaginationListeners
-    private var loadMore: Boolean = false
     private var pageNo: Int = 1
     private lateinit var adapterCollection: CollectionAdapterRv
 
@@ -72,6 +71,7 @@ class HomeFragment : Fragment(), Results {
         setDummyData()
         setListeners()
     }
+
     private fun getData() {
         DataService(collectionRequest, this).getCollections(pageNo, limit)
         DataService(categoriesRequest, this).getCategories(limit, false)

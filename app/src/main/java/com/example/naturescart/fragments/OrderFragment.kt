@@ -30,7 +30,6 @@ class OrderFragment : Fragment(), Results {
 
     private lateinit var orderBinding: FragmentOrderBinding
     private var orderList: ArrayList<OrderDetail> = ArrayList()
-
     private var loggedUser: User? = null
     private var isLastPage: Boolean = false
     private var isLoading: Boolean = true

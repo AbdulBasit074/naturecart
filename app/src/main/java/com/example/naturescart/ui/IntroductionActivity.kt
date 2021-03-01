@@ -3,10 +3,12 @@ package com.example.naturescart.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.naturescart.R
 import com.example.naturescart.adapters.IntroductionViewPagerAdapter
 import com.example.naturescart.databinding.ActivityIntroductionBinding
+import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.moveTo
 import com.example.naturescart.helper.showToast
 import com.example.naturescart.model.OnBoarding
@@ -39,10 +41,10 @@ class IntroductionActivity : AppCompatActivity(), Results {
 
     private fun setListeners() {
         binding.nextBtn.setOnClickListener {
-            moveTo(LanguageSelectionActivity::class.java)
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Constants.onBoardingShow,false).apply()
+            moveTo(HomeActivity::class.java)
         }
     }
-
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             onBoardRequest -> {

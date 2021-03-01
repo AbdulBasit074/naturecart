@@ -20,7 +20,7 @@ class SplashActivity : AppCompatActivity() {
 
         /**Splash call for 3sec and open home screen*/
         Handler(Looper.getMainLooper()).postDelayed({
-            moveTo(IntroductionActivity::class.java)
+            moveTo(LanguageSelectionActivity::class.java)
         }, Constants.splashTime)
 
 

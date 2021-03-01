@@ -26,7 +26,6 @@ import com.google.gson.reflect.TypeToken
 
 class SearchActivity : AppCompatActivity(), Results {
 
-
     private lateinit var binding: ActivitySearchBinding
     private val searchHistoryRequest: Int = 2203
     private val searchRequest: Int = 1203
@@ -65,10 +64,6 @@ class SearchActivity : AppCompatActivity(), Results {
         binding.searchResultRv.addItemDecoration(HorizantalDoubleDivider())
     }
 
-    private fun seeALL() {
-
-    }
-
     private fun searchETListener() {
         binding.searchEt.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -82,9 +77,9 @@ class SearchActivity : AppCompatActivity(), Results {
     }
 
     private fun performSearch() {
+        binding.searchEt.clearFocus()
         isLoading = true
         pageNo = 1
-
         if (loggedUser != null) {
             val authToken = loggedUser!!.accessToken
             DataService(searchRequest, this).getSearchResult(
@@ -139,10 +134,7 @@ class SearchActivity : AppCompatActivity(), Results {
                 searchProductList.addAll(productList)
                 adapterProduct.notifyDataSetChanged()
             }
-
-
         }
-
     }
 
     private fun initPageListener() {
@@ -164,20 +156,18 @@ class SearchActivity : AppCompatActivity(), Results {
                         "Bearer $authToken"
                         ,
                         binding.searchEt.text.toString(),
-                        PaginationListeners.pageSize, pageNo
+                        pageSize, pageNo
                     )
                 } else {
                     DataService(loadMoreRequest, this@SearchActivity).getSearchResult(
                         null,
                         binding.searchEt.text.toString(),
-                        PaginationListeners.pageSize, pageNo
+                        pageSize, pageNo
                     )
                 }
                 adapterProduct.startLoading()
             }
         }
-
-
     }
 
     private fun setAdapter() {

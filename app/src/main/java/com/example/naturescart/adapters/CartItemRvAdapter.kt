@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
@@ -26,7 +27,8 @@ class CartItemRvAdapter(
     RecyclerView.Adapter<CartItemRvAdapter.ViewHolder>(), Results {
     private var totalItemSelect: Int = 0
     private var cartID: Long? = null
-    private val addToCartRequest = 222
+    private val addToCartRc = 3820
+    private val removeFromCartRc = 8323
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -65,30 +67,21 @@ class CartItemRvAdapter(
             )
             Glide.with(binding.productImage.context).load(item.product?.image)
                 .into(binding.productImage)
-
+            binding.deleteBtn.setOnClickListener {
+                CartService(removeFromCartRc, this@CartItemRvAdapter).removeFromCart(item.id ?: 0)
+                binding.parentView.close(true)
+            }
         }
 
         private fun setSelectCount(item: CartDetail.Item) {
             /**number of product item select dialog **/
             val list: ArrayList<Int> = arrayListOf(1, 2, 3, 5, 7)
             val builder = AlertDialog.Builder(binding.root.context)
-            val adapter = ArrayAdapter(
-                binding.root.context,
-                R.layout.support_simple_spinner_dropdown_item,
-                list
-            )
+            val adapter = ArrayAdapter(binding.root.context, R.layout.support_simple_spinner_dropdown_item, list)
             builder.setAdapter(adapter) { _, which ->
                 totalItemSelect = list[which]
-
-                cartID =
-                    androidx.preference.PreferenceManager.getDefaultSharedPreferences(binding.totalItemPrice.context)
-                        .getLong(Constants.cartID, 0)
-                CartService(addToCartRequest, this@CartItemRvAdapter)
-                    .addToCart(
-                        item.product?.id!!,
-                        totalItemSelect,
-                        cartID
-                    )
+                cartID = PreferenceManager.getDefaultSharedPreferences(binding.totalItemPrice.context).getLong(Constants.cartID, 0)
+                CartService(addToCartRc, this@CartItemRvAdapter).addToCart(item.product?.id!!, totalItemSelect, cartID)
             }
             val dialog = builder.create()
             dialog.setCustomTitle(binding.root.context.customTextView("Select Item"))
@@ -98,13 +91,16 @@ class CartItemRvAdapter(
 
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
-            addToCartRequest -> {
+            addToCartRc -> {
                 val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
-                androidx.preference.PreferenceManager.getDefaultSharedPreferences(context).edit()
+                PreferenceManager.getDefaultSharedPreferences(context).edit()
                     .putLong(
                         Constants.cartID,
                         cartDetail.id!!
                     ).apply()
+                refreshCallBack()
+            }
+            removeFromCartRc -> {
                 refreshCallBack()
             }
         }

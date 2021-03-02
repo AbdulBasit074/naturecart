@@ -13,8 +13,11 @@ class Constants {
         const val addressID: String = "addressID"
         const val orderDetail: String = "orderDetail"
         const val onBoardingShow: String = "onBoardingShow"
-        const val categoryID: String = "categoryID"
+        const val languageSelected = "languageSelected"
+        const val categoryID = "categoryID"
+        const val categoryName = "categoryName"
         const val cartDetail: String = "cartDetail"
+        const val fcmTokenPersistenceKey = "fcmTokenPersistenceKey"
         const val baseUrl: String = "https://app.naturescart.ae/api/"
         const val locationDialogRequestKey = 6518
         var selectAddressId: Int = 0

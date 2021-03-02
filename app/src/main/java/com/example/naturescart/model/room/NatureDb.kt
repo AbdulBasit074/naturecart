@@ -11,7 +11,7 @@ import com.example.naturescart.model.User
 
 @Database(
     entities = [User::class, Product::class, Category::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class NatureDb : RoomDatabase() {
@@ -19,9 +19,11 @@ abstract class NatureDb : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun favouriteDao():FavouriteDao
     companion object {
+
         private var databaseName: String = "NatureDb"
         private var instance: NatureDb? = null
-        fun newInstance(context: Context): NatureDb {
+
+        fun getInstance(context: Context): NatureDb {
             if (instance == null) {
                 instance = Room.databaseBuilder(context, NatureDb::class.java, databaseName)
                     .allowMainThreadQueries().fallbackToDestructiveMigration().build()

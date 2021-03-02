@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -13,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.naturescart"
+        applicationId "com.ae.naturescart"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -107,6 +109,12 @@ dependencies {
     //Preference Manager
     implementation 'androidx.preference:preference-ktx:1.1.1'
 
+    implementation 'org.greenrobot:eventbus:3.1.1'
 
+    implementation platform('com.google.firebase:firebase-bom:26.5.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-perf-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 
 }

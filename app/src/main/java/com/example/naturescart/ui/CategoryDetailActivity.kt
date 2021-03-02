@@ -5,49 +5,48 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
 import com.example.naturescart.adapters.CategoryViewPagerAdapter
-import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.databinding.ActivityCategoryDetailBinding
 import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.PaginationListeners
-import com.example.naturescart.model.Product
+import com.example.naturescart.model.CategoryDetail
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.category.CategoryService
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 
-class CategoryDetail : AppCompatActivity(), TabLayout.OnTabSelectedListener,
+class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener,
     ViewPager.OnPageChangeListener, Results {
 
+    private lateinit var binding: ActivityCategoryDetailBinding
+    private var list: ArrayList<CategoryDetail.Child> = ArrayList()
+    private var categoryId: Long = 0
+    private var categoryName: String = ""
+    private var categoryDetail = CategoryDetail()
 
     companion object {
-        fun newInstance(context: Context, categoryId: Long?): Intent {
-            return Intent(context, CategoryDetail::class.java).putExtra(
-                Constants.categoryID,
-                categoryId
-            )
+        fun newInstance(context: Context, categoryId: Long?, categoryName: String): Intent {
+            val intent = Intent(context, CategoryDetailActivity::class.java)
+            intent.putExtra(Constants.categoryID, categoryId)
+            intent.putExtra(Constants.categoryName, categoryName)
+            return intent
         }
     }
-
-
-    private lateinit var binding: ActivityCategoryDetailBinding
-    private var list: ArrayList<com.example.naturescart.model.CategoryDetail.Child> = ArrayList()
-    private var categoryId: Long = 0
-    private var categoryDetail: com.example.naturescart.model.CategoryDetail =
-        com.example.naturescart.model.CategoryDetail()
 
     private var categoryDetailRequest: Int = 1122
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_category_detail)
         categoryId = intent.getLongExtra(Constants.categoryID, 0)
-        CategoryService(categoryDetailRequest, this).getCategory(categoryId,PaginationListeners.pageSize,
+        categoryName = intent.getStringExtra(Constants.categoryName)?:""
+        CategoryService(categoryDetailRequest, this).getCategory(
+            categoryId, PaginationListeners.pageSize,
             withProducts = true,
-            isChild = false,pageNo = 1)
+            isChild = false, pageNo = 1
+        )
         setListeners()
     }
 
@@ -74,7 +73,7 @@ class CategoryDetail : AppCompatActivity(), TabLayout.OnTabSelectedListener,
         }
         binding.tabLayout.addOnTabSelectedListener(this)
         binding.viewPager.adapter =
-            CategoryViewPagerAdapter(this, supportFragmentManager, list.size, list,categoryId)
+            CategoryViewPagerAdapter(this, supportFragmentManager, list.size, list, categoryId, categoryName)
         binding.viewPager.addOnPageChangeListener(this)
         onPageSelected(0)
 
@@ -123,11 +122,10 @@ class CategoryDetail : AppCompatActivity(), TabLayout.OnTabSelectedListener,
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             categoryDetailRequest -> {
-                categoryDetail =
-                    Gson().fromJson(data, com.example.naturescart.model.CategoryDetail::class.java)
+                categoryDetail = Gson().fromJson(data, CategoryDetail::class.java)
                 Glide.with(this).load(categoryDetail.image).into(binding.tabHeader)
                 binding.title.text = categoryDetail.name
-                list.add(com.example.naturescart.model.CategoryDetail.Child())
+                list.add(CategoryDetail.Child())
                 list.addAll(categoryDetail.childs!!)
                 tabLayoutSetting()
             }

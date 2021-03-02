@@ -21,22 +21,20 @@
                 android:id="@+id/toolBar"
                 layout="@layout/tool_bar" />
 
-            <EditText
+            <TextView
                 android:id="@+id/searchEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:autofillHints="Search"
                 android:background="@drawable/ic_search_field"
-                android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="@dimen/_5sdp"
-                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
                 android:hint="Search fruits, herbs, spices…"
-                android:inputType="none"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
+                app:drawableStartCompat="@drawable/ic_search"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolBar" />
 
@@ -58,7 +56,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/collectionRv"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_60sdp"
+                        android:layout_height="@dimen/_68sdp"
+                        android:layoutAnimation="@anim/item_anim"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:listitem="@layout/li_collection" />
 
@@ -69,6 +68,7 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:alpha="0"
                         app:layout_constraintTop_toBottomOf="@id/collectionRv" />
 
                     <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
@@ -76,6 +76,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:alpha="0"
                         app:dotsColor="@color/saleem_green"
                         app:dotsSize="@dimen/_7sdp"
                         app:dotsStrokeColor="@color/transparent_black"
@@ -102,6 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
+                        android:layoutAnimation="@anim/item_anim"
                         android:minHeight="@dimen/_70sdp"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

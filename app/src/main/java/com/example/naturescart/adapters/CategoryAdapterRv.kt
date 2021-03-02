@@ -11,14 +11,7 @@ import com.example.naturescart.model.Category
 class CategoryAdapterRv(private val items: ArrayList<Category>) :
     RecyclerView.Adapter<CategoryAdapterRv.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                R.layout.li_category,
-                parent,
-                false
-            )
-        )
+        return ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.li_category, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -26,7 +19,6 @@ class CategoryAdapterRv(private val items: ArrayList<Category>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         holder.bindView(items[position])
     }
 

@@ -8,59 +8,27 @@ import com.google.gson.annotations.Expose
 
 import com.google.gson.annotations.SerializedName
 
-
 @Entity
 class Product(
-
-    @SerializedName("category_id")
-    @Expose
-    var categoryID: Long? = 0,
-
-    @PrimaryKey
-    @SerializedName("id")
-    @Expose
-    var id: Long? = null,
-
-    @SerializedName("item_id")
-    @Expose
-    var itemId: Long? = null,
-
-    @SerializedName("name")
-    @Expose
-    var name: String? = null,
-
-    @SerializedName("purchase_rate")
-    @Expose
-    var purchaseRate: Int? = null,
-
-    @SerializedName("sell_price")
-    @Expose
-    var sellPrice: Int? = null,
-
-    @SerializedName("quantity")
-    @Expose
-    var quantity: Int? = null,
-
-    @SerializedName("sku")
-    @Expose
-    var sku: String? = null,
-
-    @SerializedName("unit")
-    @Expose
-    var unit: String? = null,
-
-    @SerializedName("image")
-    @Expose
-    var image: String? = null,
-
-    @SerializedName("description")
-    @Expose
-    var description: String? = null
+    @PrimaryKey @SerializedName("id") var id: Long? = null,
+    @SerializedName("item_id") var itemId: Long? = null,
+    @SerializedName("category_id") var categoryID: Long? = 0,
+    @SerializedName("category_name") var categoryName: String? = null,
+    @SerializedName("name") var name: String? = null,
+    @SerializedName("purchase_rate") var purchaseRate: Int? = null,
+    @SerializedName("sell_price") var sellPrice: Int? = null,
+    @SerializedName("quantity") var quantity: Int? = null,
+    @SerializedName("sku") var sku: String? = null,
+    @SerializedName("unit") var unit: String? = null,
+    @SerializedName("image") var image: String? = null,
+    @SerializedName("description") var description: String? = null
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
         parcel.readValue(Long::class.java.classLoader) as? Long,
         parcel.readValue(Long::class.java.classLoader) as? Long,
         parcel.readValue(Long::class.java.classLoader) as? Long,
+        parcel.readString(),
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
@@ -69,13 +37,13 @@ class Product(
         parcel.readString(),
         parcel.readString(),
         parcel.readString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(categoryID)
         parcel.writeValue(id)
         parcel.writeValue(itemId)
+        parcel.writeString(categoryName)
         parcel.writeString(name)
         parcel.writeValue(purchaseRate)
         parcel.writeValue(sellPrice)

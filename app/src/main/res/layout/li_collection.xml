@@ -2,7 +2,9 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="collectionItem"
             type="com.example.naturescart.model.CollectionModel" />
@@ -14,12 +16,12 @@
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageBatch"
-            android:layout_width="@dimen/_55sdp"
-            android:layout_height="@dimen/_55sdp"
+            setCircularImage="@{collectionItem.image}"
+            android:layout_width="@dimen/_56sdp"
+            android:layout_height="@dimen/_56sdp"
             android:contentDescription="@string/icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            setCircularImage="@{collectionItem.image}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

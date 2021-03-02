@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface CartClient {
+
     @FormUrlEncoded
     @POST("carts")
     fun addToCart(
@@ -19,7 +20,10 @@ interface CartClient {
         @Query("cart_id") cartId: Long?
     ): Call<ResponseBody>
 
-
+    @DELETE("carts/{productId}")
+    fun removeFromCart(
+        @Path("productId") productId: Long
+    ): Call<ResponseBody>
 
 
 }

@@ -40,29 +40,26 @@ class OrderFragment : Fragment(), Results {
     private var layoutManger = LinearLayoutManager(activity)
     private lateinit var paginationListeners: PaginationListeners
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         orderBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order, container, false)
         return orderBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loggedUser = NatureDb.newInstance(requireActivity()).userDao().getLoggedUser()
+        loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
         setAdapterForOrder()
         setListeners()
 
-        if (loggedUser != null)
+        if (loggedUser != null) {
             OrderService(ordersRequest, this).getOrders(
                 loggedUser!!.accessToken,
                 PaginationListeners.pageSize,
                 pageNo
             )
-
-
+        } else {
+            orderBinding.noOrdersContainer.visibility = View.VISIBLE
+        }
     }
 
     private fun setAdapterForOrder() {
@@ -74,7 +71,7 @@ class OrderFragment : Fragment(), Results {
 
     override fun onResume() {
         super.onResume()
-        loggedUser = NatureDb.newInstance(requireActivity()).userDao().getLoggedUser()
+        loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
     }
 
     private fun onOrderClick(order: OrderDetail) {
@@ -83,7 +80,6 @@ class OrderFragment : Fragment(), Results {
 
 
     private fun setListeners() {
-
         orderBinding.toolBar.profileBtn.setOnClickListener {
             if (loggedUser == null)
                 moveFromFragment(requireActivity(), MenuActivity::class.java)
@@ -126,9 +122,7 @@ class OrderFragment : Fragment(), Results {
             ordersRequest -> {
                 orderList.clear()
                 isLoading = false
-                orderList.addAll(
-                    Gson().fromJson(data, object : TypeToken<ArrayList<OrderDetail>>() {}.type)
-                )
+                orderList.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<OrderDetail>>() {}.type))
                 adapter.stopLoading()
 
                 if (orderList.size < PaginationListeners.pageSize)
@@ -136,7 +130,7 @@ class OrderFragment : Fragment(), Results {
                 initPageListener()
                 orderBinding.orderRv.addOnScrollListener(paginationListeners)
                 orderBinding.orderRv.adapter?.notifyDataSetChanged()
-
+                orderBinding.noOrdersContainer.visibility = if (orderList.isNullOrEmpty()) View.VISIBLE else View.GONE
             }
             loadMoreRequest -> {
                 adapter.stopLoading()

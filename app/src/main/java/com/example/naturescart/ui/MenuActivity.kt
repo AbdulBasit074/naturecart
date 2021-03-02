@@ -6,20 +6,23 @@ import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityMenuBinding
 import com.example.naturescart.helper.DialogCustom
+import com.example.naturescart.helper.LogInEvent
 import com.example.naturescart.helper.moveTo
 import com.example.naturescart.helper.showToast
 import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.auth.AuthService
+import com.example.naturescart.services.product.ProductService
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
+import org.greenrobot.eventbus.EventBus
 
 class MenuActivity : AppCompatActivity(), Results {
 
-
     private val registerUserRequest: Int = 122
     private val loginUserRequest: Int = 145
+    private val productFavouriteRc: Int = 2389
     private lateinit var binding: ActivityMenuBinding
     private var loggedUser: User? = null
 
@@ -27,10 +30,9 @@ class MenuActivity : AppCompatActivity(), Results {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu)
-        loggedUser = NatureDb.newInstance(this).userDao().getLoggedUser()
+        loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         setViews()
         setListeners()
-
     }
 
     private fun setListeners() {
@@ -129,8 +131,6 @@ class MenuActivity : AppCompatActivity(), Results {
             else -> true
 
         }
-
-
     }
 
     private fun setViews() {
@@ -145,12 +145,16 @@ class MenuActivity : AppCompatActivity(), Results {
             }
             loginUserRequest -> {
                 loggedUser = Gson().fromJson(data, User::class.java)
-                NatureDb.newInstance(this).userDao().logOut()
-                NatureDb.newInstance(this).userDao().login(loggedUser!!)
+                NatureDb.getInstance(this).userDao().logOut()
+                NatureDb.getInstance(this).userDao().login(loggedUser!!)
+                val favorites = NatureDb.getInstance(this).favouriteDao().getAllProduct()
+                favorites.forEach {
+                    ProductService(productFavouriteRc, this).addToFavourite(loggedUser?.accessToken ?: "", it.id ?: 0)
+                }
+                EventBus.getDefault().postSticky(LogInEvent())
                 onBackPressed()
             }
         }
-
     }
 
     override fun onFailure(requestCode: Int, data: String) {

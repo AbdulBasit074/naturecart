@@ -9,7 +9,7 @@ import com.example.naturescart.R
 import com.example.naturescart.adapters.IntroductionViewPagerAdapter
 import com.example.naturescart.databinding.ActivityIntroductionBinding
 import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.moveTo
+import com.example.naturescart.helper.moveToWithoutHistory
 import com.example.naturescart.helper.showToast
 import com.example.naturescart.model.OnBoarding
 import com.example.naturescart.services.Results
@@ -19,10 +19,10 @@ import com.google.gson.reflect.TypeToken
 
 class IntroductionActivity : AppCompatActivity(), Results {
 
-
     private lateinit var binding: ActivityIntroductionBinding
     private var boardList: ArrayList<OnBoarding> = ArrayList()
     private val onBoardRequest: Int = 1293
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_introduction)
@@ -36,13 +36,12 @@ class IntroductionActivity : AppCompatActivity(), Results {
         binding.viewPagerIntroduction.adapter = IntroductionViewPagerAdapter(boardList)
         binding.viewPagerIntroduction.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.dotsIndicator.setViewPager2(binding.viewPagerIntroduction)
-
     }
 
     private fun setListeners() {
         binding.nextBtn.setOnClickListener {
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Constants.onBoardingShow,false).apply()
-            moveTo(HomeActivity::class.java)
+            moveToWithoutHistory(HomeActivity::class.java)
         }
     }
     override fun onSuccess(requestCode: Int, data: String) {

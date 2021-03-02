@@ -2,19 +2,21 @@ package com.example.naturescart.services.product
 
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ProductClient {
 
 
     @FormUrlEncoded
     @POST("favourite")
-    fun onFavourite(
+    fun addToFavourite(
         @Header("Authorization") authToken: String,
         @Field("product_id") productID: Long
+    ): Call<ResponseBody>
+
+    @GET("favourite-detail")
+    fun getFavorites(
+        @Header("Authorization") authToken: String
     ): Call<ResponseBody>
 
 

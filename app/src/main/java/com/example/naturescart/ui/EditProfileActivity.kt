@@ -22,7 +22,7 @@ class EditProfileActivity : AppCompatActivity(), Results {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile)
-        loggedUser = NatureDb.newInstance(this).userDao().getLoggedUser()
+        loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         binding.user = loggedUser
         setListeners()
 
@@ -88,8 +88,8 @@ class EditProfileActivity : AppCompatActivity(), Results {
         loggedUser?.firstName = binding.nameEt.text.toString()
         loggedUser?.email = binding.emailEt.text.toString()
         loggedUser?.phone = binding.phoneNo.text.toString()
-        NatureDb.newInstance(this).userDao().logOut()
-        NatureDb.newInstance(this).userDao().login(loggedUser!!)
+        NatureDb.getInstance(this).userDao().logOut()
+        NatureDb.getInstance(this).userDao().login(loggedUser!!)
     }
     override fun onFailure(requestCode: Int, data: String) {
         showToast(data)

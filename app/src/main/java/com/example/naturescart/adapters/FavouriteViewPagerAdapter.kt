@@ -12,10 +12,11 @@ import com.example.naturescart.model.CategoryDetail
 class FavouriteViewPagerAdapter(
     private val activity: Activity, fm: FragmentManager,
     private val totalTabs: Int,
-    private val categoryList:ArrayList<Category>
+    private val categoryList: ArrayList<Category>
 ) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
     override fun getItem(position: Int): Fragment {
-        return FavouriteListingFragment(categoryList[position].id!!)
+        return FavouriteListingFragment(categoryList[position].id!!, categoryList[position].name ?: "")
     }
 
     override fun getCount(): Int {

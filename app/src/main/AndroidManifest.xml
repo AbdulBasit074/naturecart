@@ -17,24 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NaturesCart"
         tools:ignore="AllowBackup">
-        <activity android:name=".ui.PaymentWebView"></activity>
-        <activity
-            android:name=".ui.SearchActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".ui.EditProfileActivity" />
-        <activity android:name=".ui.UserDetailActivity" />
-        <activity android:name=".ui.NotificationActivity" />
-        <activity android:name=".ui.OrderDetailActivity" />
-        <activity android:name=".ui.AddNewAddress" />
-        <activity android:name=".ui.OrderPlacedActivity" />
-        <activity android:name=".ui.CartOrderDetailActivity" />
-        <activity android:name=".ui.AddressActivity" />
-        <activity android:name=".ui.MenuActivity" />
-        <activity android:name=".ui.CategoryDetail" />
-        <activity android:name=".ui.LanguageSelectionActivity" />
-        <activity
-            android:name=".ui.HomeActivity"
-            android:windowSoftInputMode="adjustPan" />
+
         <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,6 +25,51 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.PaymentWebView"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.SearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.EditProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.UserDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.NotificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.OrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AddNewAddress"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.OrderPlacedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.CartOrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AddressActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.CategoryDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.LanguageSelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.HomeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.IntroductionActivity"
             android:screenOrientation="portrait" />

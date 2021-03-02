@@ -40,25 +40,23 @@ class AddressActivity : AppCompatActivity(), Results {
     private val positionNick: Int = 0
     private val addRequest: Int = 32
     private val updateRequest: Int = 22
-    private lateinit var addressSelect: Address
-
-    private lateinit var loggedUser: User
+    private var addressSelect: Address? = null
+    private var loggedUser: User? = null
     private lateinit var binding: ActivityAddressBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_address)
-        loggedUser = NatureDb.newInstance(this).userDao().getLoggedUser()
+        loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         isSelection = intent.getBooleanExtra(Constants.isAddressSelection, false)
         setListener()
-        AddressService(addressList, this).getAddress(loggedUser.accessToken)
+        AddressService(addressList, this).getAddress(loggedUser?.accessToken?:"")
         setData()
     }
 
     private fun setData() {
-
         if (isSelection)
             binding.title.text = "Select Address"
-
     }
 
     private fun setListener() {
@@ -100,7 +98,7 @@ class AddressActivity : AppCompatActivity(), Results {
                         R.drawable.ic_thumb,
                         "Address Update"
                     ).show()
-                    AddressService(addressList, this).getAddress(loggedUser.accessToken)
+                    AddressService(addressList, this).getAddress(loggedUser?.accessToken?:"")
                 }
                 addRequest -> {
                     DialogCustom(
@@ -108,7 +106,7 @@ class AddressActivity : AppCompatActivity(), Results {
                         R.drawable.ic_thumb,
                         "Address Added"
                     ).show()
-                    AddressService(addressList, this).getAddress(loggedUser.accessToken)
+                    AddressService(addressList, this).getAddress(loggedUser?.accessToken?:"")
                 }
             }
         }

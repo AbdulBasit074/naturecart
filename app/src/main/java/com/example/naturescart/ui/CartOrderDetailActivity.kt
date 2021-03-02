@@ -48,7 +48,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_cart_order_detail)
-        loggedUser = NatureDb.newInstance(this).userDao().getLoggedUser()
+        loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         cartDetail = intent.getParcelableExtra(Constants.cartDetail)
         setCartDetail()
         AddressService(addressList, this).getAddress(loggedUser!!.accessToken)

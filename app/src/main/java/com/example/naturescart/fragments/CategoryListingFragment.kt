@@ -19,16 +19,15 @@ import com.example.naturescart.services.Results
 import com.example.naturescart.services.category.CategoryService
 import com.google.gson.Gson
 
-class CategoryListingFragment(private val position: Int, private val categoryID: Long) : Fragment(),
-    Results {
+class CategoryListingFragment(private val position: Int, private val categoryID: Long, private val categoryName: String) : Fragment(), Results {
+
     private lateinit var binding: FragmentCategoryListingBinding
     private var listItems: ArrayList<String> = ArrayList()
     private var productList: ArrayList<Product> = ArrayList()
     private val loadMoreRequest: Int = 5203
     private val categoryWithRequest: Int = 5003
     private val categoryDetailRequest: Int = 1003
-    private var categoryDetail: com.example.naturescart.model.CategoryDetail =
-        com.example.naturescart.model.CategoryDetail()
+    private var categoryDetail: CategoryDetail = CategoryDetail()
     private var isLastPage: Boolean = false
     private var isLoading: Boolean = true
     private var pageNo: Int = 1
@@ -36,13 +35,8 @@ class CategoryListingFragment(private val position: Int, private val categoryID:
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapterProduct: ItemAdapterRv
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_category_listing, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_category_listing, container, false)
         return binding.root
     }
 
@@ -67,7 +61,7 @@ class CategoryListingFragment(private val position: Int, private val categoryID:
         }
         layoutManager = GridLayoutManager(activity, 2)
         binding.productRvDetail.layoutManager = layoutManager
-        adapterProduct = ItemAdapterRv(requireActivity(), productList)
+        adapterProduct = ItemAdapterRv(requireActivity(), productList, categoryName)
         binding.productRvDetail.addItemDecoration(HorizantalDoubleDivider())
         binding.productRvDetail.adapter = adapterProduct
     }

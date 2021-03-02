@@ -7,18 +7,16 @@ import androidx.preference.PreferenceManager
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityLanguageSelectionBinding
 import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.moveTo
+import com.example.naturescart.helper.moveToWithoutHistory
 
 class LanguageSelectionActivity : AppCompatActivity() {
 
-
     private lateinit var binding: ActivityLanguageSelectionBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_language_selection)
         setListeners()
-
-
     }
 
     private fun setListeners() {
@@ -26,13 +24,11 @@ class LanguageSelectionActivity : AppCompatActivity() {
         binding.arabicBtn.setOnClickListener { checkStatus() }
     }
 
-    fun checkStatus() {
-
-        if (PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(Constants.onBoardingShow, true)
-        )
-            moveTo(IntroductionActivity::class.java)
+    private fun checkStatus() {
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Constants.languageSelected, true).apply()
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.onBoardingShow, true))
+            moveToWithoutHistory(IntroductionActivity::class.java)
         else
-            moveTo(HomeActivity::class.java)
+            moveToWithoutHistory(HomeActivity::class.java)
     }
 }

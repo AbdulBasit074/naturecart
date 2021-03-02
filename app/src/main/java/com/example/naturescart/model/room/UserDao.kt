@@ -13,7 +13,7 @@ interface UserDao {
     fun login(user: User)
 
     @Query("SELECT * FROM User LIMIT 1")
-    fun getLoggedUser(): User
+    fun getLoggedUser(): User?
 
     @Query("DELETE FROM User")
     fun logOut()

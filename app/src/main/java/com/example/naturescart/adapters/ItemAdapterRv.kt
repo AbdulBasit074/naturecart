@@ -3,20 +3,19 @@ package com.example.naturescart.adapters
 import android.app.Activity
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.naturescart.R
 import com.example.naturescart.databinding.LiItemBinding
-import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.DialogCustom
-import com.example.naturescart.helper.customTextView
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.CartDetail
-import com.example.naturescart.model.Category
 import com.example.naturescart.model.Product
 import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
@@ -24,12 +23,13 @@ import com.example.naturescart.services.Results
 import com.example.naturescart.services.cart.CartService
 import com.example.naturescart.services.product.ProductService
 import com.google.gson.Gson
+import org.greenrobot.eventbus.EventBus
 
 class ItemAdapterRv(
     private val context: Activity,
-    private val items: ArrayList<Product>
-    ) :
-    RecyclerView.Adapter<ItemAdapterRv.ViewHolder>(), Results {
+    private val items: ArrayList<Product>,
+    private val parentCategoryName: String
+) : RecyclerView.Adapter<ItemAdapterRv.ViewHolder>() {
 
     private var isLoaderVisible = false
     private var itemView: Int = 1
@@ -38,28 +38,15 @@ class ItemAdapterRv(
     private val productFavouriteRequest: Int = 8222
     private var cartID: Long? = null
     private val addToCartRequest = 222
+    private val loggedUser: User? = NatureDb.getInstance(context).userDao().getLoggedUser()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
             itemView -> {
-                ViewHolder(
-                    DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.li_item,
-                        parent,
-                        false
-                    )
-                )
+                ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.li_item, parent, false))
             }
             else -> {
-                ViewHolder(
-                    DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.li_loading_bottom,
-                        parent,
-                        false
-                    )
-                )
+                ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.li_loading_bottom, parent, false))
             }
         }
     }
@@ -90,98 +77,85 @@ class ItemAdapterRv(
 
     inner class ViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        var loggedUser: User? = null
-        private var isFavourite = false
-
         fun bindView(item: Product) {
             if (binding is LiItemBinding) {
 
                 binding.product = item
-                loggedUser = NatureDb.newInstance(context).userDao().getLoggedUser()
 
-                if (loggedUser == null) {
-                    val product = NatureDb.newInstance(context).favouriteDao().getProduct(item.id!!)
-                    if (product != null) {
-                        isFavourite = true
-                        binding.favouriteImage.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                context,
-                                R.drawable.ic_heart_fav_add
-                            )
-                        )
-                    }
-
+                binding.labelSold.visibility = if (item.quantity == 0) View.VISIBLE else View.GONE
+                binding.addToCartBtn.visibility = if (item.quantity == 0) View.GONE else View.VISIBLE
+                if (NatureDb.getInstance(context).favouriteDao().getProduct(item.id!!) != null) {
+                    binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav_add))
                 }
 
                 binding.favouriteImage.setOnClickListener {
 
                     if (loggedUser != null) {
-                        ProductService(
-                            productFavouriteRequest,
-                            this@ItemAdapterRv
-                        ).addToFavourite(loggedUser!!.accessToken, item.id!!)
+                        ProductService(productFavouriteRequest, object : Results {
+                            override fun onSuccess(requestCode: Int, data: String) {
+                                if (NatureDb.getInstance(context).favouriteDao().getProduct(item.id!!) == null) {
+                                    item.categoryName = parentCategoryName
+                                    NatureDb.getInstance(context).favouriteDao().insertProduct(item)
+                                    binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav_add))
+                                } else {
+                                    NatureDb.getInstance(context).favouriteDao().removeProduct(item.id!!)
+                                    binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav))
+                                }
+                                EventBus.getDefault().postSticky(FavoritesUpdatedEvent())
+                                val dialog = DialogCustom(context, R.drawable.ic_add_fav, data)
+                                dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+                                dialog.showDialog()
+                            }
+
+                            override fun onFailure(requestCode: Int, data: String) {
+                                val dialog = DialogCustom(context, R.drawable.ic_add_fav, data)
+                                dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+                                dialog.showDialog()
+                            }
+
+                        }).addToFavourite(loggedUser.accessToken, item.id!!)
                     } else {
-                        var dialogMsg = ""
-                        if (!isFavourite) {
-                            val category = Category(item.categoryID, null, "Check", "", "")
-                            if (NatureDb.newInstance(context).favouriteDao()
-                                    .getCategory(item.categoryID!!) == null
-                            )
-                                NatureDb.newInstance(context).favouriteDao()
-                                    .insertCategory(category)
-
-                            NatureDb.newInstance(context).favouriteDao().insertProduct(item)
-                            binding.favouriteImage.setImageDrawable(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.ic_heart_fav_add
-                                )
-                            )
+                        val dialogMsg: String
+                        if (NatureDb.getInstance(context).favouriteDao().getProduct(item.id!!) == null) {
+                            item.categoryName = parentCategoryName
+                            NatureDb.getInstance(context).favouriteDao().insertProduct(item)
+                            binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav_add))
                             dialogMsg = "Add to favourite"
-                            isFavourite = true
                         } else {
-                            if (NatureDb.newInstance(context).favouriteDao()
-                                    .getProductByCategory(item.categoryID!!).size > 1
-                            )
-                                NatureDb.newInstance(context).favouriteDao()
-                                    .removeCategory(item.categoryID!!)
-
-                            NatureDb.newInstance(context).favouriteDao().removeProduct(item.id!!)
-                            binding.favouriteImage.setImageDrawable(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.ic_heart_fav
-                                )
-                            )
+                            NatureDb.getInstance(context).favouriteDao().removeProduct(item.id!!)
+                            binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav))
                             dialogMsg = "Remove from favourite"
-                            isFavourite = false
                         }
-                        val dialog = DialogCustom(
-                            context,
-                            R.drawable.ic_add_fav,
-                            dialogMsg
-                        )
+                        EventBus.getDefault().postSticky(FavoritesUpdatedEvent())
+                        val dialog = DialogCustom(context, R.drawable.ic_add_fav, dialogMsg)
                         dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
-                        dialog.show()
+                        dialog.showDialog()
                     }
-
                 }
                 binding.itemCount.setOnClickListener {
                     setSelectCount()
                 }
-                binding.itemCart.setOnClickListener {
-                    cartID =
-                        androidx.preference.PreferenceManager.getDefaultSharedPreferences(binding.itemCart.context)
-                            .getLong(Constants.cartID, 0)
-                    CartService(addToCartRequest, this@ItemAdapterRv)
-                        .addToCart(
-                            item.id!!,
-                            totalItemSelect,
-                            cartID
-                        )
+                binding.addToCartBtn.setOnClickListener {
+                    cartID = PreferenceManager.getDefaultSharedPreferences(binding.addToCartBtn.context).getLong(Constants.cartID, 0)
+                    CartService(addToCartRequest, object : Results {
+                        override fun onSuccess(requestCode: Int, data: String) {
+                            val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                            PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                            val dialog = DialogCustom(context, R.drawable.ic_cart, "Added To Cart")
+                            dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+                            dialog.showDialog()
+                            EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                        }
+
+                        override fun onFailure(requestCode: Int, data: String) {
+                            val dialog = DialogCustom(context, R.drawable.ic_cart, data)
+                            dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+                            dialog.showDialog()
+                        }
+
+                    }).addToCart(item.id!!, totalItemSelect, cartID)
                 }
             }
-
         }
 
         private fun setSelectCount() {
@@ -189,11 +163,7 @@ class ItemAdapterRv(
                 /**number of product item select dialog **/
                 val list: ArrayList<Int> = arrayListOf(1, 2, 3, 5, 7)
                 val builder = AlertDialog.Builder(binding.root.context)
-                val adapter = ArrayAdapter(
-                    binding.root.context,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    list
-                )
+                val adapter = ArrayAdapter(binding.root.context, R.layout.support_simple_spinner_dropdown_item, list)
                 builder.setAdapter(adapter) { _, which ->
                     totalItemSelect = list[which]
                     binding.itemCount.text = list[which].toString()
@@ -205,70 +175,5 @@ class ItemAdapterRv(
         }
 
     }
-
-    override fun onSuccess(requestCode: Int, data: String) {
-
-
-        when (requestCode) {
-
-            productFavouriteRequest -> {
-                val dialog = DialogCustom(
-                    context,
-                    R.drawable.ic_add_fav,
-                    data
-                )
-                dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
-                dialog.show()
-
-
-            }
-            addToCartRequest -> {
-                val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
-                androidx.preference.PreferenceManager.getDefaultSharedPreferences(context).edit()
-                    .putLong(
-                        Constants.cartID,
-                        cartDetail.id!!
-                    ).apply()
-                val dialog = DialogCustom(
-                    context,
-                    R.drawable.ic_cart,
-                    "Added To Cart"
-                )
-                dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
-                dialog.show()
-
-            }
-        }
-    }
-
-    override fun onFailure(requestCode: Int, data: String) {
-        when (requestCode) {
-
-            productFavouriteRequest -> {
-                val dialog = DialogCustom(
-                    context,
-                    R.drawable.ic_add_fav,
-                    data
-                )
-                dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
-                dialog.show()
-            }
-            addToCartRequest -> {
-                val dialog = DialogCustom(
-                    context,
-                    R.drawable.ic_cart,
-                    data
-                )
-                dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
-                dialog.show()
-            }
-
-
-        }
-
-
-    }
-
-
 }
 

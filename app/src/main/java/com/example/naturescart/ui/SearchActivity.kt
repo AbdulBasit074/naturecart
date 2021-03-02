@@ -1,6 +1,8 @@
 package com.example.naturescart.ui
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
@@ -46,33 +48,55 @@ class SearchActivity : AppCompatActivity(), Results {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
-        loggedUser = NatureDb.newInstance(this).userDao().getLoggedUser()
-        if (loggedUser != null)
+        loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
+        if (loggedUser != null) {
             DataService(searchHistoryRequest, this).getUserHistory(loggedUser!!.accessToken)
-
+        } else {
+            binding.searchHistoryRv.visibility = View.GONE
+        }
         setAdapterForProducts()
-        searchETListener()
+        setSearchEtListener()
 
 
     }
 
     private fun setAdapterForProducts() {
-        adapterProduct = ItemAdapterRv(this, searchProductList)
+        adapterProduct = ItemAdapterRv(this, searchProductList, "")
         layoutManager = GridLayoutManager(this, 2)
         binding.searchResultRv.layoutManager = layoutManager
         binding.searchResultRv.adapter = adapterProduct
         binding.searchResultRv.addItemDecoration(HorizantalDoubleDivider())
     }
 
-    private fun searchETListener() {
+    private fun setSearchEtListener() {
         binding.searchEt.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchProductList.clear()
-                binding.searchHistory.visibility = View.GONE
+                binding.searchHistoryRv.visibility = View.GONE
                 performSearch()
+                binding.searchEt.clearFocus()
                 return@OnEditorActionListener true
             }
             false
+        })
+        binding.searchEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0.isNullOrEmpty()) {
+                    searchProductList.clear()
+                    binding.searchResultRv.adapter?.notifyDataSetChanged()
+                    binding.noResultsContainer.visibility = View.VISIBLE
+                } else {
+                    performSearch()
+                }
+            }
         })
     }
 
@@ -83,8 +107,7 @@ class SearchActivity : AppCompatActivity(), Results {
         if (loggedUser != null) {
             val authToken = loggedUser!!.accessToken
             DataService(searchRequest, this).getSearchResult(
-                "Bearer $authToken"
-                ,
+                "Bearer $authToken",
                 binding.searchEt.text.toString(),
                 PaginationListeners.pageSize, pageNo
             )
@@ -95,20 +118,17 @@ class SearchActivity : AppCompatActivity(), Results {
                 PaginationListeners.pageSize, pageNo
             )
         }
-        binding.searchHistory.clearFocus()
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             searchHistoryRequest -> {
-                searchList =
-                    Gson().fromJson(data, object : TypeToken<ArrayList<SearchHistory>>() {}.type)
+                searchList = Gson().fromJson(data, object : TypeToken<ArrayList<SearchHistory>>() {}.type)
                 setAdapter()
+                binding.searchHistoryRv.visibility = if (searchList.isNullOrEmpty()) View.GONE else View.VISIBLE
             }
             searchRequest -> {
                 adapterProduct.stopLoading()
-                binding.searchHistory.visibility = View.GONE
-                binding.searchResultRv.visibility = View.VISIBLE
                 isLoading = false
                 searchProductList.clear()
                 searchProductList.addAll(
@@ -122,6 +142,7 @@ class SearchActivity : AppCompatActivity(), Results {
                 initPageListener()
                 binding.searchResultRv.addOnScrollListener(paginationListener)
                 binding.searchResultRv.adapter?.notifyDataSetChanged()
+                binding.noResultsContainer.visibility = if (searchProductList.isNullOrEmpty()) View.VISIBLE else View.GONE
             }
             loadMoreRequest -> {
                 adapterProduct.stopLoading()
@@ -153,8 +174,7 @@ class SearchActivity : AppCompatActivity(), Results {
                 if (loggedUser != null) {
                     val authToken = loggedUser!!.accessToken
                     DataService(searchRequest, this@SearchActivity).getSearchResult(
-                        "Bearer $authToken"
-                        ,
+                        "Bearer $authToken",
                         binding.searchEt.text.toString(),
                         pageSize, pageNo
                     )
@@ -171,7 +191,7 @@ class SearchActivity : AppCompatActivity(), Results {
     }
 
     private fun setAdapter() {
-        binding.searchHistory.adapter = SearchAdapterRv(searchList) { data -> onHistoryClick(data) }
+        binding.searchHistoryRv.adapter = SearchAdapterRv(searchList) { data -> onHistoryClick(data) }
     }
 
     private fun onHistoryClick(data: String) {

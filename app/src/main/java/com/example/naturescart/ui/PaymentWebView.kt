@@ -64,7 +64,6 @@ class PaymentWebView : AppCompatActivity() {
         }
     }
 
-
     inner class JavaScriptResult : ValueCallback<String> {
         override fun onReceiveValue(value: String?) {
             if (value != "null" && value != null) {

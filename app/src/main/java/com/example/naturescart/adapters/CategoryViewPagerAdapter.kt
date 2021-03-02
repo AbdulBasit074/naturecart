@@ -10,14 +10,16 @@ import com.example.naturescart.model.CategoryDetail
 class CategoryViewPagerAdapter(
     private val activity: Activity, fm: FragmentManager,
     private val totalTabs: Int,
-    private val categoryList:ArrayList<CategoryDetail.Child>,
-    private val categoryID:Long
+    private val categoryList: ArrayList<CategoryDetail.Child>,
+    private val categoryID: Long,
+    private val categoryName:String
 ) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
     override fun getItem(position: Int): Fragment {
-        return if(position==0)
-            CategoryListingFragment(position,categoryID)
+        return if (position == 0)
+            CategoryListingFragment(position, categoryID, categoryName)
         else
-            CategoryListingFragment(position,categoryList[position].id!!)
+            CategoryListingFragment(position, categoryList[position].id!!, categoryName)
     }
 
     override fun getCount(): Int {

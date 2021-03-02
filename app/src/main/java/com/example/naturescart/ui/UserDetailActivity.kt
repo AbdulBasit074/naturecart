@@ -22,7 +22,7 @@ class UserDetailActivity : AppCompatActivity(), Results {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail)
-        loggedUser = NatureDb.newInstance(this).userDao().getLoggedUser()
+        loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         binding.user = loggedUser
         setListeners()
     }
@@ -45,7 +45,7 @@ class UserDetailActivity : AppCompatActivity(), Results {
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             logoutRequest -> {
-                NatureDb.newInstance(this).userDao().logOut()
+                NatureDb.getInstance(this).userDao().logOut()
                 moveTo(HomeActivity::class.java)
                 finishAffinity()
             }

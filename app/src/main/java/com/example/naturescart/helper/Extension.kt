@@ -8,12 +8,14 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.naturescart.R
+import com.example.naturescart.model.Category
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
@@ -21,6 +23,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.iid.FirebaseInstanceId
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,10 +32,16 @@ fun AppCompatActivity.moveTo(clazz: Class<*>) {
     startActivity(Intent(this, clazz))
 }
 
+fun AppCompatActivity.moveToWithoutHistory(clazz: Class<*>) {
+    startActivity(Intent(this, clazz))
+    finishAffinity()
+}
+
 
 fun Fragment.moveFromFragment(activity: Activity, clazz: Class<*>) {
     startActivity(Intent(activity, clazz))
 }
+
 fun Fragment.moveFromFragment(intent: Intent) {
     startActivity(intent)
 }
@@ -54,8 +63,6 @@ fun AppCompatActivity.moveForResult(intent: Intent, requestCode: Int) {
 fun AppCompatActivity.showToast(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_LONG).show()
 }
-
-
 
 
 fun Context.showToast(message: String) {
@@ -117,6 +124,7 @@ fun AppCompatActivity.askToEnableGPS(onActivityResult: (Int, Int, Intent?) -> Un
         }
     }
 }
+
 fun convertDate(dateString: String?): String {
     val sourceSdf = SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.ENGLISH)
     sourceSdf.timeZone = TimeZone.getTimeZone("GMT")
@@ -165,5 +173,20 @@ fun AppCompatActivity.getCurrentLocation(
     }
 }
 
+fun ArrayList<Category>.containsWithThisName(name: String): Boolean {
+    forEach {
+        if (it.name == name)
+            return true
+    }
+    return false
+}
 
-
+fun AppCompatActivity.checkAndFetchFcmToken() {
+    if (Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey) == null) {
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
+            val token = instanceIdResult.token
+            Persister.with(this).persist(Constants.fcmTokenPersistenceKey, token)
+            Log.d("TAGEE", token)
+        }
+    }
+}

@@ -21,24 +21,10 @@ class CollectionAdapterRv(private val items: ArrayList<CollectionModel>) :
 
         return when (viewType) {
             viewItem -> {
-                ViewHolder(
-                    DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.li_collection,
-                        parent,
-                        false
-                    )
-                )
+                ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.li_collection, parent, false))
             }
             else -> {
-                ViewHolder(
-                    DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.li_loading,
-                        parent,
-                        false
-                    )
-                )
+                ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.li_loading, parent, false))
             }
         }
     }

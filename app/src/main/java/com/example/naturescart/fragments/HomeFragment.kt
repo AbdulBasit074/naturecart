@@ -1,9 +1,12 @@
 package com.example.naturescart.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,7 +39,6 @@ class HomeFragment : Fragment(), Results {
         var dummyList: ArrayList<String> = ArrayList()
     }
 
-
     private lateinit var homeBinding: FragmentHomeBinding
     private val collectionRequest: Int = 1132
     private val loadMoreCollectionRC: Int = 1332
@@ -55,12 +57,9 @@ class HomeFragment : Fragment(), Results {
     private lateinit var adapterCollection: CollectionAdapterRv
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-        loggedUser = NatureDb.newInstance(requireActivity()).userDao().getLoggedUser()
+        loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
         return homeBinding.root
     }
 
@@ -79,7 +78,6 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun setListeners() {
-
         homeBinding.toolBar.notificationBtn.setOnClickListener {
             moveFromFragment(requireActivity(), NotificationActivity::class.java)
         }
@@ -100,7 +98,6 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun setAllAdapters() {
-
         adapterCollection = CollectionAdapterRv(collectionData)
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         homeBinding.collectionRv.layoutManager = layoutManager
@@ -111,20 +108,23 @@ class HomeFragment : Fragment(), Results {
         homeBinding.topSliderVp.adapter = HomeSliderViewPagerAdapter(dummyList)
         homeBinding.topSliderVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         homeBinding.topSliderIndicator.setViewPager2(homeBinding.topSliderVp)
+        setTopSliderAnimator()
 
         homeBinding.categoryRv.adapter = CategoryAdapterRv(categoriesData)
         homeBinding.categoryRv.addItemDecoration(HorizantalDivider())
 
+        homeBinding.categoryProductRvDetail.adapter = CategoryDetailProductsRvAdapter(requireActivity(), categoryProductData) { data -> seeAll(data) }
+    }
 
-        homeBinding.categoryProductRvDetail.adapter =
-            CategoryDetailProductsRvAdapter(
-                requireActivity(),
-                categoryProductData
-            ) { data -> seeAll(data) }
+    private fun setTopSliderAnimator() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            homeBinding.topSliderVp.setCurrentItem((homeBinding.topSliderVp.currentItem + 1) % (homeBinding.topSliderVp.adapter?.itemCount ?: 0), true)
+            setTopSliderAnimator()
+        }, 3000)
     }
 
     private fun seeAll(categoryClick: CategoryProducts) {
-        moveFromFragment(CategoryDetail.newInstance(requireActivity(), categoryClick.id))
+        moveFromFragment(CategoryDetailActivity.newInstance(requireActivity(), categoryClick.id, categoryClick.name ?: ""))
     }
 
     private fun setDummyData() {
@@ -139,7 +139,7 @@ class HomeFragment : Fragment(), Results {
 
     override fun onResume() {
         super.onResume()
-        loggedUser = NatureDb.newInstance(requireActivity()).userDao().getLoggedUser()
+        loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
@@ -147,23 +147,22 @@ class HomeFragment : Fragment(), Results {
             collectionRequest -> {
                 isLoading = false
                 collectionData.clear()
-                collectionData.addAll(
-                    Gson().fromJson(
-                        data,
-                        object : TypeToken<ArrayList<CollectionModel>>() {}.type
-                    )
-                )
+                collectionData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<CollectionModel>>() {}.type))
                 if (collectionData.size < PaginationListeners.pageSize)
                     isLast = true
                 initPageListener()
                 homeBinding.collectionRv.addOnScrollListener(paginationListener)
                 homeBinding.collectionRv.adapter?.notifyDataSetChanged()
+                homeBinding.collectionRv.scheduleLayoutAnimation()
+                homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+                homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+                homeBinding.topSliderVp.alpha = 1f
+                homeBinding.topSliderIndicator.alpha = 1f
             }
             loadMoreCollectionRC -> {
                 adapterCollection.stopLoading()
                 isLoading = false
-                val dataList: ArrayList<CollectionModel> =
-                    Gson().fromJson(data, object : TypeToken<ArrayList<CollectionModel>>() {}.type)
+                val dataList: ArrayList<CollectionModel> = Gson().fromJson(data, object : TypeToken<ArrayList<CollectionModel>>() {}.type)
                 if (dataList.size < PaginationListeners.pageSize)
                     isLast = true
                 collectionData.addAll(dataList)
@@ -171,21 +170,12 @@ class HomeFragment : Fragment(), Results {
             }
 
             categoriesRequest -> {
-                categoriesData.addAll(
-                    Gson().fromJson(
-                        data,
-                        object : TypeToken<ArrayList<Category>>() {}.type
-                    )
-                )
+                categoriesData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<Category>>() {}.type))
                 homeBinding.categoryRv.adapter?.notifyDataSetChanged()
+                homeBinding.categoryRv.scheduleLayoutAnimation()
             }
             categoriesProductRequest -> {
-                categoryProductData.addAll(
-                    Gson().fromJson(
-                        data,
-                        object : TypeToken<ArrayList<CategoryProducts>>() {}.type
-                    )
-                )
+                categoryProductData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<CategoryProducts>>() {}.type))
                 homeBinding.categoryProductRvDetail.adapter?.notifyDataSetChanged()
             }
         }

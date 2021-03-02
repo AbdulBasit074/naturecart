@@ -20,19 +20,16 @@ class AddressesRvAdapter(
     private val items: ArrayList<Address>,
     private val selection: Boolean,
     private var addressClick: (Address) -> Unit
-) :
-    RecyclerView.Adapter<AddressesRvAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<AddressesRvAdapter.ViewHolder>() {
+
     private var positionSelect = Constants.selectAddressId
+    private var user: User? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        user = NatureDb.getInstance(parent.context).userDao().getLoggedUser()
         return ViewHolder(
-            DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                R.layout.li_address,
-                parent,
-                false
-            )
+            DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.li_address, parent, false)
         )
     }
 
@@ -49,7 +46,7 @@ class AddressesRvAdapter(
 
         private val addressDelete: Int = 222
         private var deletedSelect: Int = -1
-        private lateinit var user: User
+
         fun bindView(item: Address) {
             binding.addressTitle.text = item.addressNick
             binding.addressDetail.text = Constants.geoCoding(
@@ -57,8 +54,6 @@ class AddressesRvAdapter(
                 item.longitude!!,
                 binding.root.context
             )
-
-            user = NatureDb.newInstance(binding.addressDetail.context).userDao().getLoggedUser()
             if (selection) {
                 Glide.with(binding.icon.context).load(R.drawable.ic_icon_check_circle)
                     .into(binding.icon)
@@ -80,9 +75,9 @@ class AddressesRvAdapter(
                 }
 
             }
-            binding.delete.setOnClickListener {
+            binding.deleteBtn.setOnClickListener {
                 deletedSelect = adapterPosition
-                AddressService(addressDelete, this).deleteAddress(user.accessToken, item.id!!)
+                AddressService(addressDelete, this).deleteAddress(user?.accessToken ?: "", item.id!!)
             }
         }
 
@@ -90,11 +85,11 @@ class AddressesRvAdapter(
             binding.revealLayout.close(true)
             items.removeAt(deletedSelect)
             notifyDataSetChanged()
-            binding.delete.context.showToast("Address Deleted")
+            binding.deleteBtn.context.showToast("Address Deleted")
         }
 
         override fun onFailure(requestCode: Int, data: String) {
-            binding.delete.context.showToast(data)
+            binding.deleteBtn.context.showToast(data)
         }
 
     }

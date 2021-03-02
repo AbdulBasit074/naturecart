@@ -72,16 +72,16 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
     private var nickList: ArrayList<String> = ArrayList()
     private var nickListObject: ArrayList<NickAddress> = ArrayList()
     private var isUpdate: Boolean = false
-    private lateinit var loggedUser: User
+    private var loggedUser: User? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_new_address)
-        loggedUser = NatureDb.newInstance(this).userDao().getLoggedUser()
+        loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         isUpdate = intent.getBooleanExtra(Constants.isUpdate, false)
         showToast("Loading Map...")
 
-        AddressService(nickRequestGet, this).getNickAddress(loggedUser.accessToken)
-        AddressService(citiesRequest, this).getCities(loggedUser.accessToken)
+        AddressService(nickRequestGet, this).getNickAddress(loggedUser?.accessToken?:"")
+        AddressService(citiesRequest, this).getCities(loggedUser?.accessToken?:"")
         updateUI()
         setListeners()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -157,12 +157,12 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                     addressSave.longitude = latLng!!.longitude
                     if (isUpdate)
                         AddressService(addressUpdateRequest, this).updateAddress(
-                            loggedUser.accessToken, addressSave,
+                            loggedUser?.accessToken?:"", addressSave,
                             addressSave.id!!
                         )
                     else
                         AddressService(addressAddRequest, this).addAddress(
-                            loggedUser.accessToken,
+                            loggedUser?.accessToken?:"",
                             addressSave
                         )
                 }

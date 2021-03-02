@@ -18,12 +18,7 @@ class CategoryDetailProductsRvAdapter(
     RecyclerView.Adapter<CategoryDetailProductsRvAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                R.layout.li_category_detail,
-                parent,
-                false
-            )
+            DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.li_category_detail, parent, false)
         )
     }
 
@@ -40,7 +35,7 @@ class CategoryDetailProductsRvAdapter(
 
         fun bindView(item: CategoryProducts) {
             binding.categoryProduct = item
-            binding.productRv.adapter = ItemAdapterRv(context, item.products!!)
+            binding.productRv.adapter = ItemAdapterRv(context, item.products!!, item.name?:"")
             binding.productRv.addItemDecoration(HorizantalDivider())
             binding.seeAll.setOnClickListener {
                 seeAll(item)

@@ -11,13 +11,12 @@ import com.example.naturescart.model.OnBoarding
 
 class IntroductionViewPagerAdapter(private val onBoard: ArrayList<OnBoarding>) :
     RecyclerView.Adapter<IntroductionViewPagerAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.li_view_pager,
-                parent,
-                false
+                R.layout.li_view_pager, parent, false
             )
         )
     }
@@ -34,12 +33,11 @@ class IntroductionViewPagerAdapter(private val onBoard: ArrayList<OnBoarding>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindViews(board: OnBoarding) {
-                   Glide.with(binding.root.context).load(board.image)
-                        .into(binding.iconIntroduction)
-                    binding.titleIntroduction.text = board.name
-                    binding.detailIntroduction.text = board.description
+            Glide.with(binding.root.context).load(board.image)
+                .into(binding.iconIntroduction)
+            binding.titleIntroduction.text = board.name
+            binding.detailIntroduction.text = board.description
         }
-
     }
 
 }

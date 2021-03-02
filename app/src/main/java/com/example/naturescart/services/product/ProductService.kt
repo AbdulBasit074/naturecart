@@ -6,9 +6,12 @@ import com.example.naturescart.services.RetrofitClient
 
 class ProductService(requestCode: Int, callBack: Results) : BaseService(requestCode, callBack) {
 
+    fun addToFavourite(authToken: String, productID: Long) {
+        RetrofitClient.getInstance().create(ProductClient::class.java).addToFavourite("Bearer $authToken", productID).enqueue(this)
+    }
 
-    fun addToFavourite(authToken:String,productID:Long) {
-            RetrofitClient.getInstance().create(ProductClient::class.java).onFavourite("Bearer $authToken",productID).enqueue(this)
+    fun getFavorites(authToken: String) {
+        RetrofitClient.getInstance().create(ProductClient::class.java).getFavorites("Bearer $authToken").enqueue(this)
     }
 
 }

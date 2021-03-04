@@ -7,25 +7,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
+import com.example.naturescart.databinding.ForgotPasswordChangeBinding
 import com.example.naturescart.databinding.PasswordChangeBinding
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.auth.AuthService
 
-class DialogCustomPasswordChange(
-    context: Context, private val userToken: String, private val onSuccess: (String) -> Unit
-) :
+class DialogCustomForgotPasswordChange(context: Context, private val email: String, private val onSuccess: (String) -> Unit) :
     Dialog(context), Results {
 
 
-    private lateinit var binding: PasswordChangeBinding
-    private val onChangePassword: Int = 331
+    private lateinit var binding: ForgotPasswordChangeBinding
+    private val onChangePassword: Int = 1331
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding =
             DataBindingUtil.inflate(
                 LayoutInflater.from(context),
-                R.layout.password_change,
+                R.layout.forgot_password_change,
                 null,
                 false
             )
@@ -37,9 +36,8 @@ class DialogCustomPasswordChange(
     private fun initView() {
         binding.changeBtn.setOnClickListener {
             if (isInputOk()) {
-                AuthService(onChangePassword, this).changePassword(
-                    userToken,
-                    binding.currentEt.text.toString(),
+                AuthService(onChangePassword, this).resetPassword(
+                    email,
                     binding.newEt.text.toString(),
                     binding.confirmEt.text.toString()
                 )
@@ -52,10 +50,6 @@ class DialogCustomPasswordChange(
 
     private fun isInputOk(): Boolean {
         when {
-            binding.currentEt.text.isEmpty() -> {
-                binding.currentEt.context.showToast("Current password must Required")
-                return false
-            }
             binding.newEt.text.isEmpty() -> {
                 binding.newEt.context.showToast("New password must Required")
                 return false
@@ -72,9 +66,7 @@ class DialogCustomPasswordChange(
         onSuccess(data)
         this.dismiss()
     }
-
     override fun onFailure(requestCode: Int, data: String) {
-        binding.currentEt.context.showToast(data)
+        binding.newEt.context.showToast(data)
     }
-
 }

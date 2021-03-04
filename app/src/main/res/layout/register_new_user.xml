@@ -6,8 +6,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parent"
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:ignore="HardcodedText">
 
         <TextView
@@ -15,10 +15,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-
-
             android:layout_marginTop="@dimen/_30sdp"
+
+
+            android:layout_marginEnd="@dimen/_20sdp"
             android:fontFamily="@font/roboto_slab_semi_bold"
             android:text="Register new user"
             android:textColor="@color/black"
@@ -31,9 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-
             android:layout_marginTop="@dimen/_20sdp"
+
+            android:layout_marginEnd="@dimen/_10sdp"
             android:fontFamily="@font/nunito_regular"
             android:text="Full Name"
             android:textColor="@color/black"
@@ -47,10 +47,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:fontFamily="@font/nunito_regular"
             android:backgroundTint="@color/divider"
+            android:fontFamily="@font/nunito_regular"
+            android:inputType="textPersonName"
+            android:singleLine="true"
             android:hint="Full Name"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fullNameLabel"
             tools:ignore="MissingConstraints" />
 
@@ -58,11 +60,11 @@
             android:id="@+id/emailLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:fontFamily="@font/nunito_regular"
             android:text="Email"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
 
             android:textColor="@color/black"
             android:textSize="@dimen/_13ssp"
@@ -73,12 +75,13 @@
             android:id="@+id/emailEtRegister"
             android:layout_width="@dimen/_280sdp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/divider"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:backgroundTint="@color/divider"
             android:fontFamily="@font/nunito_regular"
             android:hint="Email"
+            android:singleLine="true"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/emailLabel"
             tools:ignore="MissingConstraints" />
 
@@ -87,11 +90,10 @@
             android:id="@+id/passwordLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/nunito_regular"
             android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-
+            android:fontFamily="@font/nunito_regular"
             android:text="Password"
             android:textColor="@color/black"
             android:textSize="@dimen/_13ssp"
@@ -102,26 +104,26 @@
             android:id="@+id/passwordEtRegister"
             android:layout_width="@dimen/_280sdp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/divider"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:autofillHints="Search"
+            android:backgroundTint="@color/divider"
             android:fontFamily="@font/nunito_regular"
-            app:layout_constraintStart_toStartOf="parent"
             android:hint="Password"
-            app:layout_constraintTop_toBottomOf="@id/passwordLabel"
-            tools:ignore="MissingConstraints" />
+            android:inputType="textPassword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/passwordLabel" />
 
         <TextView
             android:id="@+id/phoneLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:fontFamily="@font/nunito_regular"
             android:text="Phone"
             android:textColor="@color/black"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-
             android:textSize="@dimen/_13ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/passwordEtRegister" />
@@ -130,8 +132,9 @@
             android:id="@+id/flagLabel"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:contentDescription="@string/icon"
             android:src="@drawable/ic_flag"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
@@ -142,9 +145,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_2sdp"
             android:layout_marginTop="@dimen/_7sdp"
+            android:fontFamily="@font/nunito_regular"
             android:text="+971"
             android:textColor="@color/black"
-            android:fontFamily="@font/nunito_regular"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toEndOf="@id/flagLabel"
             app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
@@ -155,37 +158,39 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:fontFamily="@font/nunito_regular"
+            android:autofillHints="Search"
             android:backgroundTint="@color/divider"
+            android:fontFamily="@font/nunito_regular"
+            android:inputType="phone"
+            android:maxLength="11"
             app:layout_constraintStart_toEndOf="@id/countryCodeLabel"
             app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
             android:id="@+id/privacyLabel1"
-            app:layout_constraintTop_toBottomOf="@id/phoneNo"
-            android:text="By proceeding I agree to the following"
-            android:fontFamily="@font/nunito_semi_bold"
-
-            android:textSize="@dimen/_11ssp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_semi_bold"
+            android:singleLine="true"
+            android:text="By proceeding I agree to the following"
             android:textColor="@color/black"
-            />
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintTop_toBottomOf="@id/phoneNo" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            app:layout_constraintTop_toBottomOf="@id/privacyLabel1"
-            android:text="Terms Of Service and Privacy Policy"
-            android:fontFamily="@font/nunito_regular"
-            android:textSize="@dimen/_11ssp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:singleLine="true"
+            android:text="Terms Of Service and Privacy Policy"
             android:textColor="@color/saleem_green2"
-            />
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintTop_toBottomOf="@id/privacyLabel1" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/registerBtn"
             android:layout_width="@dimen/_110sdp"

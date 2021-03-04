@@ -2,7 +2,6 @@ package com.example.naturescart.helper
 
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -10,10 +9,12 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.naturescart.R
 import com.example.naturescart.model.Category
@@ -23,10 +24,10 @@ import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 fun AppCompatActivity.moveTo(clazz: Class<*>) {
@@ -41,6 +42,19 @@ fun AppCompatActivity.moveToWithoutHistory(clazz: Class<*>) {
 
 fun Fragment.moveFromFragment(activity: Activity, clazz: Class<*>) {
     startActivity(Intent(activity, clazz))
+}
+
+fun Fragment.moveForResultFragment(activity: Activity, clazz: Class<*>, requestCode: Int) {
+    startActivityForResult(Intent(activity, clazz), requestCode)
+}
+
+fun AppCompatActivity.hasStoragePermission(): Boolean {
+    return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+}
+
+fun AppCompatActivity.requestedStoragePermission(requestCode: Int) {
+    val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    ActivityCompat.requestPermissions(this, permission, requestCode)
 }
 
 fun Fragment.moveFromFragment(intent: Intent) {
@@ -158,6 +172,23 @@ fun AppCompatActivity.getCurrentLocation(fields: ArrayList<Place.Field>, onLocat
                 onLocationAvailable(place)
             }
         }
+    }
+}
+
+fun AppCompatActivity.stringToInt(arr: Array<String?>): Int {
+    var stringValue = ""
+    arr.forEach {
+        stringValue += it
+    }
+    return stringValue.toInt()
+}
+
+fun Context.showKeyboard() {
+    try {
+        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 }
 

@@ -14,22 +14,40 @@ class AuthService(requestCode: Int, callBack: Results) : BaseService(requestCode
     }
 
     fun userLogin(email: String, password: String) {
-        RetrofitClient.getInstance().create(AuthClient::class.java).userLogin(email, password,Constants.fcmToken,Constants.deviceType)
+        RetrofitClient.getInstance().create(AuthClient::class.java).userLogin(email, password, Constants.fcmToken, Constants.deviceType)
             .enqueue(this)
     }
 
 
-    fun userLogout(authToken:String) {
+    fun userLogout(authToken: String) {
         RetrofitClient.getInstance().create(AuthClient::class.java).logout("Bearer $authToken")
             .enqueue(this)
     }
-    fun editProfile(authToken:String, name:String,email: String,phone:String) {
-        RetrofitClient.getInstance().create(AuthClient::class.java).updateProfile("Bearer $authToken",name,email,phone)
+
+    fun editProfile(authToken: String, name: String, email: String, phone: String) {
+        RetrofitClient.getInstance().create(AuthClient::class.java).updateProfile("Bearer $authToken", name, email, phone)
             .enqueue(this)
     }
-    fun changePassword(authToken:String, current:String,newPassword: String,confirmPassword:String) {
-        RetrofitClient.getInstance().create(AuthClient::class.java).changePassword("Bearer $authToken",current,newPassword,confirmPassword)
+
+    fun changePassword(authToken: String, current: String, newPassword: String, confirmPassword: String) {
+        RetrofitClient.getInstance().create(AuthClient::class.java).changePassword("Bearer $authToken", current, newPassword, confirmPassword)
             .enqueue(this)
     }
+
+    fun forgotPassword(email: String) {
+        RetrofitClient.getInstance().create(AuthClient::class.java).forgotPassword(email)
+            .enqueue(this)
+    }
+
+    fun verifyOtp(email: String, otp: Int) {
+        RetrofitClient.getInstance().create(AuthClient::class.java).verifyOTP(email, otp)
+            .enqueue(this)
+    }
+
+    fun resetPassword(email: String, newPassword: String, confirmPassword: String) {
+        RetrofitClient.getInstance().create(AuthClient::class.java).resetPassword(email, newPassword, confirmPassword)
+            .enqueue(this)
+    }
+
 
 }

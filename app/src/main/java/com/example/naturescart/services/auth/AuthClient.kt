@@ -29,7 +29,6 @@ interface AuthClient {
     ): Call<ResponseBody>
 
 
-
     @DELETE("auth/logout")
     fun logout(
         @Header("Authorization") authToken: String
@@ -53,5 +52,27 @@ interface AuthClient {
         @Field("new_password") newPassword: String,
         @Field("confirm_password") confirmPassword: String
     ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("auth/send-otp")
+    fun forgotPassword(
+        @Field("email") email: String
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("auth/confirm-otp")
+    fun verifyOTP(
+        @Field("email") email: String,
+        @Field("otp") otp: Int
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("auth/reset-password")
+    fun resetPassword(
+        @Field("email") email: String,
+        @Field("new_password") newPassword: String,
+        @Field("confirm_password") confirmPassword: String
+    ): Call<ResponseBody>
+
 
 }

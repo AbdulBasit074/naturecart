@@ -13,6 +13,7 @@ import com.example.naturescart.adapters.FavouriteViewPagerAdapter
 import com.example.naturescart.databinding.FragmentFavouriteBinding
 import com.example.naturescart.helper.FavoritesUpdatedEvent
 import com.example.naturescart.helper.containsWithThisName
+import com.example.naturescart.helper.moveForResultFragment
 import com.example.naturescart.helper.moveFromFragment
 import com.example.naturescart.model.Category
 import com.example.naturescart.model.Product
@@ -31,6 +32,7 @@ class FavouriteFragment : Fragment(), ViewPager.OnPageChangeListener {
     private lateinit var binding: FragmentFavouriteBinding
     private var list: ArrayList<String> = ArrayList()
     private var loggedUser: User? = null
+    private val loginRequest: Int = 5103
     private var allCategoryList: ArrayList<Category> = ArrayList()
     private lateinit var allProductList: ArrayList<Product>
 
@@ -76,7 +78,7 @@ class FavouriteFragment : Fragment(), ViewPager.OnPageChangeListener {
         }
         binding.toolBar.profileBtn.setOnClickListener {
             if (loggedUser == null)
-                moveFromFragment(requireActivity(), MenuActivity::class.java)
+                moveForResultFragment(requireActivity(), MenuActivity::class.java, loginRequest)
             else
                 moveFromFragment(requireActivity(), UserDetailActivity::class.java)
         }

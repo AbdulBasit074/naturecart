@@ -38,6 +38,7 @@ class EditProfileActivity : AppCompatActivity(), Results {
                     data
                 )
             }.show()
+
         }
         binding.saveBtn.setOnClickListener {
             if (isInputOk()) {

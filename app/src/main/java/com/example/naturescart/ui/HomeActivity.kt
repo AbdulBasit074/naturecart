@@ -157,6 +157,7 @@ class HomeActivity : AppCompatActivity(), Results {
                         favoritesDao.insertProduct(product)
                     }
                 }
+                EventBus.getDefault().postSticky(FavoritesUpdatedEvent())
             }
         }
     }

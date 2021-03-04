@@ -1,5 +1,7 @@
 package com.example.naturescart.fragments
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.naturescart.R
 import com.example.naturescart.adapters.OrderRvAdapter
 import com.example.naturescart.databinding.FragmentOrderBinding
-import com.example.naturescart.helper.LoadingDialog
-import com.example.naturescart.helper.PaginationListeners
-import com.example.naturescart.helper.moveFromFragment
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.OrderDetail
 import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
@@ -36,6 +35,7 @@ class OrderFragment : Fragment(), Results {
     private var isLoading: Boolean = true
     private val ordersRequest: Int = 1203
     private val loadMoreRequest: Int = 5203
+    private val loginRequest: Int = 5103
     private var pageNo: Int = 1
     private lateinit var adapter: OrderRvAdapter
     private var layoutManger = LinearLayoutManager(activity)
@@ -53,7 +53,10 @@ class OrderFragment : Fragment(), Results {
         loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
         setAdapterForOrder()
         setListeners()
+        callOrderDetail()
+    }
 
+    private fun callOrderDetail() {
         if (loggedUser != null) {
             loadingView?.show()
             OrderService(ordersRequest, this).getOrders(
@@ -82,18 +85,16 @@ class OrderFragment : Fragment(), Results {
         moveFromFragment(OrderDetailActivity.newInstance(requireActivity(), order))
     }
 
-
     private fun setListeners() {
         orderBinding.toolBar.profileBtn.setOnClickListener {
             if (loggedUser == null)
-                moveFromFragment(requireActivity(), MenuActivity::class.java)
+                moveForResultFragment(requireActivity(), MenuActivity::class.java, loginRequest)
             else
                 moveFromFragment(requireActivity(), UserDetailActivity::class.java)
         }
         orderBinding.toolBar.notificationBtn.setOnClickListener {
             moveFromFragment(requireActivity(), NotificationActivity::class.java)
         }
-
     }
 
     private fun initPageListener() {
@@ -117,8 +118,6 @@ class OrderFragment : Fragment(), Results {
                 adapter.startLoading()
             }
         }
-
-
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
@@ -155,5 +154,17 @@ class OrderFragment : Fragment(), Results {
     override fun onFailure(requestCode: Int, data: String) {
         loadingView?.dismiss()
         showToast(data)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                loginRequest -> {
+                    loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
+                    callOrderDetail()
+                }
+            }
+        }
     }
 }

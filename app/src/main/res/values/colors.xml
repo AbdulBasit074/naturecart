@@ -11,6 +11,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="saleem_green">#1A804D</color>
     <color name="saleem_green2">#108148</color>
+    <color name="otp_green">#4F108148</color>
+
     <color name="down_well_black">#021001</color>
     <color name="transparent_black">#60000000</color>
     <color name="transparent_black2">#BF000000</color>

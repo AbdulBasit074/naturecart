@@ -1,5 +1,7 @@
 package com.example.naturescart.fragments
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +28,7 @@ import org.greenrobot.eventbus.EventBus
 class CartFragment : Fragment(), Results {
 
     private val cartDetailRequest: Int = 212
+    private val loginRequest: Int = 2112
     private lateinit var cartBinding: FragmentCartBinding
     private var cartDetail: CartDetail = CartDetail()
     private var loggedUser: User? = null
@@ -63,7 +66,7 @@ class CartFragment : Fragment(), Results {
         }
         cartBinding.toolBar.profileBtn.setOnClickListener {
             if (loggedUser == null)
-                moveFromFragment(requireActivity(), MenuActivity::class.java)
+                moveForResultFragment(requireActivity(), MenuActivity::class.java, loginRequest)
             else
                 moveFromFragment(requireActivity(), UserDetailActivity::class.java)
         }
@@ -71,7 +74,7 @@ class CartFragment : Fragment(), Results {
             if (loggedUser != null)
                 moveFromFragment(CartOrderDetailActivity.newInstance(requireActivity(), cartDetail))
             else
-                moveFromFragment(requireActivity(), MenuActivity::class.java)
+                moveForResultFragment(requireActivity(), MenuActivity::class.java, loginRequest)
         }
     }
 
@@ -115,6 +118,20 @@ class CartFragment : Fragment(), Results {
     override fun onFailure(requestCode: Int, data: String) {
         loadingView?.dismiss()
         showToast(data)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                loginRequest -> {
+                    loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
+                }
+
+            }
+        }
+
+
     }
 
 }

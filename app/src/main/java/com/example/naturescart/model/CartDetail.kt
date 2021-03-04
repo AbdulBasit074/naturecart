@@ -17,7 +17,7 @@ class CartDetail(
 
     @SerializedName("sub_total")
     @Expose
-    var subTotal: Double? = null,
+    var subTotal: Float? = null,
 
     @SerializedName("items")
     @Expose
@@ -31,7 +31,7 @@ class CartDetail(
     constructor(parcel: Parcel) : this(
         parcel.readValue(Long::class.java.classLoader) as? Long,
         parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Double::class.java.classLoader) as? Double,
+        parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.createTypedArrayList(Item),
         parcel.readParcelable(Item.Summary::class.java.classLoader)
     ) {
@@ -52,7 +52,7 @@ class CartDetail(
 
         @SerializedName("price")
         @Expose
-        var price: Int? = null,
+        var price: Float? = null,
 
         @SerializedName("product")
         @Expose
@@ -62,7 +62,7 @@ class CartDetail(
             parcel.readValue(Long::class.java.classLoader) as? Long,
             parcel.readValue(Int::class.java.classLoader) as? Int,
             parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readValue(Int::class.java.classLoader) as? Int,
+            parcel.readValue(Float::class.java.classLoader) as? Float,
             parcel.readParcelable(Product::class.java.classLoader)
         ) {
         }
@@ -70,11 +70,11 @@ class CartDetail(
         class Summary(
             @SerializedName("sub_total")
             @Expose
-            var subTotal: Double? = null,
+            var subTotal: Float? = null,
 
             @SerializedName("delivery_charges")
             @Expose
-            var deliveryChanges: Double? = null,
+            var deliveryChanges: Float? = null,
 
             @SerializedName("total_items")
             @Expose
@@ -82,8 +82,8 @@ class CartDetail(
 
         ) : Parcelable {
             constructor(parcel: Parcel) : this(
-                parcel.readValue(Double::class.java.classLoader) as? Double,
-                parcel.readValue(Double::class.java.classLoader) as? Double,
+                parcel.readValue(Float::class.java.classLoader) as? Float,
+                parcel.readValue(Float::class.java.classLoader) as? Float,
                 parcel.readValue(Int::class.java.classLoader) as? Int
             ) {
             }

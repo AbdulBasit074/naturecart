@@ -121,11 +121,7 @@
                         tools:listitem="@layout/li_category_detail" />
 
                 </LinearLayout>
-
-
             </androidx.core.widget.NestedScrollView>
-
         </LinearLayout>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

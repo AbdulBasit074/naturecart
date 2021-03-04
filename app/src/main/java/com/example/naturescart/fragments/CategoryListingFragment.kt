@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.naturescart.R
 import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.databinding.FragmentCategoryListingBinding
+import com.example.naturescart.helper.HorizantalDivider
 import com.example.naturescart.helper.HorizantalDoubleDivider
 import com.example.naturescart.helper.PaginationListeners
 import com.example.naturescart.helper.showToast
@@ -65,7 +66,6 @@ class CategoryListingFragment(private val position: Int, private val categoryID:
         binding.productRvDetail.addItemDecoration(HorizantalDoubleDivider())
         binding.productRvDetail.adapter = adapterProduct
     }
-
 
     override fun onSuccess(requestCode: Int, data: String) {
 

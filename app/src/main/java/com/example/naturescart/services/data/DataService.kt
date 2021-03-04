@@ -11,21 +11,28 @@ class DataService(requestCode: Int, callBack: Results) : BaseService(requestCode
         RetrofitClient.getInstance().create(DataClient::class.java).onBoarding().enqueue(this)
     }
 
-    fun getCollections(pageNo:Int, limit: Int) {
+    fun getCollections(pageNo: Int, limit: Int) {
         RetrofitClient.getInstance().create(DataClient::class.java).getCollections(pageNo, limit).enqueue(this)
     }
-    fun getCategories(limit: Int,withProduct:Boolean) {
-        RetrofitClient.getInstance().create(DataClient::class.java).getCategories(limit,withProduct).enqueue(this)
+
+    fun getCollectionProducts(collectionId: Long, pageNo: Int, limit: Int) {
+        RetrofitClient.getInstance().create(DataClient::class.java).getCollectionProducts(collectionId, pageNo, limit).enqueue(this)
     }
-    fun getCategoryProducts(limit: Int,withProduct:Boolean) {
-        RetrofitClient.getInstance().create(DataClient::class.java).getCategories(limit,withProduct).enqueue(this)
+
+    fun getCategories(limit: Int, withProduct: Boolean) {
+        RetrofitClient.getInstance().create(DataClient::class.java).getCategories(limit, withProduct).enqueue(this)
     }
-    fun getUserHistory(authToken:String) {
+
+    fun getCategoryProducts(limit: Int, withProduct: Boolean) {
+        RetrofitClient.getInstance().create(DataClient::class.java).getCategories(limit, withProduct).enqueue(this)
+    }
+
+    fun getUserHistory(authToken: String) {
         RetrofitClient.getInstance().create(DataClient::class.java).getUserHistory("Bearer $authToken").enqueue(this)
     }
 
-    fun getSearchResult(authToken: String?, keyWord:String, limit:Int, pageNo:Int) {
-        RetrofitClient.getInstance().create(DataClient::class.java).getSearchResult(authToken,keyWord,limit,pageNo).enqueue(this)
+    fun getSearchResult(authToken: String?, keyWord: String, limit: Int, pageNo: Int) {
+        RetrofitClient.getInstance().create(DataClient::class.java).getSearchResult(authToken, keyWord, limit, pageNo).enqueue(this)
     }
 
 

@@ -1,6 +1,8 @@
 package com.example.naturescart.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -51,13 +53,9 @@ class SearchActivity : AppCompatActivity(), Results {
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         if (loggedUser != null) {
             DataService(searchHistoryRequest, this).getUserHistory(loggedUser!!.accessToken)
-        } else {
-            binding.searchHistoryRv.visibility = View.GONE
         }
         setAdapterForProducts()
         setSearchEtListener()
-
-
     }
 
     private fun setAdapterForProducts() {
@@ -68,11 +66,17 @@ class SearchActivity : AppCompatActivity(), Results {
         binding.searchResultRv.addItemDecoration(HorizantalDoubleDivider())
     }
 
+    private var runnable: Runnable? = null
+    private var handler: Handler? = null
     private fun setSearchEtListener() {
+        handler = Handler(Looper.getMainLooper())
+        runnable = Runnable {
+            performSearch()
+            binding.searchHistoryRv.visibility = View.GONE
+        }
         binding.searchEt.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchProductList.clear()
-                binding.searchHistoryRv.visibility = View.GONE
                 performSearch()
                 binding.searchEt.clearFocus()
                 return@OnEditorActionListener true
@@ -93,11 +97,16 @@ class SearchActivity : AppCompatActivity(), Results {
                     searchProductList.clear()
                     binding.searchResultRv.adapter?.notifyDataSetChanged()
                     binding.noResultsContainer.visibility = View.VISIBLE
+                    binding.searchHistoryRv.visibility = if (searchList.isNullOrEmpty()) View.GONE else View.VISIBLE
                 } else {
-                    performSearch()
+                    handler?.removeCallbacks(runnable!!)
+                    handler?.postDelayed(runnable!!, 2000)
                 }
             }
         })
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun performSearch() {

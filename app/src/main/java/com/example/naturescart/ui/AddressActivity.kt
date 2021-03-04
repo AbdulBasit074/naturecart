@@ -50,7 +50,7 @@ class AddressActivity : AppCompatActivity(), Results {
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         isSelection = intent.getBooleanExtra(Constants.isAddressSelection, false)
         setListener()
-        AddressService(addressList, this).getAddress(loggedUser?.accessToken?:"")
+        AddressService(addressList, this).getAddress(loggedUser?.accessToken ?: "")
         setData()
     }
 
@@ -82,7 +82,7 @@ class AddressActivity : AppCompatActivity(), Results {
 
     private fun addressIs(data: Address) {
         if (isSelection) {
-               addressSelect = data
+            addressSelect = data
         } else
             moveForResult(AddNewAddress.newInstance(this, true, data), updateRequest)
     }
@@ -98,7 +98,7 @@ class AddressActivity : AppCompatActivity(), Results {
                         R.drawable.ic_thumb,
                         "Address Update"
                     ).show()
-                    AddressService(addressList, this).getAddress(loggedUser?.accessToken?:"")
+                    AddressService(addressList, this).getAddress(loggedUser?.accessToken ?: "")
                 }
                 addRequest -> {
                     DialogCustom(
@@ -106,7 +106,7 @@ class AddressActivity : AppCompatActivity(), Results {
                         R.drawable.ic_thumb,
                         "Address Added"
                     ).show()
-                    AddressService(addressList, this).getAddress(loggedUser?.accessToken?:"")
+                    AddressService(addressList, this).getAddress(loggedUser?.accessToken ?: "")
                 }
             }
         }
@@ -129,15 +129,13 @@ class AddressActivity : AppCompatActivity(), Results {
 
     override fun onBackPressed() {
         if (addressSelect == null) {
-            showToast("Please add some address for select")
+            finish()
         } else {
             val resultIntent = Intent()
-            //Add extras or a data URI to this intent as appropriate.
             resultIntent.putExtra(Constants.selectionAddress, addressSelect)
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
-
     }
 
 

@@ -38,24 +38,16 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
-
-    companion object {
-        fun newInstance(context: Context, isUpdate: Boolean, addressUpdate: Address): Intent {
-            return Intent(context, AddNewAddress::class.java).putExtra(Constants.isUpdate, isUpdate)
-                .putExtra(Constants.updateAddress, addressUpdate)
-        }
-    }
-
-
     private lateinit var binding: ActivityAddNewAddressBinding
     private val autocompleteRequestCode = 62839
-
     private val addRequest: Int = 32
     private val updateRequest: Int = 22
-
 
     private var latLng: LatLng? = null
     private var fields = arrayListOf(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)
@@ -64,6 +56,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
     private val nickRequestGet: Int = 1112
     private val addressAddRequest: Int = 1412
     private val addressUpdateRequest: Int = 4412
+    private val markAddressOnMapRc = 3894
     private var positionNick: Int = 0
     private var positionNickKey: String = ""
 
@@ -73,6 +66,14 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
     private var nickListObject: ArrayList<NickAddress> = ArrayList()
     private var isUpdate: Boolean = false
     private var loggedUser: User? = null
+
+    companion object {
+        fun newInstance(context: Context, isUpdate: Boolean, addressUpdate: Address): Intent {
+            return Intent(context, AddNewAddress::class.java).putExtra(Constants.isUpdate, isUpdate)
+                .putExtra(Constants.updateAddress, addressUpdate)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_new_address)
@@ -80,8 +81,8 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         isUpdate = intent.getBooleanExtra(Constants.isUpdate, false)
         showToast("Loading Map...")
 
-        AddressService(nickRequestGet, this).getNickAddress(loggedUser?.accessToken?:"")
-        AddressService(citiesRequest, this).getCities(loggedUser?.accessToken?:"")
+        AddressService(nickRequestGet, this).getNickAddress(loggedUser?.accessToken ?: "")
+        AddressService(citiesRequest, this).getCities(loggedUser?.accessToken ?: "")
         updateUI()
         setListeners()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -134,7 +135,9 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             }
 
         })
-
+        binding.markLocationOnMapBtn.setOnClickListener {
+            startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
+        }
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
@@ -157,12 +160,12 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                     addressSave.longitude = latLng!!.longitude
                     if (isUpdate)
                         AddressService(addressUpdateRequest, this).updateAddress(
-                            loggedUser?.accessToken?:"", addressSave,
+                            loggedUser?.accessToken ?: "", addressSave,
                             addressSave.id!!
                         )
                     else
                         AddressService(addressAddRequest, this).addAddress(
-                            loggedUser?.accessToken?:"",
+                            loggedUser?.accessToken ?: "",
                             addressSave
                         )
                 }
@@ -220,6 +223,9 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.locationDialogRequestKey && resultCode == Activity.RESULT_OK) {
             checkPermissionAndGetLocation()
+        } else if (requestCode == markAddressOnMapRc && resultCode == RESULT_OK) {
+            latLng = data?.getParcelableExtra(Constants.dataPassKey)
+            mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
         }
     }
 

@@ -4,8 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.Expose
-
 import com.google.gson.annotations.SerializedName
 
 @Entity
@@ -15,8 +13,8 @@ class Product(
     @SerializedName("category_id") var categoryID: Long? = 0,
     @SerializedName("category_name") var categoryName: String? = null,
     @SerializedName("name") var name: String? = null,
-    @SerializedName("purchase_rate") var purchaseRate: Int? = null,
-    @SerializedName("sell_price") var sellPrice: Int? = null,
+    @SerializedName("purchase_rate") var purchaseRate: Float? = null,
+    @SerializedName("sell_price") var sellPrice: Float? = null,
     @SerializedName("quantity") var quantity: Int? = null,
     @SerializedName("sku") var sku: String? = null,
     @SerializedName("unit") var unit: String? = null,
@@ -30,8 +28,8 @@ class Product(
         parcel.readValue(Long::class.java.classLoader) as? Long,
         parcel.readString(),
         parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Float::class.java.classLoader) as? Float,
+        parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readString(),

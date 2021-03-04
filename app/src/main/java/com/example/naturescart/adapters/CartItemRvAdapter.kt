@@ -63,7 +63,7 @@ class CartItemRvAdapter(
                 binding.itemCount.context.getString(R.string.aed_price, item.price.toString())
             binding.totalItemPrice.text = binding.itemCount.context.getString(
                 R.string.aed_price,
-                (item.price!! * item.quantity!!).toString()
+                String.format("%.2f", item.price!! * item.quantity!!)
             )
             Glide.with(binding.productImage.context).load(item.product?.image)
                 .into(binding.productImage)
@@ -75,7 +75,10 @@ class CartItemRvAdapter(
 
         private fun setSelectCount(item: CartDetail.Item) {
             /**number of product item select dialog **/
-            val list: ArrayList<Int> = arrayListOf(1, 2, 3, 5, 7)
+            val list: ArrayList<Int> = ArrayList()
+            val limit = item.quantity?:1
+            for (i in 1..limit)
+                list.add(i)
             val builder = AlertDialog.Builder(binding.root.context)
             val adapter = ArrayAdapter(binding.root.context, R.layout.support_simple_spinner_dropdown_item, list)
             builder.setAdapter(adapter) { _, which ->

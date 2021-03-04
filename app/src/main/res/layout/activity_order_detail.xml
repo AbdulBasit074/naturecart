@@ -122,7 +122,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_20sdp"
-
                             android:fontFamily="@font/roboto_slab_regular"
                             android:text="Sub Total"
                             android:textSize="@dimen/_12ssp"
@@ -133,7 +132,6 @@
                             android:id="@+id/itemCharges"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
                             android:layout_marginEnd="@dimen/_20sdp"
                             android:fontFamily="@font/roboto_slab_regular"
                             android:textSize="@dimen/_12ssp"

@@ -14,10 +14,24 @@
             android:layout_height="@dimen/_30sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:contentDescription="@null"
             android:padding="@dimen/_5sdp"
             android:src="@drawable/ic_back_arrow"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/addressTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_slab_semi_bold"
+            android:text="Add New Address"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15ssp"
+            app:layout_constraintBottom_toBottomOf="@id/backBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/backBtn" />
 
         <TextView
             android:id="@+id/ed_search"
@@ -33,19 +47,17 @@
             android:singleLine="true"
             android:textColor="#2E3334"
             android:textColorHint="#8A8C8B"
-            app:layout_constraintTop_toBottomOf="@id/backBtn"
-            app:layout_constraintStart_toStartOf="parent"
             android:textSize="@dimen/_11sdp"
             app:drawableEndCompat="@drawable/ic_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/backBtn"
             tools:ignore="HardcodedText" />
-
-
-
 
         <FrameLayout
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_150sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/backBtn">
 
@@ -60,8 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_pin"
-                android:contentDescription="@string/icon" />
+                android:contentDescription="@string/icon"
+                android:src="@drawable/ic_pin" />
         </FrameLayout>
 
         <androidx.constraintlayout.widget.Guideline
@@ -71,7 +83,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.32" />
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -79,17 +90,14 @@
             app:layout_constraintTop_toBottomOf="@id/guideLine">
 
             <TextView
-                android:id="@+id/addressTitle"
+                android:id="@+id/markLocationOnMapBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:fontFamily="@font/roboto_slab_semi_bold"
-                android:text="Add New Address"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_16ssp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:fontFamily="@font/nunito_regular"
+                android:padding="@dimen/_12sdp"
+                android:text="Mark location on map"
+                android:textColor="@color/saleem_green"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -97,34 +105,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/nunito_regular"
                 android:text="Address Nick"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addressTitle" />
+                app:layout_constraintTop_toBottomOf="@id/markLocationOnMapBtn" />
+
             <TextView
                 android:id="@+id/addressNickEt"
                 android:layout_width="@dimen/_280sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
                 android:hint="Nick"
                 android:paddingStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:singleLine="true"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
                 app:drawableEndCompat="@drawable/ic_forward_small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addressNickLabel"
                 tools:ignore="RtlSymmetry" />
+
             <EditText
                 android:id="@+id/addressNickOther"
                 android:layout_width="@dimen/_280sdp"
@@ -133,8 +142,8 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
-                android:visibility="gone"
                 android:hint="Other are.."
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addressNickEt"
                 tools:ignore="MissingConstraints" />
@@ -212,9 +221,10 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:backgroundTint="@color/divider"
-                android:inputType="number"
                 android:fontFamily="@font/nunito_regular"
                 android:hint="50505050"
+                android:inputType="number"
+                android:maxLength="11"
                 app:layout_constraintStart_toEndOf="@id/countryCodeLabel"
                 app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
 
@@ -232,20 +242,21 @@
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/phoneNo" />
+
             <TextView
                 android:id="@+id/cityEt"
                 android:layout_width="@dimen/_280sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
                 android:hint="City"
                 android:paddingStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:singleLine="true"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
                 app:drawableEndCompat="@drawable/ic_forward_small"
@@ -269,10 +280,7 @@
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cityEt"
-
-                />
-
+                app:layout_constraintTop_toBottomOf="@id/cityEt" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

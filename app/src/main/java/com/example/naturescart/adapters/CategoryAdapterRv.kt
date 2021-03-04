@@ -8,7 +8,10 @@ import com.example.naturescart.R
 import com.example.naturescart.databinding.LiCategoryBinding
 import com.example.naturescart.model.Category
 
-class CategoryAdapterRv(private val items: ArrayList<Category>) :
+class CategoryAdapterRv(
+    private val items: ArrayList<Category>,
+    private val seeAll: (Long, String) -> Unit
+) :
     RecyclerView.Adapter<CategoryAdapterRv.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.li_category, parent, false))
@@ -26,6 +29,9 @@ class CategoryAdapterRv(private val items: ArrayList<Category>) :
 
         fun bindView(item: Category) {
             binding.category = item
+            binding.root.setOnClickListener {
+                seeAll(item.id ?: 0, item.name ?: "")
+            }
         }
     }
 

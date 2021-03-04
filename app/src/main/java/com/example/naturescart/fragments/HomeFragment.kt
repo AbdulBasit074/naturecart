@@ -17,10 +17,7 @@ import com.example.naturescart.adapters.CategoryDetailProductsRvAdapter
 import com.example.naturescart.adapters.CollectionAdapterRv
 import com.example.naturescart.adapters.HomeSliderViewPagerAdapter
 import com.example.naturescart.databinding.FragmentHomeBinding
-import com.example.naturescart.helper.HorizantalDivider
-import com.example.naturescart.helper.PaginationListeners
-import com.example.naturescart.helper.moveFromFragment
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.Category
 import com.example.naturescart.model.CategoryProducts
 import com.example.naturescart.model.CollectionModel
@@ -31,7 +28,6 @@ import com.example.naturescart.services.data.DataService
 import com.example.naturescart.ui.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
 
 class HomeFragment : Fragment(), Results {
 
@@ -55,7 +51,7 @@ class HomeFragment : Fragment(), Results {
     private lateinit var paginationListener: PaginationListeners
     private var pageNo: Int = 1
     private lateinit var adapterCollection: CollectionAdapterRv
-
+    private var loadingView: LoadingDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
@@ -65,6 +61,8 @@ class HomeFragment : Fragment(), Results {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadingView = LoadingDialog(requireContext())
+        loadingView?.show()
         setViews()
         getData()
         setDummyData()
@@ -98,22 +96,21 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun setAllAdapters() {
-        adapterCollection = CollectionAdapterRv(collectionData)
+        adapterCollection = CollectionAdapterRv(collectionData) { collection -> onCollectionClicked(collection) }
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         homeBinding.collectionRv.layoutManager = layoutManager
         homeBinding.collectionRv.adapter = adapterCollection
         homeBinding.collectionRv.addItemDecoration(HorizantalDivider())
-
 
         homeBinding.topSliderVp.adapter = HomeSliderViewPagerAdapter(dummyList)
         homeBinding.topSliderVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         homeBinding.topSliderIndicator.setViewPager2(homeBinding.topSliderVp)
         setTopSliderAnimator()
 
-        homeBinding.categoryRv.adapter = CategoryAdapterRv(categoriesData)
+        homeBinding.categoryRv.adapter = CategoryAdapterRv(categoriesData) { categoryId, categoryName -> seeAll(categoryId, categoryName) }
         homeBinding.categoryRv.addItemDecoration(HorizantalDivider())
 
-        homeBinding.categoryProductRvDetail.adapter = CategoryDetailProductsRvAdapter(requireActivity(), categoryProductData) { data -> seeAll(data) }
+        homeBinding.categoryProductRvDetail.adapter = CategoryDetailProductsRvAdapter(requireActivity(), categoryProductData) { categoryId, categoryName -> seeAll(categoryId, categoryName) }
     }
 
     private fun setTopSliderAnimator() {
@@ -123,8 +120,12 @@ class HomeFragment : Fragment(), Results {
         }, 3000)
     }
 
-    private fun seeAll(categoryClick: CategoryProducts) {
-        moveFromFragment(CategoryDetailActivity.newInstance(requireActivity(), categoryClick.id, categoryClick.name ?: ""))
+    private fun seeAll(categoryId: Long, categoryName: String) {
+        moveFromFragment(CategoryDetailActivity.newInstance(requireActivity(), categoryId, categoryName))
+    }
+
+    private fun onCollectionClicked(collection: CollectionModel) {
+        moveFromFragment(CollectionDetailActivity.newInstance(requireActivity(), collection.id, collection.name))
     }
 
     private fun setDummyData() {
@@ -152,12 +153,7 @@ class HomeFragment : Fragment(), Results {
                     isLast = true
                 initPageListener()
                 homeBinding.collectionRv.addOnScrollListener(paginationListener)
-                homeBinding.collectionRv.adapter?.notifyDataSetChanged()
-                homeBinding.collectionRv.scheduleLayoutAnimation()
-                homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
-                homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
-                homeBinding.topSliderVp.alpha = 1f
-                homeBinding.topSliderIndicator.alpha = 1f
+                showData()
             }
             loadMoreCollectionRC -> {
                 adapterCollection.stopLoading()
@@ -168,15 +164,13 @@ class HomeFragment : Fragment(), Results {
                 collectionData.addAll(dataList)
                 homeBinding.collectionRv.adapter?.notifyDataSetChanged()
             }
-
             categoriesRequest -> {
                 categoriesData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<Category>>() {}.type))
-                homeBinding.categoryRv.adapter?.notifyDataSetChanged()
-                homeBinding.categoryRv.scheduleLayoutAnimation()
+                showData()
             }
             categoriesProductRequest -> {
                 categoryProductData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<CategoryProducts>>() {}.type))
-                homeBinding.categoryProductRvDetail.adapter?.notifyDataSetChanged()
+                showData()
             }
         }
     }
@@ -204,5 +198,22 @@ class HomeFragment : Fragment(), Results {
         }
     }
 
+    private fun showData() {
+        if (!collectionData.isNullOrEmpty() && !categoriesData.isNullOrEmpty() && !categoryProductData.isNullOrEmpty()) {
+            loadingView?.dismiss()
+            //show collections data
+            homeBinding.collectionRv.adapter?.notifyDataSetChanged()
+            homeBinding.collectionRv.scheduleLayoutAnimation()
+            homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+            homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+            homeBinding.topSliderVp.alpha = 1f
+            homeBinding.topSliderIndicator.alpha = 1f
+            //show categories data
+            homeBinding.categoryRv.adapter?.notifyDataSetChanged()
+            homeBinding.categoryRv.scheduleLayoutAnimation()
+            //show category products data
+            homeBinding.categoryProductRvDetail.adapter?.notifyDataSetChanged()
+        }
+    }
 
 }

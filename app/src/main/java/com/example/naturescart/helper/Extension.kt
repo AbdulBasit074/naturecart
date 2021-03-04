@@ -2,6 +2,7 @@ package com.example.naturescart.helper
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -126,30 +127,19 @@ fun AppCompatActivity.askToEnableGPS(onActivityResult: (Int, Int, Intent?) -> Un
 }
 
 fun convertDate(dateString: String?): String {
-    val sourceSdf = SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.ENGLISH)
+    val sourceSdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH)
     sourceSdf.timeZone = TimeZone.getTimeZone("GMT")
     val destSdf = SimpleDateFormat("MMM dd yyyy", Locale.ENGLISH)
     val date = sourceSdf.parse(dateString ?: "")!!
     return destSdf.format(date)
 }
 
-fun AppCompatActivity.getCurrentLocation(
-    fields: ArrayList<Place.Field>,
-    onLocationAvailable: (Place) -> Unit
-) {
+fun AppCompatActivity.getCurrentLocation(fields: ArrayList<Place.Field>, onLocationAvailable: (Place) -> Unit) {
     if (!Places.isInitialized())
-        Places.initialize(
-            applicationContext,
-            getString(R.string.google_maps_api),
-            Locale.getDefault()
-        )
+        Places.initialize(applicationContext, getString(R.string.google_maps_api), Locale.getDefault())
     val request = FindCurrentPlaceRequest.newInstance(fields)
     val client = Places.createClient(this)
-    if (ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED
-    ) {
+    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         return
     } else {
         val placeResponse = client.findCurrentPlace(request)
@@ -167,8 +157,6 @@ fun AppCompatActivity.getCurrentLocation(
                 val place = response.placeLikelihoods[position].place
                 onLocationAvailable(place)
             }
-
-
         }
     }
 }
@@ -188,5 +176,7 @@ fun AppCompatActivity.checkAndFetchFcmToken() {
             Persister.with(this).persist(Constants.fcmTokenPersistenceKey, token)
             Log.d("TAGEE", token)
         }
+    } else {
+        Log.d("TAGEE", Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey)!!)
     }
 }

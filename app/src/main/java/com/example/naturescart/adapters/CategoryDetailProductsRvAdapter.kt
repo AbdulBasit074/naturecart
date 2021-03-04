@@ -13,7 +13,7 @@ import com.example.naturescart.model.CategoryProducts
 class CategoryDetailProductsRvAdapter(
     private val context: Activity,
     private val items: ArrayList<CategoryProducts>,
-    private val seeAll: (CategoryProducts) -> Unit
+    private val seeAll: (Long, String) -> Unit
 ) :
     RecyclerView.Adapter<CategoryDetailProductsRvAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,10 +35,10 @@ class CategoryDetailProductsRvAdapter(
 
         fun bindView(item: CategoryProducts) {
             binding.categoryProduct = item
-            binding.productRv.adapter = ItemAdapterRv(context, item.products!!, item.name?:"")
+            binding.productRv.adapter = ItemAdapterRv(context, item.products!!, item.name ?: "")
             binding.productRv.addItemDecoration(HorizantalDivider())
             binding.seeAll.setOnClickListener {
-                seeAll(item)
+                seeAll(item.id?:0, item.name ?: "")
             }
 
         }

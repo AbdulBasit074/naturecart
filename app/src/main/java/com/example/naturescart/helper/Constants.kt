@@ -10,6 +10,7 @@ class Constants {
         const val splashTime: Long = 300
         const val cartID: String = "cartID"
         const val userID: String = "userID"
+        const val dataPassKey = "dataPassKey"
         const val addressID: String = "addressID"
         const val orderDetail: String = "orderDetail"
         const val onBoardingShow: String = "onBoardingShow"

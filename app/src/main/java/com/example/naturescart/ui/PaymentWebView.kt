@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityPaymentWebViewBinding
 import com.example.naturescart.helper.Constants
+import com.example.naturescart.helper.LoadingDialog
 
 class PaymentWebView : AppCompatActivity() {
 
@@ -43,23 +44,18 @@ class PaymentWebView : AppCompatActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setWebView() {
+        val loadingView = LoadingDialog(this)
+        loadingView.show()
         binding.webView.loadUrl(Constants.paymentMethodUrl + "$cartID" + "/$userID" + "/$addressID/")
         binding.webView.settings.javaScriptEnabled = true
-
-
         binding.webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-            }
-
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-
+                loadingView.dismiss()
                 view!!.evaluateJavascript(
                     "document.getElementsByTagName('pre')[0].innerHTML",
                     JavaScriptResult()
                 )
-
             }
         }
     }

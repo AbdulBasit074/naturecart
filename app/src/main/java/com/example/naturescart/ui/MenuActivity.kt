@@ -1,6 +1,7 @@
 package com.example.naturescart.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
@@ -26,13 +27,14 @@ class MenuActivity : AppCompatActivity(), Results {
     private lateinit var binding: ActivityMenuBinding
     private var loggedUser: User? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu)
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         setViews()
         setListeners()
+        if (loggedUser == null)
+            binding.profileBtn.visibility = View.GONE
     }
 
     private fun setListeners() {

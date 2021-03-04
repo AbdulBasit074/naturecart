@@ -10,10 +10,7 @@ import androidx.preference.PreferenceManager
 import com.example.naturescart.R
 import com.example.naturescart.adapters.CartItemRvAdapter
 import com.example.naturescart.databinding.FragmentCartBinding
-import com.example.naturescart.helper.CartUpdateEvent
-import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.moveFromFragment
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.CartDetail
 import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
@@ -33,6 +30,7 @@ class CartFragment : Fragment(), Results {
     private var cartDetail: CartDetail = CartDetail()
     private var loggedUser: User? = null
     private var cartID: Long? = null
+    private var loadingView: LoadingDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         cartBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart, container, false)
@@ -41,12 +39,14 @@ class CartFragment : Fragment(), Results {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadingView = LoadingDialog(requireContext())
         loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
         cartID = PreferenceManager.getDefaultSharedPreferences(activity).getLong(Constants.cartID, 0)
         if (cartID!!.toInt() == 0) {
             cartBinding.emptyCartContainer.visibility = View.VISIBLE
             cartBinding.checkoutContainer.visibility = View.GONE
         } else {
+            loadingView?.show()
             CartService(cartDetailRequest, this).getCartDetail(cartID)
         }
         setListeners()
@@ -94,7 +94,6 @@ class CartFragment : Fragment(), Results {
         CartService(cartDetailRequest, this).getCartDetail(cartID)
     }
 
-
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             cartDetailRequest -> {
@@ -103,16 +102,18 @@ class CartFragment : Fragment(), Results {
                 setAdapter()
                 checkForEmptiness()
                 EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                loadingView?.dismiss()
             }
         }
     }
 
     private fun upDateUi() {
         cartBinding.totalItem.text = getString(R.string.total_cart, cartDetail.summary?.totalItems.toString())
-        cartBinding.totalAmount.text = getString(R.string.aed_price, cartDetail.summary?.subTotal.toString())
+        cartBinding.totalAmount.text = getString(R.string.aed_price, String.format("%.2f", cartDetail.summary?.subTotal))
     }
 
     override fun onFailure(requestCode: Int, data: String) {
+        loadingView?.dismiss()
         showToast(data)
     }
 

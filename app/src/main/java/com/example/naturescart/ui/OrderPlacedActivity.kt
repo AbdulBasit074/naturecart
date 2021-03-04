@@ -22,7 +22,6 @@ class OrderPlacedActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_order_placed)
         PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(Constants.cartID, 0).apply()
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
-
             val dialog = DialogCustom(
                 binding.root.context,
                 R.drawable.ic_thumb,
@@ -32,7 +31,6 @@ class OrderPlacedActivity : AppCompatActivity() {
             dialog.show()
         }, 2000)
         binding.Btn.setOnClickListener {
-
             moveTo(HomeActivity::class.java)
             finishAffinity()
         }

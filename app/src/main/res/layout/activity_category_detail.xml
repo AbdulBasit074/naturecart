@@ -35,7 +35,7 @@
                     android:layout_marginTop="@dimen/_40sdp"
                     android:contentDescription="@string/icon"
                     android:fitsSystemWindows="true"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax" />
 
 
@@ -97,6 +97,7 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/background_silver"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 

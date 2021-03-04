@@ -11,7 +11,9 @@ import com.example.naturescart.R
 import com.example.naturescart.adapters.CategoryViewPagerAdapter
 import com.example.naturescart.databinding.ActivityCategoryDetailBinding
 import com.example.naturescart.helper.Constants
+import com.example.naturescart.helper.LoadingDialog
 import com.example.naturescart.helper.PaginationListeners
+import com.example.naturescart.helper.showToast
 import com.example.naturescart.model.CategoryDetail
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.category.CategoryService
@@ -26,6 +28,7 @@ class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListe
     private var categoryId: Long = 0
     private var categoryName: String = ""
     private var categoryDetail = CategoryDetail()
+    private var loadingView: LoadingDialog? = null
 
     companion object {
         fun newInstance(context: Context, categoryId: Long?, categoryName: String): Intent {
@@ -40,8 +43,10 @@ class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_category_detail)
+        loadingView = LoadingDialog(this)
+        loadingView?.show()
         categoryId = intent.getLongExtra(Constants.categoryID, 0)
-        categoryName = intent.getStringExtra(Constants.categoryName)?:""
+        categoryName = intent.getStringExtra(Constants.categoryName) ?: ""
         CategoryService(categoryDetailRequest, this).getCategory(
             categoryId, PaginationListeners.pageSize,
             withProducts = true,
@@ -122,6 +127,7 @@ class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListe
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             categoryDetailRequest -> {
+                loadingView?.dismiss()
                 categoryDetail = Gson().fromJson(data, CategoryDetail::class.java)
                 Glide.with(this).load(categoryDetail.image).into(binding.tabHeader)
                 binding.title.text = categoryDetail.name
@@ -133,7 +139,7 @@ class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListe
     }
 
     override fun onFailure(requestCode: Int, data: String) {
-
-
+        loadingView?.dismiss()
+        showToast(data)
     }
 }

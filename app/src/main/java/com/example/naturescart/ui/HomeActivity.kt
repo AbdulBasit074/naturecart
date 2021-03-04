@@ -1,5 +1,6 @@
 package com.example.naturescart.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +11,7 @@ import androidx.preference.PreferenceManager
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityHomeBinding
 import com.example.naturescart.fragments.*
-import com.example.naturescart.helper.CartUpdateEvent
-import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.LogInEvent
-import com.example.naturescart.helper.checkAndFetchFcmToken
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.CartDetail
 import com.example.naturescart.model.CollectionModel
 import com.example.naturescart.model.User
@@ -75,6 +73,12 @@ class HomeActivity : AppCompatActivity(), Results {
     fun onUserLoggedIn(event: LogInEvent) {
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         ProductService(getFavoritesRc, this).getFavorites(loggedUser!!.accessToken)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onConnectivityEvent(event: ConnectivityEvent) {
+        if (!event.connected)
+            startActivity(Intent(this, NoInternetActivity::class.java))
     }
 
     private fun bottomNavigationFragments() {

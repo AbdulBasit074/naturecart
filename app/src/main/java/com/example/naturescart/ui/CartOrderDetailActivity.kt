@@ -23,6 +23,13 @@ import com.google.gson.reflect.TypeToken
 
 class CartOrderDetailActivity : AppCompatActivity(), Results {
 
+    private var loggedUser: User? = null
+    private val addressList: Int = 2223
+    private val paymentMethodRequest: Int = 1122
+    private var cartDetail: CartDetail? = null
+    private lateinit var binding: ActivityCartOrderDetailBinding
+    private var listAddress: ArrayList<Address> = ArrayList()
+    private var addressSelect: Address = Address()
 
     companion object {
         fun newInstance(context: Context, cartDetail: CartDetail): Intent {
@@ -33,17 +40,6 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
 
         }
     }
-
-
-    private var loggedUser: User? = null
-    private val addressList: Int = 2223
-    private val paymentMethodRequest: Int = 1122
-    private var cartDetail: CartDetail? = null
-    private lateinit var binding: ActivityCartOrderDetailBinding
-    private var listAddress: ArrayList<Address> = ArrayList()
-
-    private var addressSelect: com.example.naturescart.model.Address =
-        com.example.naturescart.model.Address()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,10 +53,9 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
 
     private fun setCartDetail() {
         if (cartDetail != null) {
-            binding.bottomSheetCO.itemCharges.text = cartDetail!!.subTotal.toString()
-            binding.bottomSheetCO.deliveryCharges.text =
-                cartDetail!!.summary!!.deliveryChanges.toString()
-            binding.bottomSheetCO.totalCharges.text = cartDetail!!.summary!!.subTotal.toString()
+            binding.bottomSheetCO.itemCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.subTotal))
+            binding.bottomSheetCO.deliveryCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary!!.deliveryChanges))
+            binding.bottomSheetCO.totalCharges.text = getString(R.string.aed_price, String.format("%.2f", (cartDetail!!.summary!!.deliveryChanges!! + cartDetail!!.summary!!.subTotal!!)))
         }
     }
 
@@ -83,12 +78,10 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         when (requestCode) {
-
             0 -> {
                 if (data != null) {
-                    addressSelect = data!!.getParcelableExtra(Constants.selectionAddress)!!
+                    addressSelect = data.getParcelableExtra(Constants.selectionAddress)!!
                     binding.addressTitle.text = addressSelect.addressNick
                     binding.addressDetail.text = addressSelect.address
 

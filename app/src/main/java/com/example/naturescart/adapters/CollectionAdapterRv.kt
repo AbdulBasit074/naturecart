@@ -9,9 +9,10 @@ import com.example.naturescart.R
 import com.example.naturescart.databinding.LiCollectionBinding
 import com.example.naturescart.model.CollectionModel
 
-class CollectionAdapterRv(private val items: ArrayList<CollectionModel>) :
-    RecyclerView.Adapter<CollectionAdapterRv.ViewHolder>() {
-
+class CollectionAdapterRv(
+    private val items: ArrayList<CollectionModel>,
+    private val onCollectionClicked: (CollectionModel) -> Unit
+) : RecyclerView.Adapter<CollectionAdapterRv.ViewHolder>() {
 
     var isLoaderVisible = false
     private val viewLoading: Int = 0
@@ -61,6 +62,9 @@ class CollectionAdapterRv(private val items: ArrayList<CollectionModel>) :
         fun bindView(item: CollectionModel) {
             if (binding is LiCollectionBinding) {
                 binding.collectionItem = item
+                binding.root.setOnClickListener {
+                    onCollectionClicked(item)
+                }
             }
         }
     }

@@ -27,7 +27,6 @@ class OrderDetailActivity : AppCompatActivity() {
         }
     }
 
-
     private lateinit var binding: ActivityOrderDetailBinding
     private lateinit var orderDetail: OrderDetail
     private var list: ArrayList<String> = ArrayList()
@@ -42,14 +41,14 @@ class OrderDetailActivity : AppCompatActivity() {
     }
 
     private fun setOrderData() {
-        binding.orderStatus.text = orderDetail.status
+        binding.orderStatus.text = StringBuilder().append("Order Status: ").append(orderDetail.status)
         binding.dateTxt.text = convertDate(orderDetail.orderData.toString())
-        binding.itemCharges.text = orderDetail.subtotal.toString()
-        binding.deliveryCharges.text = orderDetail.summary?.deliveryChanges.toString()
+        binding.itemCharges.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.subtotal))
+        binding.deliveryCharges.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary?.deliveryChanges))
         binding.addressTitleSelect.text = orderDetail.address!![0].addressNick.toString()
         binding.addressDetail.text = orderDetail.address!![0].address.toString()
         binding.orderNo.text = getString(R.string.order_no, orderDetail.orderId.toString())
-        binding.bottomSheetTotal.total.text = orderDetail.total.toString()
+        binding.bottomSheetTotal.total.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.total))
     }
 
     private fun setListeners() {

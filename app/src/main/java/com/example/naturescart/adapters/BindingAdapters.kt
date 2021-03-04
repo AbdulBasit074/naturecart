@@ -9,7 +9,7 @@ import com.mikhaellopez.circularimageview.CircularImageView
 
 
 @BindingAdapter("setCircularImage")
-fun setCircularImage(imageView: CircularImageView, src: String) {
+fun setCircularImage(imageView: CircularImageView, src: String?) {
     Glide.with(imageView.context).load(src).into(imageView)
 }
 
@@ -35,8 +35,8 @@ fun setAddressOrder(textView: TextView, address: com.example.naturescart.model.A
 
 
 @BindingAdapter("textPrice")
-fun setTextPrice(textView: TextView, src: String) {
-    textView.text = textView.context.getString(R.string.aed_price, src)
+fun setTextPrice(textView: TextView, price: Float) {
+    textView.text = textView.context.getString(R.string.aed_price, String.format("%.2f", price))
 }
 
 @BindingAdapter("textNoItems")

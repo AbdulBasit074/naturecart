@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.naturescart.R
 import com.example.naturescart.adapters.OrderRvAdapter
 import com.example.naturescart.databinding.FragmentOrderBinding
+import com.example.naturescart.helper.LoadingDialog
 import com.example.naturescart.helper.PaginationListeners
 import com.example.naturescart.helper.moveFromFragment
 import com.example.naturescart.helper.showToast
@@ -39,6 +40,7 @@ class OrderFragment : Fragment(), Results {
     private lateinit var adapter: OrderRvAdapter
     private var layoutManger = LinearLayoutManager(activity)
     private lateinit var paginationListeners: PaginationListeners
+    private var loadingView: LoadingDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         orderBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order, container, false)
@@ -47,11 +49,13 @@ class OrderFragment : Fragment(), Results {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadingView = LoadingDialog(requireContext())
         loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
         setAdapterForOrder()
         setListeners()
 
         if (loggedUser != null) {
+            loadingView?.show()
             OrderService(ordersRequest, this).getOrders(
                 loggedUser!!.accessToken,
                 PaginationListeners.pageSize,
@@ -120,6 +124,7 @@ class OrderFragment : Fragment(), Results {
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             ordersRequest -> {
+                loadingView?.dismiss()
                 orderList.clear()
                 isLoading = false
                 orderList.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<OrderDetail>>() {}.type))
@@ -148,6 +153,7 @@ class OrderFragment : Fragment(), Results {
     }
 
     override fun onFailure(requestCode: Int, data: String) {
+        loadingView?.dismiss()
         showToast(data)
     }
 }

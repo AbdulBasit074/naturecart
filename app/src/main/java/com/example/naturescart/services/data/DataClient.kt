@@ -4,6 +4,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface DataClient {
@@ -13,6 +14,13 @@ interface DataClient {
 
     @GET("collections")
     fun getCollections(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
+    ): Call<ResponseBody>
+
+    @GET("collection/{collectionId}")
+    fun getCollectionProducts(
+        @Path("collectionId") collectionId: Long,
         @Query("page") page: Int,
         @Query("limit") limit: Int
     ): Call<ResponseBody>
@@ -38,14 +46,10 @@ interface DataClient {
     @GET("search")
     fun getSearchResult(
         @Header("Authorization") authToken: String?,
-        @Query("keyword") keyWord:String,
-        @Query("limit") limit:Int,
-        @Query("page") page:Int
+        @Query("keyword") keyWord: String,
+        @Query("limit") limit: Int,
+        @Query("page") page: Int
     ): Call<ResponseBody>
-
-
-
-
 
 
 }

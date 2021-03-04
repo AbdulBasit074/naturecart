@@ -12,7 +12,7 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/_130sdp"
+        android:layout_width="@dimen/_140sdp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/_15sdp"
         app:cardElevation="0dp"
@@ -46,6 +46,7 @@
                 android:text="Save 1.00"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_9ssp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,7 +64,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/itemDetail"
+                android:id="@+id/nameTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -78,7 +79,7 @@
                 app:layout_constraintTop_toBottomOf="@id/itemImage" />
 
             <TextView
-                android:id="@+id/itemPiece"
+                android:id="@+id/descriptionTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -89,29 +90,28 @@
                 android:textColor="@color/transparent_black2"
                 android:textSize="@dimen/_8ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/itemDetail" />
+                app:layout_constraintTop_toBottomOf="@id/nameTv" />
 
             <TextView
-                android:id="@+id/itemPrice"
-                textPrice="@{product.sellPrice.toString()}"
+                android:id="@+id/priceTv"
+                textPrice="@{product.sellPrice}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_3sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_slab_semi_bold"
                 android:singleLine="false"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/itemPiece" />
+                app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
 
             <TextView
                 android:id="@+id/itemCount"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:background="@drawable/item_element_border_count"
                 android:drawablePadding="@dimen/_5sdp"
                 android:paddingStart="@dimen/_10sdp"
@@ -122,13 +122,13 @@
                 android:textColor="@color/black"
                 app:drawableEndCompat="@drawable/ic_drop_down"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/itemPrice" />
+                app:layout_constraintTop_toBottomOf="@id/priceTv" />
 
             <TextView
                 android:id="@+id/addToCartBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@drawable/item_element_border_cart"
                 android:drawablePadding="@dimen/_5sdp"
@@ -140,7 +140,7 @@
                 android:textColor="@color/black"
                 app:drawableStartCompat="@drawable/ic_add"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/itemPrice" />
+                app:layout_constraintTop_toBottomOf="@id/priceTv" />
 
             <TextView
                 android:id="@+id/labelSold"

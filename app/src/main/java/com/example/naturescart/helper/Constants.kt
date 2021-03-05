@@ -7,7 +7,7 @@ import java.util.*
 
 class Constants {
     companion object {
-        const val splashTime: Long = 300
+        const val splashTime: Long = 500
         const val cartID: String = "cartID"
         const val userID: String = "userID"
         const val dataPassKey = "dataPassKey"

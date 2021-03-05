@@ -17,6 +17,7 @@ import com.example.naturescart.model.CollectionModel
 import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
 import com.example.naturescart.services.Results
+import com.example.naturescart.services.auth.AuthService
 import com.example.naturescart.services.cart.CartService
 import com.example.naturescart.services.product.ProductService
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,12 +34,15 @@ class HomeActivity : AppCompatActivity(), Results {
     private val getFavoritesRc = 2398
     private lateinit var binding: ActivityHomeBinding
     private var previous: MenuItem? = null
+    private val deviceAddRequest: Int = 1293
     var loggedUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        AuthService(deviceAddRequest, this).addDevice(Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey, "").toString(), true)
+
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         loadFragment(HomeFragment()) //default fragment home open
         previous = binding.bottomNavigation.menu.findItem(binding.bottomNavigation.selectedItemId)

@@ -24,13 +24,11 @@ class IntroductionActivity : AppCompatActivity(), Results {
     private lateinit var binding: ActivityIntroductionBinding
     private var boardList: ArrayList<OnBoarding> = ArrayList()
     private val onBoardRequest: Int = 1293
-    private val deviceAddRequest: Int = 1293
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_introduction)
         DataService(onBoardRequest, this).onBoarding()
-        AuthService(deviceAddRequest, this).addDevice(Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey, "").toString(), true)
         setViewPagerAdapter()
         setListeners()
 

@@ -67,11 +67,19 @@ interface AuthClient {
     ): Call<ResponseBody>
 
     @FormUrlEncoded
-    @POST("auth/reset-password")
+    @PUT("auth/reset-password")
     fun resetPassword(
         @Field("email") email: String,
         @Field("new_password") newPassword: String,
         @Field("confirm_password") confirmPassword: String
+    ): Call<ResponseBody>
+
+
+    @FormUrlEncoded
+    @POST("devices/add")
+    fun addDevice(
+        @Field("device_token") deviceToken: String,
+        @Field("send_notifications") sendNotification: Boolean
     ): Call<ResponseBody>
 
 

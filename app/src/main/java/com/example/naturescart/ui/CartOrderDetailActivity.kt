@@ -29,7 +29,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
     private var cartDetail: CartDetail? = null
     private lateinit var binding: ActivityCartOrderDetailBinding
     private var listAddress: ArrayList<Address> = ArrayList()
-    private var addressSelect: Address = Address()
+    private var addressSelect: Address? = null
 
     companion object {
         fun newInstance(context: Context, cartDetail: CartDetail): Intent {
@@ -67,12 +67,18 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
             startActivityForResult(AddressActivity.newInstance(this, true), 0)
         }
         binding.bottomSheetCO.Btn.setOnClickListener {
-            moveForResult(
-                PaymentWebView.newInstance(
-                    this, cartDetail?.id!!, loggedUser!!.id,
-                    addressSelect.id!!
-                ), paymentMethodRequest
-            )
+
+            if (addressSelect != null) {
+                moveForResult(
+                    PaymentWebView.newInstance(
+                        this, cartDetail?.id!!, loggedUser!!.id,
+                        addressSelect!!.id!!
+                    ), paymentMethodRequest
+                )
+
+            } else {
+                showToast("Please select Address")
+            }
         }
     }
 
@@ -82,8 +88,8 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
             0 -> {
                 if (data != null) {
                     addressSelect = data.getParcelableExtra(Constants.selectionAddress)!!
-                    binding.addressTitle.text = addressSelect.addressNick
-                    binding.addressDetail.text = addressSelect.address
+                    binding.addressTitle.text = addressSelect!!.addressNick
+                    binding.addressDetail.text = addressSelect!!.address
 
                 }
             }
@@ -104,8 +110,8 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
                 listAddress =
                     Gson().fromJson(data, object : TypeToken<ArrayList<Address>>() {}.type)
                 addressSelect = listAddress[0]
-                binding.addressTitle.text = addressSelect.addressNick
-                binding.addressDetail.text = addressSelect.address
+                binding.addressTitle.text = addressSelect!!.addressNick
+                binding.addressDetail.text = addressSelect!!.address
             }
         }
     }

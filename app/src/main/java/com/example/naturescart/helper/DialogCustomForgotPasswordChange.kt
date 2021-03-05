@@ -42,10 +42,7 @@ class DialogCustomForgotPasswordChange(context: Context, private val email: Stri
                     binding.confirmEt.text.toString()
                 )
             }
-
         }
-        binding.closeBtn.setOnClickListener { this.dismiss() }
-
     }
 
     private fun isInputOk(): Boolean {
@@ -66,6 +63,7 @@ class DialogCustomForgotPasswordChange(context: Context, private val email: Stri
         onSuccess(data)
         this.dismiss()
     }
+
     override fun onFailure(requestCode: Int, data: String) {
         binding.newEt.context.showToast(data)
     }

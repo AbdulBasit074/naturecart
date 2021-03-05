@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityMenuBinding
@@ -26,14 +27,15 @@ class MenuActivity : AppCompatActivity(), Results {
     private val productFavouriteRc: Int = 2389
     private val forgotPasswordRq: Int = 2459
     private val otpPasswordRq: Int = 1159
-
-    private var otpDigit: Array<String?> = arrayOfNulls(4)
+    private var loadingView: LoadingDialog? = null
+    private val otpArray = arrayOfNulls<String>(4)
     private lateinit var binding: ActivityMenuBinding
     private var loggedUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu)
+        loadingView = LoadingDialog(this)
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         setViews()
         setListeners()
@@ -62,6 +64,7 @@ class MenuActivity : AppCompatActivity(), Results {
         }
         binding.forgotPasswordEmailBS.submitBtn.setOnClickListener {
             if (binding.forgotPasswordEmailBS.emailInput.text.isNotEmpty()) {
+                loadingView?.show()
                 AuthService(forgotPasswordRq, this).forgotPassword(binding.forgotPasswordEmailBS.emailInput.text.toString())
             } else
                 showToast("Email is required")
@@ -91,6 +94,7 @@ class MenuActivity : AppCompatActivity(), Results {
         binding.registerBottomSheet.registerBtn.setOnClickListener {
 
             if (isRegisterInputOk()) {
+                loadingView?.show()
                 AuthService(registerUserRequest, this).userRegister(
                     binding.registerBottomSheet.fullNameEt.text.toString(),
                     binding.registerBottomSheet.emailEtRegister.text.toString(),
@@ -101,82 +105,61 @@ class MenuActivity : AppCompatActivity(), Results {
         }
         binding.signInBottomSheet.loginBtn.setOnClickListener {
             if (isLoginInputOk()) {
-                AuthService(loginUserRequest, this).userLogin(binding.signInBottomSheet.emailEt.text.toString(), binding.signInBottomSheet.passwordEt.text.toString())
+                loadingView?.show()
+                AuthService(loginUserRequest, this).userLogin(
+                    binding.signInBottomSheet.emailEt.text.toString(),
+                    binding.signInBottomSheet.passwordEt.text.toString(),
+                    Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey, "").toString()
+                )
             }
         }
         binding.otpVerifyBS.verifyBtn.setOnClickListener {
-            AuthService(otpPasswordRq, this).verifyOtp(binding.forgotPasswordEmailBS.emailInput.text.toString(), stringToInt(otpDigit))
+            loadingView?.show()
+            AuthService(otpPasswordRq, this).verifyOtp(binding.forgotPasswordEmailBS.emailInput.text.toString(), otpArray.convertToString().toInt())
         }
-        binding.otpVerifyBS.txtIp1.addTextChangedListener(object : TextWatcher {
+        binding.otpVerifyBS.digit1Et.addTextChangedListener(object : MyTextWatcher() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (binding.otpVerifyBS.txtIp1.text.toString().length == 1) {
-                    otpDigit[0] = binding.otpVerifyBS.txtIp1.text.toString()
-                    binding.otpVerifyBS.txtIp1.clearFocus()
-                    binding.otpVerifyBS.txtIp2.requestFocus()
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-
-                if (binding.otpVerifyBS.txtIp1.text.toString().isEmpty()) {
-                    binding.otpVerifyBS.txtIp1.requestFocus()
+                if (!s.isNullOrEmpty()) {
+                    binding.otpVerifyBS.digit2Et.requestFocus()
+                    otpArray[0] = binding.otpVerifyBS.digit1Et.text.toString()
                 }
             }
         })
-        binding.otpVerifyBS.txtIp2.addTextChangedListener(object : TextWatcher {
+        binding.otpVerifyBS.digit2Et.addTextChangedListener(object : MyTextWatcher() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (binding.otpVerifyBS.txtIp2.text.toString().length == 1) {
-                    otpDigit[1] = binding.otpVerifyBS.txtIp1.text.toString()
-                    binding.otpVerifyBS.txtIp2.clearFocus()
-                    binding.otpVerifyBS.txtIp3.requestFocus()
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                if (binding.otpVerifyBS.txtIp2.text.toString().isEmpty()) {
-                    binding.otpVerifyBS.txtIp1.requestFocus()
+                if (!s.isNullOrEmpty()) {
+                    binding.otpVerifyBS.digit3Et.requestFocus()
+                    otpArray[1] = binding.otpVerifyBS.digit2Et.text.toString()
+                } else {
+                    binding.otpVerifyBS.digit1Et.requestFocus()
                 }
             }
         })
-        binding.otpVerifyBS.txtIp3.addTextChangedListener(object : TextWatcher {
+        binding.otpVerifyBS.digit3Et.addTextChangedListener(object : MyTextWatcher() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (binding.otpVerifyBS.txtIp3.text.toString().length == 1) {
-                    otpDigit[2] = binding.otpVerifyBS.txtIp1.text.toString()
-                    binding.otpVerifyBS.txtIp3.clearFocus()
-                    binding.otpVerifyBS.txtIp4.requestFocus()
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                if (binding.otpVerifyBS.txtIp3.text.toString().isEmpty()) {
-                    binding.otpVerifyBS.txtIp2.requestFocus()
+                if (!s.isNullOrEmpty()) {
+                    binding.otpVerifyBS.digit4Et.requestFocus()
+                    otpArray[2] = binding.otpVerifyBS.digit3Et.text.toString()
+                } else {
+                    binding.otpVerifyBS.digit2Et.requestFocus()
                 }
             }
         })
-        binding.otpVerifyBS.txtIp4.addTextChangedListener(object : TextWatcher {
+        binding.otpVerifyBS.digit4Et.addTextChangedListener(object : MyTextWatcher() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (binding.otpVerifyBS.txtIp4.text.toString().length == 1) {
-                    otpDigit[3] = binding.otpVerifyBS.txtIp1.text.toString()
-                    binding.otpVerifyBS.txtIp4.clearFocus()
-                    binding.otpVerifyBS.txtIp4.requestFocus()
-                    AuthService(otpPasswordRq, this@MenuActivity).verifyOtp(binding.forgotPasswordEmailBS.emailInput.text.toString(), stringToInt(otpDigit))
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                if (binding.otpVerifyBS.txtIp4.text.toString().isEmpty()) {
-                    binding.otpVerifyBS.txtIp3.requestFocus()
+                if (!s.isNullOrEmpty()) {
+                    otpArray[3] = binding.otpVerifyBS.digit4Et.text.toString()
+                    loadingView?.show()
+                    AuthService(otpPasswordRq, this@MenuActivity).verifyOtp(binding.forgotPasswordEmailBS.emailInput.text.toString(), otpArray.convertToString().toInt())
+                    hideKeyboard()
+                } else {
+                    binding.otpVerifyBS.digit3Et.requestFocus()
                 }
             }
         })
+
+
     }
-
 
     private fun isRegisterInputOk(): Boolean {
         when {
@@ -226,9 +209,15 @@ class MenuActivity : AppCompatActivity(), Results {
 
 
     override fun onSuccess(requestCode: Int, data: String) {
+        loadingView?.dismiss()
+
         when (requestCode) {
             registerUserRequest -> {
-                AuthService(loginUserRequest, this).userLogin(binding.registerBottomSheet.emailEtRegister.text.toString(), binding.registerBottomSheet.passwordEtRegister.text.toString())
+                AuthService(loginUserRequest, this).userLogin(
+                    binding.registerBottomSheet.emailEtRegister.text.toString(),
+                    binding.registerBottomSheet.passwordEtRegister.text.toString(),
+                    Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey, "").toString()
+                )
             }
             loginUserRequest -> {
                 saveUserDetail(data)
@@ -236,14 +225,20 @@ class MenuActivity : AppCompatActivity(), Results {
             forgotPasswordRq -> {
                 showToast(data)
                 BottomSheetBehavior.from(binding.otpVerifyBS.parent).state = BottomSheetBehavior.STATE_EXPANDED
-                binding.otpVerifyBS.txtIp1.requestFocus()
+                binding.otpVerifyBS.digit1Et.requestFocus()
+                showKeyboard()
+
             }
             otpPasswordRq -> {
                 BottomSheetBehavior.from(binding.otpVerifyBS.parent).state =
                     BottomSheetBehavior.STATE_COLLAPSED
                 BottomSheetBehavior.from(binding.forgotPasswordEmailBS.parent).state =
                     BottomSheetBehavior.STATE_COLLAPSED
-
+                binding.otpVerifyBS.digit1Et.text.clear()
+                binding.otpVerifyBS.digit2Et.text.clear()
+                binding.otpVerifyBS.digit3Et.text.clear()
+                binding.otpVerifyBS.digit4Et.text.clear()
+                hideKeyboard()
                 DialogCustomForgotPasswordChange(this, binding.forgotPasswordEmailBS.emailInput.text.toString()) { data ->
                     onPasswordChange(
                         data
@@ -278,6 +273,7 @@ class MenuActivity : AppCompatActivity(), Results {
     }
 
     override fun onFailure(requestCode: Int, data: String) {
+        loadingView?.dismiss()
         showToast(data)
     }
 }

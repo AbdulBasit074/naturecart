@@ -13,8 +13,8 @@ class AuthService(requestCode: Int, callBack: Results) : BaseService(requestCode
             .userRegister(fullName, email, password, phone).enqueue(this)
     }
 
-    fun userLogin(email: String, password: String) {
-        RetrofitClient.getInstance().create(AuthClient::class.java).userLogin(email, password, Constants.fcmToken, Constants.deviceType)
+    fun userLogin(email: String, password: String,deviceToken: String) {
+        RetrofitClient.getInstance().create(AuthClient::class.java).userLogin(email, password,deviceToken, Constants.deviceType)
             .enqueue(this)
     }
 
@@ -46,6 +46,11 @@ class AuthService(requestCode: Int, callBack: Results) : BaseService(requestCode
 
     fun resetPassword(email: String, newPassword: String, confirmPassword: String) {
         RetrofitClient.getInstance().create(AuthClient::class.java).resetPassword(email, newPassword, confirmPassword)
+            .enqueue(this)
+    }
+
+    fun addDevice(deviceToken: String, sendNotification: Boolean) {
+        RetrofitClient.getInstance().create(AuthClient::class.java).addDevice(deviceToken, sendNotification)
             .enqueue(this)
     }
 

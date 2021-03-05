@@ -9,6 +9,7 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
@@ -174,13 +175,12 @@ fun AppCompatActivity.getCurrentLocation(fields: ArrayList<Place.Field>, onLocat
         }
     }
 }
-
-fun AppCompatActivity.stringToInt(arr: Array<String?>): Int {
-    var stringValue = ""
-    arr.forEach {
-        stringValue += it
+fun Array<String?>.convertToString(): String {
+    val sb = StringBuilder()
+    for (string in this) {
+        sb.append(string)
     }
-    return stringValue.toInt()
+    return sb.toString()
 }
 
 fun Context.showKeyboard() {
@@ -190,6 +190,14 @@ fun Context.showKeyboard() {
     } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+fun AppCompatActivity.hideKeyboard() {
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    var view = currentFocus
+    if (view == null) {
+        view = View(this)
+    }
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
 fun ArrayList<Category>.containsWithThisName(name: String): Boolean {

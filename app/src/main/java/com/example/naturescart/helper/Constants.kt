@@ -27,7 +27,6 @@ class Constants {
         const val paymentMethodUrl = "https://app.naturescart.ae/paytabs_payment/"
         const val selectionAddress = "selectionAddress"
         const val updateAddress = "updateAddress"
-        var fcmToken = "489384h3bf4348hf4893023dh83h20h"
         const val deviceType = "android"
 
         fun geoCoding(latitude: Double, longitude: Double, context: Context): String {

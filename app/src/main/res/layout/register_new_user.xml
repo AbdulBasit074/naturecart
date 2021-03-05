@@ -157,7 +157,6 @@
             android:layout_width="@dimen/_210sdp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_2sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:autofillHints="Search"
             android:backgroundTint="@color/divider"
             android:fontFamily="@font/nunito_regular"

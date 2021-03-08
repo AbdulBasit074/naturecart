@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.EventBus
 
 class CartFragment : Fragment(), Results {
 
+    private val cartDataPersistenceKey = "cartDataPersistenceKey"
     private val cartDetailRequest: Int = 212
     private val loginRequest: Int = 2112
     private lateinit var cartBinding: FragmentCartBinding
@@ -49,7 +50,11 @@ class CartFragment : Fragment(), Results {
             cartBinding.emptyCartContainer.visibility = View.VISIBLE
             cartBinding.checkoutContainer.visibility = View.GONE
         } else {
-            loadingView?.show()
+            val cartData = Persister.with(requireContext()).getPersisted(cartDataPersistenceKey, null)
+            if (cartData == null)
+                loadingView?.show()
+            else
+                onSuccess(cartDetailRequest, cartData)
             CartService(cartDetailRequest, this).getCartDetail(cartID)
         }
         setListeners()
@@ -106,6 +111,7 @@ class CartFragment : Fragment(), Results {
                 checkForEmptiness()
                 EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
                 loadingView?.dismiss()
+                Persister.with(requireContext()).persist(cartDataPersistenceKey, data)
             }
         }
     }

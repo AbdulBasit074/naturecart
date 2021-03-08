@@ -31,10 +31,6 @@ import com.google.gson.reflect.TypeToken
 
 class HomeFragment : Fragment(), Results {
 
-    companion object {
-        var dummyList: ArrayList<String> = ArrayList()
-    }
-
     private lateinit var homeBinding: FragmentHomeBinding
     private val collectionRequest: Int = 1132
     private val loadMoreCollectionRC: Int = 1332
@@ -52,6 +48,14 @@ class HomeFragment : Fragment(), Results {
     private var pageNo: Int = 1
     private lateinit var adapterCollection: CollectionAdapterRv
     private var loadingView: LoadingDialog? = null
+    private var animationShown = false
+    private val collectionsDataPersistenceKey = "collectionsDataPersistenceKey"
+    private val categoriesDataPersistenceKey = "categoriesDataPersistenceKey"
+    private val categoryProductsDataPersistenceKey = "categoryProductsDataPersistenceKey"
+
+    companion object {
+        var dummyList: ArrayList<String> = ArrayList()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
@@ -62,14 +66,24 @@ class HomeFragment : Fragment(), Results {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadingView = LoadingDialog(requireContext())
-        loadingView?.show()
         setViews()
-        getData()
         setDummyData()
         setListeners()
+        Handler(Looper.getMainLooper()).postDelayed({getData()}, 500)
     }
 
     private fun getData() {
+        val collectionsData = Persister.with(requireContext()).getPersisted(collectionsDataPersistenceKey, null)
+        val categoriesData = Persister.with(requireContext()).getPersisted(categoriesDataPersistenceKey, null)
+        val categoryProductsData = Persister.with(requireContext()).getPersisted(categoryProductsDataPersistenceKey, null)
+        if (collectionsData == null || categoriesData == null || categoryProductsData == null)
+            loadingView?.show()
+        if (collectionsData != null)
+            onSuccess(collectionRequest, collectionsData)
+        if (categoriesData != null)
+            onSuccess(categoriesRequest, categoriesData)
+        if (categoryProductsData != null)
+            onSuccess(categoriesProductRequest, categoryProductsData)
         DataService(collectionRequest, this).getCollections(pageNo, limit)
         DataService(categoriesRequest, this).getCategories(limit, false)
         DataService(categoriesProductRequest, this).getCategoryProducts(limit, true)
@@ -154,6 +168,7 @@ class HomeFragment : Fragment(), Results {
                 initPageListener()
                 homeBinding.collectionRv.addOnScrollListener(paginationListener)
                 showData()
+                Persister.with(requireContext()).persist(collectionsDataPersistenceKey, data)
             }
             loadMoreCollectionRC -> {
                 adapterCollection.stopLoading()
@@ -167,10 +182,12 @@ class HomeFragment : Fragment(), Results {
             categoriesRequest -> {
                 categoriesData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<Category>>() {}.type))
                 showData()
+                Persister.with(requireContext()).persist(categoriesDataPersistenceKey, data)
             }
             categoriesProductRequest -> {
                 categoryProductData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<CategoryProducts>>() {}.type))
                 showData()
+                Persister.with(requireContext()).persist(categoryProductsDataPersistenceKey, data)
             }
         }
     }
@@ -203,16 +220,20 @@ class HomeFragment : Fragment(), Results {
             loadingView?.dismiss()
             //show collections data
             homeBinding.collectionRv.adapter?.notifyDataSetChanged()
-            homeBinding.collectionRv.scheduleLayoutAnimation()
-            homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
-            homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
-            homeBinding.topSliderVp.alpha = 1f
-            homeBinding.topSliderIndicator.alpha = 1f
+            if (!animationShown) {
+                homeBinding.collectionRv.scheduleLayoutAnimation()
+                homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+                homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+                homeBinding.topSliderVp.alpha = 1f
+                homeBinding.topSliderIndicator.alpha = 1f
+            }
             //show categories data
             homeBinding.categoryRv.adapter?.notifyDataSetChanged()
-            homeBinding.categoryRv.scheduleLayoutAnimation()
+            if (!animationShown)
+                homeBinding.categoryRv.scheduleLayoutAnimation()
             //show category products data
             homeBinding.categoryProductRvDetail.adapter?.notifyDataSetChanged()
+            animationShown = true
         }
     }
 

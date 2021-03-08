@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import com.example.naturescart.R
+import com.example.naturescart.adapters.HomeFragmentsVpAdapter
 import com.example.naturescart.databinding.ActivityHomeBinding
 import com.example.naturescart.fragments.*
 import com.example.naturescart.helper.*
@@ -26,7 +25,6 @@ import com.google.gson.reflect.TypeToken
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.lang.NullPointerException
 
 class HomeActivity : AppCompatActivity(), Results {
 
@@ -36,15 +34,17 @@ class HomeActivity : AppCompatActivity(), Results {
     private var previous: MenuItem? = null
     private val deviceAddRequest: Int = 1293
     var loggedUser: User? = null
+    private lateinit var fragmentsPagerAdapter: HomeFragmentsVpAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         AuthService(deviceAddRequest, this).addDevice(Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey, "").toString(), true)
-
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
-        loadFragment(HomeFragment()) //default fragment home open
+        fragmentsPagerAdapter = HomeFragmentsVpAdapter(supportFragmentManager)
+        binding.homeFragmentsVp.offscreenPageLimit = 4
+        binding.homeFragmentsVp.adapter = fragmentsPagerAdapter
         previous = binding.bottomNavigation.menu.findItem(binding.bottomNavigation.selectedItemId)
         binding.bottomNavigation.itemIconTintList = null
         bottomNavigationFragments()
@@ -53,13 +53,6 @@ class HomeActivity : AppCompatActivity(), Results {
         if (loggedUser != null)
             ProductService(getFavoritesRc, this).getFavorites(loggedUser!!.accessToken)
         checkAndFetchFcmToken()
-    }
-
-    private fun loadFragment(fragment: Fragment) {
-        val transition: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transition.replace(binding.frameContainer.id, fragment)
-        transition.addToBackStack(null)
-        transition.commit()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -91,27 +84,27 @@ class HomeActivity : AppCompatActivity(), Results {
             previous = it
             when (it.itemId) {
                 R.id.homeNav -> {
-                    loadFragment(HomeFragment())
+                    binding.homeFragmentsVp.currentItem = 0
                     it.setIcon(R.drawable.ic_home_checked)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.favourite -> {
-                    loadFragment(FavouriteFragment())
+                    binding.homeFragmentsVp.currentItem = 1
                     it.setIcon(R.drawable.ic_heart_checked)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.cart -> {
-                    loadFragment(CartFragment())
+                    binding.homeFragmentsVp.currentItem = 2
                     it.setIcon(R.drawable.ic_cart_checked)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.order -> {
-                    loadFragment(OrderFragment())
+                    binding.homeFragmentsVp.currentItem = 3
                     it.setIcon(R.drawable.ic_order_checked)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
-                    loadFragment(AboutFragment())
+                    binding.homeFragmentsVp.currentItem = 4
                     it.setIcon(R.drawable.ic_about_checked)
                     return@OnNavigationItemSelectedListener true
                 }

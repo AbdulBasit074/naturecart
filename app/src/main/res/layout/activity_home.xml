@@ -9,11 +9,10 @@
         android:animateLayoutChanges="true"
         tools:context=".ui.HomeActivity">
 
-        <FrameLayout
-            android:id="@+id/frameContainer"
+        <com.example.naturescart.helper.NonSwipeableViewPager
+            android:id="@+id/homeFragmentsVp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
             app:layout_constraintTop_toTopOf="parent" />
 

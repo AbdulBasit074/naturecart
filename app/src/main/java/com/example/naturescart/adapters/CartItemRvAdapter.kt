@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.naturescart.R
 import com.example.naturescart.databinding.LiCartItemBinding
 import com.example.naturescart.helper.Constants
+import com.example.naturescart.helper.LoadingDialog
 import com.example.naturescart.helper.customTextView
 import com.example.naturescart.helper.showToast
 import com.example.naturescart.model.CartDetail
@@ -24,7 +25,7 @@ class CartItemRvAdapter(
     private val context: Activity,
     private var refreshCallBack: () -> Unit
 ) :
-    RecyclerView.Adapter<CartItemRvAdapter.ViewHolder>(), Results {
+    RecyclerView.Adapter<CartItemRvAdapter.ViewHolder>() {
     private var totalItemSelect: Int = 0
     private var cartID: Long? = null
     private val addToCartRc = 3820
@@ -68,7 +69,20 @@ class CartItemRvAdapter(
             Glide.with(binding.productImage.context).load(item.product?.image)
                 .into(binding.productImage)
             binding.deleteBtn.setOnClickListener {
-                CartService(removeFromCartRc, this@CartItemRvAdapter).removeFromCart(item.id ?: 0)
+                val loadingDialog = LoadingDialog(context)
+                loadingDialog.show()
+                CartService(removeFromCartRc, object : Results {
+                    override fun onSuccess(requestCode: Int, data: String) {
+                        loadingDialog.dismiss()
+                        refreshCallBack()
+                    }
+
+                    override fun onFailure(requestCode: Int, data: String) {
+                        loadingDialog.dismiss()
+                        context.showToast(data)
+                    }
+
+                }).removeFromCart(item.id ?: 0)
                 binding.parentView.close(true)
             }
         }
@@ -76,7 +90,7 @@ class CartItemRvAdapter(
         private fun setSelectCount(item: CartDetail.Item) {
             /**number of product item select dialog **/
             val list: ArrayList<Int> = ArrayList()
-            val limit = item.quantity?:1
+            val limit = item.quantity ?: 1
             for (i in 1..limit)
                 list.add(i)
             val builder = AlertDialog.Builder(binding.root.context)
@@ -84,35 +98,31 @@ class CartItemRvAdapter(
             builder.setAdapter(adapter) { _, which ->
                 totalItemSelect = list[which]
                 cartID = PreferenceManager.getDefaultSharedPreferences(binding.totalItemPrice.context).getLong(Constants.cartID, 0)
-                CartService(addToCartRc, this@CartItemRvAdapter).addToCart(item.product?.id!!, totalItemSelect, cartID)
+                val loadingDialog = LoadingDialog(context)
+                loadingDialog.show()
+                CartService(addToCartRc, object : Results {
+                    override fun onSuccess(requestCode: Int, data: String) {
+                        loadingDialog.dismiss()
+                        val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                        PreferenceManager.getDefaultSharedPreferences(context).edit()
+                            .putLong(
+                                Constants.cartID,
+                                cartDetail.id!!
+                            ).apply()
+                        refreshCallBack()
+                    }
+
+                    override fun onFailure(requestCode: Int, data: String) {
+                        loadingDialog.dismiss()
+                        context.showToast(data)
+                    }
+
+                }).addToCart(item.product?.id!!, totalItemSelect, cartID)
             }
             val dialog = builder.create()
             dialog.setCustomTitle(binding.root.context.customTextView("Select Item"))
             dialog.show()
         }
     }
-
-    override fun onSuccess(requestCode: Int, data: String) {
-        when (requestCode) {
-            addToCartRc -> {
-                val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
-                PreferenceManager.getDefaultSharedPreferences(context).edit()
-                    .putLong(
-                        Constants.cartID,
-                        cartDetail.id!!
-                    ).apply()
-                refreshCallBack()
-            }
-            removeFromCartRc -> {
-                refreshCallBack()
-            }
-        }
-    }
-
-    override fun onFailure(requestCode: Int, data: String) {
-        context.showToast(data)
-    }
-
-
 }
 

@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken
 
 class OrderFragment : Fragment(), Results {
 
+    private val ordersDataPersistenceKey = "ordersDataPersistenceKey"
     private lateinit var orderBinding: FragmentOrderBinding
     private var orderList: ArrayList<OrderDetail> = ArrayList()
     private var loggedUser: User? = null
@@ -58,7 +59,11 @@ class OrderFragment : Fragment(), Results {
 
     private fun callOrderDetail() {
         if (loggedUser != null) {
-            loadingView?.show()
+            val ordersData = Persister.with(requireContext()).getPersisted(ordersDataPersistenceKey, null)
+            if (ordersData == null)
+                loadingView?.show()
+            else
+                onSuccess(ordersRequest, ordersData)
             OrderService(ordersRequest, this).getOrders(
                 loggedUser!!.accessToken,
                 PaginationListeners.pageSize,
@@ -135,6 +140,7 @@ class OrderFragment : Fragment(), Results {
                 orderBinding.orderRv.addOnScrollListener(paginationListeners)
                 orderBinding.orderRv.adapter?.notifyDataSetChanged()
                 orderBinding.noOrdersContainer.visibility = if (orderList.isNullOrEmpty()) View.VISIBLE else View.GONE
+                Persister.with(requireContext()).persist(ordersDataPersistenceKey, data)
             }
             loadMoreRequest -> {
                 adapter.stopLoading()

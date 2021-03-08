@@ -87,9 +87,12 @@ class ItemAdapterRv(
                     binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav_add))
                 }
                 binding.favouriteImage.setOnClickListener {
+                    val loadingDialog = LoadingDialog(context)
                     if (loggedUser != null) {
+                        loadingDialog.show()
                         ProductService(productFavouriteRequest, object : Results {
                             override fun onSuccess(requestCode: Int, data: String) {
+                                loadingDialog.dismiss()
                                 if (NatureDb.getInstance(context).favouriteDao().getProduct(item.id!!) == null) {
                                     item.categoryName = parentCategoryName
                                     NatureDb.getInstance(context).favouriteDao().insertProduct(item)
@@ -105,12 +108,14 @@ class ItemAdapterRv(
                             }
 
                             override fun onFailure(requestCode: Int, data: String) {
+                                loadingDialog.dismiss()
                                 val dialog = DialogCustom(context, R.drawable.ic_add_fav, data)
                                 dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
                                 dialog.showDialog()
                             }
                         }).addToFavourite(loggedUser.accessToken, item.id!!)
                     } else {
+                        loadingDialog.dismiss()
                         val dialogMsg: String
                         if (NatureDb.getInstance(context).favouriteDao().getProduct(item.id!!) == null) {
                             item.categoryName = parentCategoryName

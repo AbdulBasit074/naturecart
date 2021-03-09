@@ -37,8 +37,7 @@ class HomeFragment : Fragment(), Results {
     private val categoriesRequest: Int = 2220
     private val categoriesProductRequest: Int = 5554
     private var limit: Int = 6
-    private lateinit var handler:Handler
-    private var onDestroyFragment: Boolean = false
+    private lateinit var handler: Handler
     private var collectionData: ArrayList<CollectionModel> = ArrayList()
     private var categoriesData: ArrayList<Category> = ArrayList()
     private val layoutManager = LinearLayoutManager(activity)
@@ -54,6 +53,7 @@ class HomeFragment : Fragment(), Results {
     private val collectionsDataPersistenceKey = "collectionsDataPersistenceKey"
     private val categoriesDataPersistenceKey = "categoriesDataPersistenceKey"
     private val categoryProductsDataPersistenceKey = "categoryProductsDataPersistenceKey"
+    private var runnable: Runnable? = null
 
     companion object {
         var dummyList: ArrayList<String> = ArrayList()
@@ -131,11 +131,10 @@ class HomeFragment : Fragment(), Results {
 
     private fun setTopSliderAnimator() {
         handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
+        runnable = Runnable {
             homeBinding.topSliderVp.setCurrentItem((homeBinding.topSliderVp.currentItem + 1) % (homeBinding.topSliderVp.adapter?.itemCount ?: 0), true)
-            if (!onDestroyFragment)
-                setTopSliderAnimator()
-        }, 3000)
+        }
+        handler.postDelayed({ runnable }, 3000)
 
     }
 
@@ -243,9 +242,11 @@ class HomeFragment : Fragment(), Results {
     }
 
     override fun onDetach() {
-        handler.removeCallbacksAndMessages(null)
+        if (runnable != null)
+            handler.removeCallbacks(runnable!!)
         super.onDetach()
     }
+
     override fun onDestroy() {
         super.onDestroy()
     }

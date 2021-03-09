@@ -4,6 +4,9 @@ import com.example.naturescart.helper.Constants
 import com.example.naturescart.services.BaseService
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.RetrofitClient
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 
 class AuthService(requestCode: Int, callBack: Results) : BaseService(requestCode, callBack) {
@@ -13,8 +16,8 @@ class AuthService(requestCode: Int, callBack: Results) : BaseService(requestCode
             .userRegister(fullName, email, password, phone).enqueue(this)
     }
 
-    fun userLogin(email: String, password: String,deviceToken: String) {
-        RetrofitClient.getInstance().create(AuthClient::class.java).userLogin(email, password,deviceToken, Constants.deviceType)
+    fun userLogin(email: String, password: String, deviceToken: String) {
+        RetrofitClient.getInstance().create(AuthClient::class.java).userLogin(email, password, deviceToken, Constants.deviceType)
             .enqueue(this)
     }
 
@@ -51,6 +54,15 @@ class AuthService(requestCode: Int, callBack: Results) : BaseService(requestCode
 
     fun addDevice(deviceToken: String, sendNotification: Boolean) {
         RetrofitClient.getInstance().create(AuthClient::class.java).addDevice(deviceToken, sendNotification)
+            .enqueue(this)
+
+    }
+
+    fun uploadAvatar(byteArray: ByteArray, authToken: String) {
+        val requestFile: RequestBody = RequestBody.create(MediaType.parse("image/jpeg"), byteArray)
+        val body = MultipartBody.Part.createFormData("avatar", "image.jpg", requestFile)
+
+        RetrofitClient.getInstance().create(AuthClient::class.java).updateAvatar("Bearer $authToken", body)
             .enqueue(this)
     }
 

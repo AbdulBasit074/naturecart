@@ -1,6 +1,7 @@
 package com.example.naturescart.services.auth
 
 
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -80,6 +81,14 @@ interface AuthClient {
     fun addDevice(
         @Field("device_token") deviceToken: String,
         @Field("send_notifications") sendNotification: Boolean
+    ): Call<ResponseBody>
+
+
+    @Multipart
+    @POST("profile-image")
+    fun updateAvatar(
+        @Header("Authorization") authToken: String,
+        @Part avatar: MultipartBody.Part
     ): Call<ResponseBody>
 
 

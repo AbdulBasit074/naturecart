@@ -26,7 +26,6 @@ class MenuActivity : AppCompatActivity(), Results {
     private val loginUserRequest: Int = 145
     private val productFavouriteRc: Int = 2389
     private val forgotPasswordRq: Int = 2459
-    private val deviceAddRequest: Int = 1293
     private val otpPasswordRq: Int = 1159
     private var loadingView: LoadingDialog? = null
     private val otpArray = arrayOfNulls<String>(4)

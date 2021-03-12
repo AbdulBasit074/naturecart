@@ -28,7 +28,11 @@ class IntroductionActivity : AppCompatActivity(), Results {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_introduction)
-        DataService(onBoardRequest, this).onBoarding()
+        val data = Persister.with(this).getPersisted(Constants.onBoardingPersistenceKey)
+        if (data == null)
+            DataService(onBoardRequest, this).onBoarding()
+        else
+            onSuccess(onBoardRequest, data)
         setViewPagerAdapter()
         setListeners()
 
@@ -50,16 +54,9 @@ class IntroductionActivity : AppCompatActivity(), Results {
 
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
-
             onBoardRequest -> {
-                boardList.addAll(
-                    Gson().fromJson(
-                        data,
-                        object : TypeToken<ArrayList<OnBoarding>>() {}.type
-                    )
-                )
+                boardList.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<OnBoarding>>() {}.type))
                 binding.viewPagerIntroduction.adapter?.notifyDataSetChanged()
-
             }
         }
     }

@@ -13,23 +13,23 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/_140sdp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_180sdp"
         app:cardCornerRadius="@dimen/_15sdp"
         app:cardElevation="0dp"
         tools:ignore="HardcodedText">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/_10sdp">
+            android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/itemImage"
+                android:id="@+id/iconIv"
                 setImage="@{product.image}"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:contentDescription="@string/icon"
+                android:transitionName="ProductIcon"
                 android:scaleType="centerCrop"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -76,7 +76,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/itemImage" />
+                app:layout_constraintTop_toBottomOf="@id/iconIv" />
 
             <TextView
                 android:id="@+id/descriptionTv"
@@ -106,59 +106,83 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
 
-            <TextView
-                android:id="@+id/itemCount"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:background="@drawable/item_element_border_count"
-                android:drawablePadding="@dimen/_5sdp"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingTop="@dimen/_3sdp"
-                android:paddingEnd="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_3sdp"
-                android:text="1"
-                android:textColor="@color/black"
-                app:drawableEndCompat="@drawable/ic_drop_down"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/decrementBtn"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                app:cardBackgroundColor="#4F108148"
+                app:cardCornerRadius="@dimen/_4sdp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/itemCountTv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/priceTv" />
+                app:layout_constraintTop_toTopOf="@id/itemCountTv">
+
+                <ImageView
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_decrement_cart" />
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/addToCartBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_25sdp"
+                android:id="@+id/itemCountTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_16sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:background="@drawable/item_element_border_cart"
-                android:drawablePadding="@dimen/_5sdp"
-                android:paddingStart="@dimen/_5sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_8sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:text="Cart"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
+                android:background="@drawable/item_element_border_count"
+                android:gravity="center"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text="0"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/ic_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/incrementBtn"
+                app:layout_constraintStart_toEndOf="@id/decrementBtn" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/incrementBtn"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:padding="@dimen/_8sdp"
+                app:cardBackgroundColor="#4F108148"
+                app:cardCornerRadius="@dimen/_4sdp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/itemCountTv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/priceTv" />
+                app:layout_constraintTop_toTopOf="@id/itemCountTv">
+
+                <ImageView
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_increment_cart" />
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/labelSold"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
                 android:background="@drawable/bg_label_sold"
                 android:drawablePadding="@dimen/_5sdp"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingEnd="@dimen/_8sdp"
+                android:gravity="center"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
                 android:text="Out of stock"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_8ssp"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/itemCount"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/itemCount" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -8,7 +8,6 @@
         android:layout_height="match_parent"
         tools:ignore="HardcodedText">
 
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedView"
             android:layout_width="match_parent"
@@ -168,7 +167,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/contactContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_220sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
@@ -179,13 +178,13 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/_24sdp">
 
                         <TextView
                             android:id="@+id/contactTitle"
                             android:layout_width="@dimen/_250sdp"
                             android:layout_height="wrap_content"
-
                             android:layout_marginTop="@dimen/_20sdp"
                             android:fontFamily="@font/roboto_slab_semi_bold"
                             android:text="Contact &amp; Help"
@@ -197,16 +196,16 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/contactEmail"
+                            android:id="@+id/emailBtn"
                             android:layout_width="@dimen/_250sdp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:background="@drawable/contact_item_bg"
                             android:drawablePadding="@dimen/_10sdp"
-                            android:fontFamily="@font/roboto_slab_light"
+                            android:fontFamily="@font/roboto_slab_semi_bold"
                             android:padding="@dimen/_10sdp"
                             android:text="customercare@naturescart.ae"
-                            android:textColor="@color/black"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/_11ssp"
                             app:drawableStartCompat="@drawable/ic_mail"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -214,56 +213,57 @@
                             app:layout_constraintTop_toBottomOf="@+id/contactTitle" />
 
                         <TextView
-                            android:id="@+id/contactNumber"
+                            android:id="@+id/phoneBtn"
                             android:layout_width="@dimen/_250sdp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:background="@drawable/contact_item_bg"
                             android:drawablePadding="@dimen/_10sdp"
-                            android:fontFamily="@font/roboto_slab_light"
+                            android:fontFamily="@font/roboto_slab_semi_bold"
                             android:padding="@dimen/_10sdp"
                             android:text="+971509341258"
-                            android:textColor="@color/black"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/_11ssp"
                             app:drawableStartCompat="@drawable/ic_bx_support"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/contactEmail" />
+                            app:layout_constraintTop_toBottomOf="@+id/emailBtn" />
 
                         <TextView
-                            android:id="@+id/contactFaceBook"
+                            android:id="@+id/facebookBtn"
                             android:layout_width="@dimen/_120sdp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:background="@drawable/contact_item_bg"
                             android:drawablePadding="@dimen/_10sdp"
-                            android:fontFamily="@font/roboto_slab_light"
+                            android:fontFamily="@font/roboto_slab_semi_bold"
+                            android:gravity="center_vertical"
                             android:padding="@dimen/_10sdp"
                             android:text="FaceBook"
-                            android:textColor="@color/black"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/_11ssp"
                             app:drawableStartCompat="@drawable/ic_facebook"
-                            app:layout_constraintEnd_toStartOf="@id/contactDetail"
+                            app:layout_constraintEnd_toStartOf="@id/instagramBtn"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/contactNumber" />
+                            app:layout_constraintTop_toBottomOf="@+id/phoneBtn" />
 
                         <TextView
-                            android:id="@+id/contactDetail"
+                            android:id="@+id/instagramBtn"
                             android:layout_width="@dimen/_120sdp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:background="@drawable/contact_item_bg"
                             android:drawablePadding="@dimen/_10sdp"
-                            android:fontFamily="@font/roboto_slab_light"
+                            android:fontFamily="@font/roboto_slab_semi_bold"
+                            android:gravity="center_vertical"
                             android:padding="@dimen/_10sdp"
                             android:text="Instagram"
-                            android:textColor="@color/black"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/_11ssp"
                             app:drawableStartCompat="@drawable/ic_instagram"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/contactFaceBook"
-                            app:layout_constraintTop_toBottomOf="@+id/contactNumber" />
-
+                            app:layout_constraintStart_toEndOf="@id/facebookBtn"
+                            app:layout_constraintTop_toBottomOf="@+id/phoneBtn" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,6 +1,7 @@
 package com.example.naturescart.fragments
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,6 +25,9 @@ import com.example.naturescart.ui.OrderDetailActivity
 import com.example.naturescart.ui.UserDetailActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class OrderFragment : Fragment(), Results {
@@ -172,5 +176,22 @@ class OrderFragment : Fragment(), Results {
                 }
             }
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLogoutEvent(event: LogoutEvent) {
+        orderList.clear()
+        orderBinding.orderRv.adapter?.notifyDataSetChanged()
+        orderBinding.noOrdersContainer.visibility = View.VISIBLE
     }
 }

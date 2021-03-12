@@ -38,6 +38,7 @@ class CartFragment : Fragment(), Results {
     private var loggedUser: User? = null
     private var cartID: Long? = null
     private var loadingView: LoadingDialog? = null
+    private var isFirstCall = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         cartBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart, container, false)
@@ -108,11 +109,15 @@ class CartFragment : Fragment(), Results {
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             cartDetailRequest -> {
+                Persister.with(requireContext()).persist(Constants.cartPersistenceKey, data)
                 cartDetail = Gson().fromJson(data, CartDetail::class.java)
                 upDateUi()
                 setAdapter()
                 checkForEmptiness()
-                EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                if (isFirstCall) {
+                    EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                    isFirstCall = false
+                }
                 loadingView?.dismiss()
                 Persister.with(requireContext()).persist(cartDataPersistenceKey, data)
             }

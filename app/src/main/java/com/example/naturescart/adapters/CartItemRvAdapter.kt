@@ -1,24 +1,26 @@
 package com.example.naturescart.adapters
 
 import android.app.Activity
+import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
 import com.example.naturescart.databinding.LiCartItemBinding
-import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.LoadingDialog
-import com.example.naturescart.helper.customTextView
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.CartDetail
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.cart.CartService
+import com.example.naturescart.ui.ImageViewActivity
 import com.google.gson.Gson
+import org.greenrobot.eventbus.EventBus
 
 class CartItemRvAdapter(
     private var itemList: ArrayList<CartDetail.Item>,
@@ -28,7 +30,8 @@ class CartItemRvAdapter(
     RecyclerView.Adapter<CartItemRvAdapter.ViewHolder>() {
     private var totalItemSelect: Int = 0
     private var cartID: Long? = null
-    private val addToCartRc = 3820
+    private val incrementRc = 3821
+    private val decrementRc = 8343
     private val removeFromCartRc = 8323
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,75 +57,78 @@ class CartItemRvAdapter(
     inner class ViewHolder(val binding: LiCartItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindView(item: CartDetail.Item) {
-            binding.itemCount.setOnClickListener {
-                setSelectCount(item)
-            }
-            binding.itemDetail.text = item.product?.name.toString()
-            binding.itemCount.text = item.quantity.toString()
+            binding.nameTv.text = item.product?.name.toString()
+            binding.itemCountTv.text = item.quantity.toString()
             totalItemSelect = item.quantity!!
-            binding.itemPrice.text =
-                binding.itemCount.context.getString(R.string.aed_price, item.price.toString())
-            binding.totalItemPrice.text = binding.itemCount.context.getString(
-                R.string.aed_price,
-                String.format("%.2f", item.price!! * item.quantity!!)
-            )
-            Glide.with(binding.productImage.context).load(item.product?.image)
-                .into(binding.productImage)
+            binding.priceTv.text = context.getString(R.string.aed_price, item.price.toString())
+            binding.totalPriceTv.text = context.getString(R.string.aed_price, String.format("%.2f", item.price!! * item.quantity!!))
+            Glide.with(context).load(item.product?.image).into(binding.iconIv)
+            binding.iconIv.setOnClickListener {
+                val pair: Pair<View, String> = Pair.create(binding.iconIv as View?, "ProductIcon")
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, pair)
+                context.startActivity(ImageViewActivity.newInstance(context, item.product?.image ?: ""), options.toBundle())
+            }
+            binding.incrementBtn.setOnClickListener {
+                val count = binding.itemCountTv.text.toString().toInt()
+                updateCart(binding.incrementBtn.context, item.product?.id!!, count + 1, incrementRc)
+            }
+            binding.decrementBtn.setOnClickListener {
+                val count = binding.itemCountTv.text.toString().toInt()
+                if (count > 1) {
+                    updateCart(binding.incrementBtn.context, item.product?.id!!, count - 1, decrementRc)
+                } else {
+                    deleteFromCart(item.id)
+                }
+            }
             binding.deleteBtn.setOnClickListener {
-                val loadingDialog = LoadingDialog(context)
-                loadingDialog.show()
-                CartService(removeFromCartRc, object : Results {
-                    override fun onSuccess(requestCode: Int, data: String) {
-                        loadingDialog.dismiss()
-                        refreshCallBack()
-                    }
-
-                    override fun onFailure(requestCode: Int, data: String) {
-                        loadingDialog.dismiss()
-                        context.showToast(data)
-                    }
-
-                }).removeFromCart(item.id ?: 0)
+                deleteFromCart(item.id)
                 binding.parentView.close(true)
             }
         }
 
-        private fun setSelectCount(item: CartDetail.Item) {
-            /**number of product item select dialog **/
-            val list: ArrayList<Int> = ArrayList()
-            val limit = item.quantity ?: 1
-            for (i in 1..limit)
-                list.add(i)
-            val builder = AlertDialog.Builder(binding.root.context)
-            val adapter = ArrayAdapter(binding.root.context, R.layout.support_simple_spinner_dropdown_item, list)
-            builder.setAdapter(adapter) { _, which ->
-                totalItemSelect = list[which]
-                cartID = PreferenceManager.getDefaultSharedPreferences(binding.totalItemPrice.context).getLong(Constants.cartID, 0)
-                val loadingDialog = LoadingDialog(context)
-                loadingDialog.show()
-                CartService(addToCartRc, object : Results {
-                    override fun onSuccess(requestCode: Int, data: String) {
-                        loadingDialog.dismiss()
-                        val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
-                        PreferenceManager.getDefaultSharedPreferences(context).edit()
-                            .putLong(
-                                Constants.cartID,
-                                cartDetail.id!!
-                            ).apply()
-                        refreshCallBack()
-                    }
+        private fun updateCart(context: Context, itemId: Long, quantity: Int, requestCode: Int) {
+            val loadingDialog = LoadingDialog(context)
+            loadingDialog.show()
+            cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
+            CartService(requestCode, object : Results {
+                override fun onSuccess(requestCode: Int, data: String) {
+                    val count = binding.itemCountTv.text.toString().toInt()
+                    if (requestCode == incrementRc)
+                        binding.itemCountTv.text = (count + 1).toString()
+                    else
+                        binding.itemCountTv.text = (count - 1).toString()
+                    loadingDialog.dismiss()
+                    val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                    PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                    EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                }
 
-                    override fun onFailure(requestCode: Int, data: String) {
-                        loadingDialog.dismiss()
-                        context.showToast(data)
-                    }
+                override fun onFailure(requestCode: Int, data: String) {
+                    loadingDialog.dismiss()
+                    val dialog = DialogCustom(context, R.drawable.ic_cart, data)
+                    dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+                    dialog.showDialog()
+                }
+            }).addToCart(itemId, quantity, cartID)
+        }
 
-                }).addToCart(item.product?.id!!, totalItemSelect, cartID)
-            }
-            val dialog = builder.create()
-            dialog.setCustomTitle(binding.root.context.customTextView("Select Item"))
-            dialog.show()
+        private fun deleteFromCart(itemId: Long?) {
+            val loadingDialog = LoadingDialog(context)
+            loadingDialog.show()
+            CartService(removeFromCartRc, object : Results {
+                override fun onSuccess(requestCode: Int, data: String) {
+                    loadingDialog.dismiss()
+                    refreshCallBack()
+                    val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                    EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                }
+
+                override fun onFailure(requestCode: Int, data: String) {
+                    loadingDialog.dismiss()
+                    context.showToast(data)
+                }
+
+            }).removeFromCart(itemId ?: 0)
         }
     }
 }
-

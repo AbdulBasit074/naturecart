@@ -100,7 +100,6 @@ class CollectionListingFragment(private val categoryName: String, private val co
 
     }
 
-
     override fun onFailure(requestCode: Int, data: String) {
         showToast(data)
     }

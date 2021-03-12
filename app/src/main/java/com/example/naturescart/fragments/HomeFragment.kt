@@ -1,5 +1,8 @@
 package com.example.naturescart.fragments
 
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -28,6 +31,9 @@ import com.example.naturescart.services.data.DataService
 import com.example.naturescart.ui.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class HomeFragment : Fragment(), Results {
 
@@ -68,7 +74,7 @@ class HomeFragment : Fragment(), Results {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadingView = LoadingDialog(requireContext())
-        setViews()
+        setAllAdapters()
         setDummyData()
         setListeners()
         Handler(Looper.getMainLooper()).postDelayed({ getData() }, 500)
@@ -102,13 +108,9 @@ class HomeFragment : Fragment(), Results {
                 moveFromFragment(requireActivity(), UserDetailActivity::class.java)
         }
         homeBinding.searchEt.setOnClickListener {
-            moveFromFragment(requireActivity(), SearchActivity::class.java)
+            activity?.startActivityForResult(Intent(requireContext(), SearchActivity::class.java), Constants.searchActivityRc)
         }
 
-    }
-
-    private fun setViews() {
-        setAllAdapters()
     }
 
     private fun setAllAdapters() {
@@ -139,11 +141,11 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun seeAll(categoryId: Long, categoryName: String) {
-        moveFromFragment(CategoryDetailActivity.newInstance(requireActivity(), categoryId, categoryName))
+        activity?.startActivityForResult(CategoryDetailActivity.newInstance(requireActivity(), categoryId, categoryName), Constants.categoryDetailsActivityRc)
     }
 
     private fun onCollectionClicked(collection: CollectionModel) {
-        moveFromFragment(CollectionDetailActivity.newInstance(requireActivity(), collection.id, collection.name))
+        activity?.startActivityForResult(CollectionDetailActivity.newInstance(requireActivity(), collection.id, collection.name), Constants.collectionDetailsActivityRc)
     }
 
     private fun setDummyData() {
@@ -184,11 +186,13 @@ class HomeFragment : Fragment(), Results {
                 homeBinding.collectionRv.adapter?.notifyDataSetChanged()
             }
             categoriesRequest -> {
+                categoriesData.clear()
                 categoriesData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<Category>>() {}.type))
                 showData()
                 Persister.with(requireContext()).persist(categoriesDataPersistenceKey, data)
             }
             categoriesProductRequest -> {
+                categoryProductData.clear()
                 categoryProductData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<CategoryProducts>>() {}.type))
                 showData()
                 Persister.with(requireContext()).persist(categoryProductsDataPersistenceKey, data)
@@ -241,10 +245,21 @@ class HomeFragment : Fragment(), Results {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        EventBus.getDefault().register(this)
+    }
+
     override fun onDetach() {
         if (runnable != null)
             handler.removeCallbacks(runnable!!)
+        EventBus.getDefault().unregister(this)
         super.onDetach()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCartUpdated(event: CartUpdateEvent) {
+//        getData()
     }
 
     override fun onDestroy() {

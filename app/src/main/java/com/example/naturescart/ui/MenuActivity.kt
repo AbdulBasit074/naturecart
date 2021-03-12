@@ -1,13 +1,20 @@
 package com.example.naturescart.ui
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.example.naturescart.BuildConfig
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityMenuBinding
 import com.example.naturescart.helper.*
@@ -45,6 +52,20 @@ class MenuActivity : AppCompatActivity(), Results {
     }
 
     private fun setListeners() {
+        binding.contactUsBtn.setOnClickListener {
+            EventBus.getDefault().postSticky(MoveToAboutEvent())
+            finish()
+        }
+        binding.rateUsBtn.setOnClickListener {
+            moveToPlayStore()
+        }
+        binding.langBtn.setOnClickListener {
+            startActivity(Intent(this, LanguageSelectionActivity::class.java))
+        }
+        binding.aboutBtn.setOnClickListener {
+            EventBus.getDefault().postSticky(MoveToAboutEvent())
+            finish()
+        }
         binding.signInBtn.setOnClickListener {
             BottomSheetBehavior.from(binding.signInBottomSheet.parent).state =
                 BottomSheetBehavior.STATE_EXPANDED
@@ -158,8 +179,32 @@ class MenuActivity : AppCompatActivity(), Results {
                 }
             }
         })
+        val textColor = ContextCompat.getColor(this, R.color.saleem_green2)
+        val privacyPolicyText = SpannableString("Terms Of Services and Privacy Policy")
+        privacyPolicyText.setSpan(object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                startActivity(WebViewActivity.newInstance(this@MenuActivity, "Terms Of Services", Constants.termsUrl))
+            }
 
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+                ds.color = textColor
+            }
+        }, 0, 17, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        privacyPolicyText.setSpan(object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                startActivity(WebViewActivity.newInstance(this@MenuActivity, "Privacy Policy", Constants.privacyPolicyUrl))
+            }
 
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+                ds.color = textColor
+            }
+        }, 22, privacyPolicyText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding.registerBottomSheet.termsAndConditionTv.text = privacyPolicyText
+        binding.registerBottomSheet.termsAndConditionTv.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun isRegisterInputOk(): Boolean {
@@ -276,5 +321,21 @@ class MenuActivity : AppCompatActivity(), Results {
     override fun onFailure(requestCode: Int, data: String) {
         loadingView?.dismiss()
         showToast(data)
+    }
+
+    private fun moveToPlayStore() {
+        val uri = Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")
+                )
+            )
+        }
     }
 }

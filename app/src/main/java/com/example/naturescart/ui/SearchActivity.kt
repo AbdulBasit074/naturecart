@@ -15,6 +15,7 @@ import com.example.naturescart.R
 import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.adapters.SearchAdapterRv
 import com.example.naturescart.databinding.ActivitySearchBinding
+import com.example.naturescart.helper.CartItemAddedEvent
 import com.example.naturescart.helper.HorizantalDoubleDivider
 import com.example.naturescart.helper.PaginationListeners
 import com.example.naturescart.helper.showToast
@@ -26,6 +27,11 @@ import com.example.naturescart.services.Results
 import com.example.naturescart.services.data.DataService
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import java.lang.Exception
+import java.lang.StringBuilder
 
 
 class SearchActivity : AppCompatActivity(), Results {
@@ -37,15 +43,12 @@ class SearchActivity : AppCompatActivity(), Results {
     private var searchProductList: ArrayList<Product> = ArrayList()
     private var isLastPage: Boolean = false
     private var isLoading: Boolean = false
-
     private lateinit var paginationListener: PaginationListeners
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapterProduct: ItemAdapterRv
-
-
     private var pageNo: Int = 1
     private var loggedUser: User? = null
-    private var searchList: ArrayList<SearchHistory> = ArrayList<SearchHistory>()
+    private var searchList: ArrayList<SearchHistory> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +59,10 @@ class SearchActivity : AppCompatActivity(), Results {
         }
         setAdapterForProducts()
         setSearchEtListener()
+        binding.itemAddedDialog.setOnClickListener {
+            setResult(RESULT_OK)
+            onBackPressed()
+        }
     }
 
     private fun setAdapterForProducts() {
@@ -211,5 +218,22 @@ class SearchActivity : AppCompatActivity(), Results {
 
     override fun onFailure(requestCode: Int, data: String) {
         showToast(data)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCartUpdated(event: CartItemAddedEvent) {
+        binding.itemsCountTv.text = StringBuilder().append("Total ${if (event.itemCount == 1) "Item" else "Items"}: ").append(event.itemCount)
+        binding.totalTv.text = getString(R.string.aed_price, String.format("%.2f", event.total))
+        binding.itemAddedDialog.visibility = View.VISIBLE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onPause() {
+        EventBus.getDefault().unregister(this)
+        super.onPause()
     }
 }

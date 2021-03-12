@@ -78,6 +78,22 @@ class HomeActivity : AppCompatActivity(), Results {
             startActivity(Intent(this, NoInternetActivity::class.java))
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun moveToAbout(event: MoveToAboutEvent) {
+        binding.bottomNavigation.selectedItemId = R.id.about
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if ((requestCode == Constants.categoryDetailsActivityRc
+                    || requestCode == Constants.collectionDetailsActivityRc
+                    || requestCode == Constants.searchActivityRc)
+            && resultCode == RESULT_OK
+        ) {
+            binding.bottomNavigation.selectedItemId = R.id.cart
+        }
+    }
+
     private fun bottomNavigationFragments() {
         val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener {
             setPreviousUiUpdate()
@@ -142,6 +158,7 @@ class HomeActivity : AppCompatActivity(), Results {
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             cartDetailRc -> {
+                Persister.with(this).persist(Constants.cartPersistenceKey, data)
                 val cartDetail = Gson().fromJson(data, CartDetail::class.java)
                 if (!cartDetail.items.isNullOrEmpty())
                     onCartUpdated(CartUpdateEvent(cartDetail.items?.size ?: 0))

@@ -3,6 +3,9 @@ package com.example.naturescart.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.ViewPager
@@ -10,16 +13,18 @@ import com.bumptech.glide.Glide
 import com.example.naturescart.R
 import com.example.naturescart.adapters.CollectionViewPagerAdapter
 import com.example.naturescart.databinding.ActivityCollectionDetailBinding
-import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.LoadingDialog
-import com.example.naturescart.helper.PaginationListeners
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.CollectionModel
 import com.example.naturescart.model.Product
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.data.DataService
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import java.lang.Exception
+import java.lang.StringBuilder
 
 class CollectionDetailActivity : AppCompatActivity(), ViewPager.OnPageChangeListener, Results {
 
@@ -51,6 +56,10 @@ class CollectionDetailActivity : AppCompatActivity(), ViewPager.OnPageChangeList
     }
 
     private fun setListeners() {
+        binding.itemAddedDialog.setOnClickListener {
+            setResult(RESULT_OK)
+            onBackPressed()
+        }
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
@@ -114,5 +123,22 @@ class CollectionDetailActivity : AppCompatActivity(), ViewPager.OnPageChangeList
     override fun onFailure(requestCode: Int, data: String) {
         loadingView?.dismiss()
         showToast(data)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCartUpdated(event: CartItemAddedEvent) {
+        binding.itemsCountTv.text = StringBuilder().append("Total ${if (event.itemCount == 1) "Item" else "Items"}: ").append(event.itemCount)
+        binding.totalTv.text = getString(R.string.aed_price, String.format("%.2f", event.total))
+        binding.itemAddedDialog.visibility = View.VISIBLE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onPause() {
+        EventBus.getDefault().unregister(this)
+        super.onPause()
     }
 }

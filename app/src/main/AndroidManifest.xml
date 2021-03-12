@@ -85,6 +85,12 @@
         <activity
             android:name=".ui.NoInternetActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ImageViewActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".helper.MyFirebaseMessagingService"

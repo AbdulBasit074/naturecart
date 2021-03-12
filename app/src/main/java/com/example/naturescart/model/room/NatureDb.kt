@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.naturescart.model.CartDetail
 import com.example.naturescart.model.Category
 import com.example.naturescart.model.Product
 import com.example.naturescart.model.User
-
 
 @Database(
     entities = [User::class, Product::class, Category::class],
@@ -17,7 +17,8 @@ import com.example.naturescart.model.User
 abstract class NatureDb : RoomDatabase() {
 
     abstract fun userDao(): UserDao
-    abstract fun favouriteDao():FavouriteDao
+    abstract fun favouriteDao(): FavouriteDao
+
     companion object {
 
         private var databaseName: String = "NatureDb"

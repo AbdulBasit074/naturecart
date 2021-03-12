@@ -30,20 +30,16 @@ class CategoryDetailProductsRvAdapter(
         holder.bindView(items[position])
     }
 
-    inner class ViewHolder(val binding: LiCategoryDetailBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: LiCategoryDetailBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindView(item: CategoryProducts) {
             binding.categoryProduct = item
             binding.productRv.adapter = ItemAdapterRv(context, item.products!!, item.name ?: "")
-            binding.productRv.addItemDecoration(HorizantalDivider())
+            if (binding.productRv.itemDecorationCount == 0)
+                binding.productRv.addItemDecoration(HorizantalDivider())
             binding.seeAll.setOnClickListener {
-                seeAll(item.id?:0, item.name ?: "")
+                seeAll(item.id ?: 0, item.name ?: "")
             }
-
         }
     }
-
-
 }
-

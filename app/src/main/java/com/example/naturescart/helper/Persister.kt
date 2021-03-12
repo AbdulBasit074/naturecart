@@ -3,6 +3,8 @@ package com.example.naturescart.helper
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import com.example.naturescart.model.CartDetail
+import com.google.gson.Gson
 
 class Persister(context: Context) {
 
@@ -49,6 +51,18 @@ class Persister(context: Context) {
 
     fun getPersistedBoolean(key: String): Boolean {
         return prefs.getBoolean(key, false)
+    }
+
+    fun getCartQuantity(productId: Long?): Int {
+        val cartData = prefs.getString(Constants.cartPersistenceKey, null)
+        if (cartData != null) {
+            val cartDetail = Gson().fromJson(cartData, CartDetail::class.java)
+            cartDetail.items?.forEach {
+                if (it.product?.id == productId)
+                    return it.quantity ?: 0
+            }
+        }
+        return 0
     }
 
 }

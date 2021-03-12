@@ -49,9 +49,9 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:backgroundTint="@color/divider"
             android:fontFamily="@font/nunito_regular"
+            android:hint="Full Name"
             android:inputType="textPersonName"
             android:singleLine="true"
-            android:hint="Full Name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fullNameLabel"
             tools:ignore="MissingConstraints" />
@@ -179,14 +179,14 @@
             app:layout_constraintTop_toBottomOf="@id/phoneNo" />
 
         <TextView
+            android:id="@+id/termsAndConditionTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:fontFamily="@font/nunito_regular"
             android:singleLine="true"
-            android:text="Terms Of Service and Privacy Policy"
-            android:textColor="@color/saleem_green2"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/_11ssp"
             app:layout_constraintTop_toBottomOf="@id/privacyLabel1" />
 

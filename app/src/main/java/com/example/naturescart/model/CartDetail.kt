@@ -2,6 +2,9 @@ package com.example.naturescart.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -34,29 +37,14 @@ class CartDetail(
         parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.createTypedArrayList(Item),
         parcel.readParcelable(Item.Summary::class.java.classLoader)
-    ) {
-    }
+    )
 
     class Item(
-        @SerializedName("id")
-        @Expose
-        var id: Long? = null,
-
-        @SerializedName("cart_id")
-        @Expose
-        var cartId: Int? = null,
-
-        @SerializedName("quantity")
-        @Expose
-        var quantity: Int? = null,
-
-        @SerializedName("price")
-        @Expose
-        var price: Float? = null,
-
-        @SerializedName("product")
-        @Expose
-        var product: Product? = null
+        @SerializedName("id") var id: Long? = null,
+        @SerializedName("cart_id") var cartId: Int? = null,
+        @SerializedName("quantity") var quantity: Int? = null,
+        @SerializedName("price") var price: Float? = null,
+        @SerializedName("product") var product: Product? = null
     ) : Parcelable {
         constructor(parcel: Parcel) : this(
             parcel.readValue(Long::class.java.classLoader) as? Long,

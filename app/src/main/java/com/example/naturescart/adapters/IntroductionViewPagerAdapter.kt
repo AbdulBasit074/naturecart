@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
 import com.example.naturescart.databinding.LiViewPagerBinding
+import com.example.naturescart.helper.ImagesCache
 import com.example.naturescart.model.OnBoarding
 
 class IntroductionViewPagerAdapter(private val onBoard: ArrayList<OnBoarding>) :
@@ -33,8 +34,7 @@ class IntroductionViewPagerAdapter(private val onBoard: ArrayList<OnBoarding>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindViews(board: OnBoarding) {
-            Glide.with(binding.root.context).load(board.image)
-                .into(binding.iconIntroduction)
+            Glide.with(binding.root.context).load(ImagesCache().getImage(board.image) ?: board.image).into(binding.iconIntroduction)
             binding.titleIntroduction.text = board.name
             binding.detailIntroduction.text = board.description
         }

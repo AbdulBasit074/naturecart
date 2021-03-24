@@ -28,9 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="1a804d" />
-                            <entry key="outputName" value="ic_decrement_cart" />
-                            <entry key="sourceFile" value="C:\Users\Awais\Downloads\ic_no_search_results.svg" />
+                            <entry key="outputName" value="ic_back" />
+                            <entry key="sourceFile" value="C:\Users\Awais\Downloads\bx-left-arrow-alt.svg" />
                           </map>
                         </option>
                       </PersistentState>

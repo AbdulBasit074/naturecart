@@ -3,6 +3,8 @@ package com.example.naturescart.adapters
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,15 +93,23 @@ class CartItemRvAdapter(
             cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
             CartService(requestCode, object : Results {
                 override fun onSuccess(requestCode: Int, data: String) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+
                     val count = binding.itemCountTv.text.toString().toInt()
                     if (requestCode == incrementRc)
                         binding.itemCountTv.text = (count + 1).toString()
                     else
                         binding.itemCountTv.text = (count - 1).toString()
+
+
+
                     loadingDialog.dismiss()
                     val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
                     PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
                     EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+
+                    }, 1000)
+
                 }
 
                 override fun onFailure(requestCode: Int, data: String) {

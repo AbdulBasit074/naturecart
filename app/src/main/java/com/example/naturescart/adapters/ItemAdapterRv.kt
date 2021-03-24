@@ -3,6 +3,8 @@ package com.example.naturescart.adapters
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +33,9 @@ import org.greenrobot.eventbus.EventBus
 class ItemAdapterRv(
     private val context: Activity,
     private val items: ArrayList<Product>,
-    private val parentCategoryName: String
+    private val parentCategoryName: String,
+    private val onItemClick: (Product) -> Unit
+
 ) : RecyclerView.Adapter<ItemAdapterRv.ViewHolder>() {
 
     private var isLoaderVisible = false
@@ -80,6 +84,9 @@ class ItemAdapterRv(
 
         fun bindView(item: Product) {
             if (binding is LiItemBinding) {
+                binding.itemContainer.setOnClickListener {
+                    onItemClick(item)
+                }
                 binding.product = item
                 binding.itemCountTv.text = Persister.with(context).getCartQuantity(item.id).toString()
                 binding.descriptionTv.visibility = if (item.description.isNullOrEmpty()) View.GONE else View.VISIBLE
@@ -169,11 +176,14 @@ class ItemAdapterRv(
             cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
             CartService(addToCartRequest, object : Results {
                 override fun onSuccess(requestCode: Int, data: String) {
-                    loadingDialog.dismiss()
-                    val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
-                    PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
-                    EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
-                    EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        loadingDialog.dismiss()
+                        val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                        EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                        EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
+                    }, 1000)
+
                 }
 
                 override fun onFailure(requestCode: Int, data: String) {
@@ -184,6 +194,7 @@ class ItemAdapterRv(
                 }
             }).addToCart(itemId, quantity, cartID)
         }
+
     }
 }
 

@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.naturescart.R
@@ -52,7 +53,10 @@ class HomeFragment : Fragment(), Results {
     private lateinit var paginationListener: PaginationListeners
     private var pageNo: Int = 1
     private lateinit var adapterCollection: CollectionAdapterRv
+    private lateinit var layoutManagerNewArrival: GridLayoutManager
+
     private var loadingView: LoadingDialog? = null
+    private lateinit var adapterNewArrivalProducts: ItemAdapterFNRv
     private var animationShown = false
     private val collectionsDataPersistenceKey = "collectionsDataPersistenceKey"
     private val categoriesDataPersistenceKey = "categoriesDataPersistenceKey"
@@ -119,7 +123,7 @@ class HomeFragment : Fragment(), Results {
                 moveFromFragment(requireActivity(), UserDetailActivity::class.java)
         }
         homeBinding.searchEt.setOnClickListener {
-            activity?.startActivityForResult(Intent(requireContext(), SearchActivity::class.java), Constants.searchActivityRc)
+            EventBus.getDefault().postSticky(MoveFragmentEvent(SearchFragment()))
         }
     }
 
@@ -138,10 +142,17 @@ class HomeFragment : Fragment(), Results {
         homeBinding.categoryRv.adapter = CategoryAdapterRv(categoriesData) { categoryId, categoryName -> seeAll(categoryId, categoryName) }
         homeBinding.categoryRv.addItemDecoration(HorizantalDivider())
 
-        homeBinding.frequentlyPurchasedRv.adapter = ItemAdapterFNRv(requireActivity(), frequentlyPurchasedProducts)
-        homeBinding.newArrivalRv.adapter = ItemAdapterFNRv(requireActivity(), newArrivalProducts)
+        homeBinding.frequentlyPurchasedRv.adapter = ItemAdapterFNRv(requireActivity(), frequentlyPurchasedProducts) { item -> onProductDetail(item) }
         homeBinding.frequentlyPurchasedRv.addItemDecoration(HorizantalDivider())
-        homeBinding.newArrivalRv.addItemDecoration(HorizantalDivider())
+        adapterNewArrivalProducts = ItemAdapterFNRv(requireActivity(), newArrivalProducts) { item -> onProductDetail(item) }
+        layoutManagerNewArrival = GridLayoutManager(requireContext(), 2)
+        homeBinding.newArrivalRv.layoutManager = layoutManagerNewArrival
+        homeBinding.newArrivalRv.adapter = adapterNewArrivalProducts
+        homeBinding.newArrivalRv.addItemDecoration(HorizantalDoubleDivider())
+    }
+
+    private fun onProductDetail(item: Product) {
+        EventBus.getDefault().postSticky(MoveFragmentEvent(ProductDetailsFragment(item)))
     }
 
     private fun setTopSliderAnimator() {
@@ -150,7 +161,6 @@ class HomeFragment : Fragment(), Results {
             homeBinding.topSliderVp.setCurrentItem((homeBinding.topSliderVp.currentItem + 1) % (homeBinding.topSliderVp.adapter?.itemCount ?: 0), true)
         }
         handler.postDelayed({ runnable }, 3000)
-
     }
 
     private fun seeAll(categoryId: Long, categoryName: String) {
@@ -181,10 +191,10 @@ class HomeFragment : Fragment(), Results {
             homeBinding.frequentlyPurchasedRv.visibility = View.GONE
             homeBinding.frequentlyPurchasedLabel.visibility = View.INVISIBLE
         }
-
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
+
         when (requestCode) {
             collectionRequest -> {
                 isLoading = false
@@ -270,23 +280,27 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun showDataLoggedUser() {
-        loadingView?.dismiss()
-        //show collections data
-        homeBinding.collectionRv.adapter?.notifyDataSetChanged()
-        if (!animationShown) {
-            homeBinding.collectionRv.scheduleLayoutAnimation()
-            homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
-            homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
-            homeBinding.topSliderVp.alpha = 1f
-            homeBinding.topSliderIndicator.alpha = 1f
-        }
-        //show categories data
-        homeBinding.categoryRv.adapter?.notifyDataSetChanged()
-        if (!animationShown)
-            homeBinding.categoryRv.scheduleLayoutAnimation()
-        //show category products data
-        homeBinding.newArrivalRv.adapter?.notifyDataSetChanged()
-        animationShown = true
+        Handler(Looper.getMainLooper()).postDelayed({
+            loadingView?.dismiss()
+            //show collections data
+            homeBinding.collectionRv.adapter?.notifyDataSetChanged()
+            if (!animationShown) {
+                homeBinding.collectionRv.scheduleLayoutAnimation()
+                homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+                homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+                homeBinding.topSliderVp.alpha = 1f
+                homeBinding.topSliderIndicator.alpha = 1f
+            }
+            //show categories data
+            homeBinding.categoryRv.adapter?.notifyDataSetChanged()
+            if (!animationShown)
+                homeBinding.categoryRv.scheduleLayoutAnimation()
+            //show category products data
+            homeBinding.newArrivalRv.adapter?.notifyDataSetChanged()
+            animationShown = true
+        }, 1000)
+
+
     }
 
     override fun onAttach(context: Context) {
@@ -300,7 +314,6 @@ class HomeFragment : Fragment(), Results {
         EventBus.getDefault().unregister(this)
         super.onDetach()
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCartUpdated(event: CartUpdateEvent) {

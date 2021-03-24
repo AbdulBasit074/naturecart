@@ -10,15 +10,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.naturescart.R
 import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.databinding.FragmentCategoryListingBinding
-import com.example.naturescart.helper.HorizantalDivider
-import com.example.naturescart.helper.HorizantalDoubleDivider
-import com.example.naturescart.helper.PaginationListeners
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.CategoryDetail
 import com.example.naturescart.model.Product
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.category.CategoryService
 import com.google.gson.Gson
+import org.greenrobot.eventbus.EventBus
 
 class CategoryListingFragment(private val position: Int, private val categoryID: Long, private val categoryName: String) : Fragment(), Results {
 
@@ -62,11 +60,13 @@ class CategoryListingFragment(private val position: Int, private val categoryID:
         }
         layoutManager = GridLayoutManager(activity, 2)
         binding.productRvDetail.layoutManager = layoutManager
-        adapterProduct = ItemAdapterRv(requireActivity(), productList, categoryName)
+        adapterProduct = ItemAdapterRv(requireActivity(), productList, categoryName) { item -> onProductDetail(item) }
         binding.productRvDetail.addItemDecoration(HorizantalDoubleDivider())
         binding.productRvDetail.adapter = adapterProduct
     }
-
+    private fun onProductDetail(item: Product) {
+        EventBus.getDefault().postSticky(MoveFragmentEvent(ProductDetailsFragment(item)))
+    }
     override fun onSuccess(requestCode: Int, data: String) {
 
         when (requestCode) {

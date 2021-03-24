@@ -16,6 +16,7 @@
         android:layout_height="@dimen/_190sdp"
         app:cardCornerRadius="@dimen/_15sdp"
         app:cardElevation="0dp"
+        android:id="@+id/itemContainer"
         tools:ignore="HardcodedText">
 
         <androidx.constraintlayout.widget.ConstraintLayout

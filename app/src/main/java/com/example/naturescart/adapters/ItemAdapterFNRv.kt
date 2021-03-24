@@ -31,6 +31,7 @@ import org.greenrobot.eventbus.EventBus
 class ItemAdapterFNRv(
     private val context: Activity,
     private val items: ArrayList<Product>,
+    private val onItemClick:(Product)->Unit
 ) : RecyclerView.Adapter<ItemAdapterFNRv.ViewHolder>() {
 
     private var isLoaderVisible = false
@@ -79,6 +80,11 @@ class ItemAdapterFNRv(
 
         fun bindView(item: Product) {
             if (binding is LiItemBinding) {
+
+                binding.itemContainer.setOnClickListener {
+                    onItemClick(item)
+                }
+
                 binding.product = item
                 binding.itemCountTv.text = Persister.with(context).getCartQuantity(item.id).toString()
                 binding.descriptionTv.visibility = if (item.description.isNullOrEmpty()) View.GONE else View.VISIBLE

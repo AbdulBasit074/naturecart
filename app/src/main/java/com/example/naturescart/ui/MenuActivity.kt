@@ -5,6 +5,8 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -255,43 +257,48 @@ class MenuActivity : AppCompatActivity(), Results {
 
 
     override fun onSuccess(requestCode: Int, data: String) {
-        loadingView?.dismiss()
 
-        when (requestCode) {
-            registerUserRequest -> {
-                AuthService(loginUserRequest, this).userLogin(
-                    binding.registerBottomSheet.emailEtRegister.text.toString(),
-                    binding.registerBottomSheet.passwordEtRegister.text.toString(),
-                    Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey, "").toString()
-                )
-            }
-            loginUserRequest -> {
-                saveUserDetail(data)
-            }
-            forgotPasswordRq -> {
-                showToast(data)
-                BottomSheetBehavior.from(binding.otpVerifyBS.parent).state = BottomSheetBehavior.STATE_EXPANDED
-                binding.otpVerifyBS.digit1Et.requestFocus()
-                showKeyboard()
+        Handler(Looper.getMainLooper()).postDelayed({
 
-            }
-            otpPasswordRq -> {
-                BottomSheetBehavior.from(binding.otpVerifyBS.parent).state =
-                    BottomSheetBehavior.STATE_COLLAPSED
-                BottomSheetBehavior.from(binding.forgotPasswordEmailBS.parent).state =
-                    BottomSheetBehavior.STATE_COLLAPSED
-                binding.otpVerifyBS.digit1Et.text.clear()
-                binding.otpVerifyBS.digit2Et.text.clear()
-                binding.otpVerifyBS.digit3Et.text.clear()
-                binding.otpVerifyBS.digit4Et.text.clear()
-                hideKeyboard()
-                DialogCustomForgotPasswordChange(this, binding.forgotPasswordEmailBS.emailInput.text.toString()) { data ->
-                    onPasswordChange(
-                        data
+            loadingView?.dismiss()
+
+            when (requestCode) {
+                registerUserRequest -> {
+                    AuthService(loginUserRequest, this).userLogin(
+                        binding.registerBottomSheet.emailEtRegister.text.toString(),
+                        binding.registerBottomSheet.passwordEtRegister.text.toString(),
+                        Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey, "").toString()
                     )
-                }.show()
+                }
+                loginUserRequest -> {
+                    saveUserDetail(data)
+                }
+                forgotPasswordRq -> {
+                    showToast(data)
+                    BottomSheetBehavior.from(binding.otpVerifyBS.parent).state = BottomSheetBehavior.STATE_EXPANDED
+                    binding.otpVerifyBS.digit1Et.requestFocus()
+                    showKeyboard()
+
+                }
+                otpPasswordRq -> {
+                    BottomSheetBehavior.from(binding.otpVerifyBS.parent).state =
+                        BottomSheetBehavior.STATE_COLLAPSED
+                    BottomSheetBehavior.from(binding.forgotPasswordEmailBS.parent).state =
+                        BottomSheetBehavior.STATE_COLLAPSED
+                    binding.otpVerifyBS.digit1Et.text.clear()
+                    binding.otpVerifyBS.digit2Et.text.clear()
+                    binding.otpVerifyBS.digit3Et.text.clear()
+                    binding.otpVerifyBS.digit4Et.text.clear()
+                    hideKeyboard()
+                    DialogCustomForgotPasswordChange(this, binding.forgotPasswordEmailBS.emailInput.text.toString()) { data ->
+                        onPasswordChange(
+                            data
+                        )
+                    }.show()
+                }
             }
-        }
+        }, 1000)
+
     }
 
     private fun onPasswordChange(data: String) {

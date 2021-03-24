@@ -11,6 +11,7 @@ import com.example.naturescart.R
 import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.databinding.FragmentCollectionListingBinding
 import com.example.naturescart.helper.HorizantalDoubleDivider
+import com.example.naturescart.helper.MoveFragmentEvent
 import com.example.naturescart.helper.PaginationListeners
 import com.example.naturescart.helper.showToast
 import com.example.naturescart.model.CollectionModel
@@ -18,6 +19,7 @@ import com.example.naturescart.model.Product
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.data.DataService
 import com.google.gson.Gson
+import org.greenrobot.eventbus.EventBus
 
 class CollectionListingFragment(private val categoryName: String, private val collectionId: Long, private val collectionName: String) : Fragment(), Results {
 
@@ -42,9 +44,13 @@ class CollectionListingFragment(private val categoryName: String, private val co
         DataService(categoryWithRequest, this).getCollectionProducts(collectionId, pageNo, PaginationListeners.pageSize)
         layoutManager = GridLayoutManager(activity, 2)
         binding.productRvDetail.layoutManager = layoutManager
-        adapterProduct = ItemAdapterRv(requireActivity(), productList, collectionName)
+        adapterProduct = ItemAdapterRv(requireActivity(), productList, collectionName) { item -> onProductDetail(item) }
         binding.productRvDetail.addItemDecoration(HorizantalDoubleDivider())
         binding.productRvDetail.adapter = adapterProduct
+    }
+
+    private fun onProductDetail(item: Product) {
+        EventBus.getDefault().postSticky(MoveFragmentEvent(ProductDetailsFragment(item)))
     }
 
     override fun onSuccess(requestCode: Int, data: String) {

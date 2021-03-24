@@ -4,6 +4,8 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -130,35 +132,41 @@ class OrderFragment : Fragment(), Results {
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
-        when (requestCode) {
-            ordersRequest -> {
-                loadingView?.dismiss()
-                orderList.clear()
-                isLoading = false
-                orderList.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<OrderDetail>>() {}.type))
-                adapter.stopLoading()
+        Handler(Looper.getMainLooper()).postDelayed({
 
-                if (orderList.size < PaginationListeners.pageSize)
-                    isLastPage = true
-                initPageListener()
-                orderBinding.orderRv.addOnScrollListener(paginationListeners)
-                orderBinding.orderRv.adapter?.notifyDataSetChanged()
-                orderBinding.noOrdersContainer.visibility = if (orderList.isNullOrEmpty()) View.VISIBLE else View.GONE
-                Persister.with(requireContext()).persist(ordersDataPersistenceKey, data)
+
+            when (requestCode) {
+                ordersRequest -> {
+
+                    loadingView?.dismiss()
+                    orderList.clear()
+                    isLoading = false
+                    orderList.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<OrderDetail>>() {}.type))
+                    adapter.stopLoading()
+
+                    if (orderList.size < PaginationListeners.pageSize)
+                        isLastPage = true
+                    initPageListener()
+                    orderBinding.orderRv.addOnScrollListener(paginationListeners)
+                    orderBinding.orderRv.adapter?.notifyDataSetChanged()
+                    orderBinding.noOrdersContainer.visibility = if (orderList.isNullOrEmpty()) View.VISIBLE else View.GONE
+                    Persister.with(requireContext()).persist(ordersDataPersistenceKey, data)
+                }
+                loadMoreRequest -> {
+                    adapter.stopLoading()
+                    isLoading = false
+                    val listNewOrder = Gson().fromJson(
+                        data,
+                        object : TypeToken<ArrayList<OrderDetail>>() {}.type
+                    ) as ArrayList<OrderDetail>
+                    orderList.addAll(listNewOrder)
+                    if (listNewOrder.size < PaginationListeners.pageSize)
+                        isLastPage = true
+                    orderBinding.orderRv.adapter?.notifyDataSetChanged()
+                }
             }
-            loadMoreRequest -> {
-                adapter.stopLoading()
-                isLoading = false
-                val listNewOrder = Gson().fromJson(
-                    data,
-                    object : TypeToken<ArrayList<OrderDetail>>() {}.type
-                ) as ArrayList<OrderDetail>
-                orderList.addAll(listNewOrder)
-                if (listNewOrder.size < PaginationListeners.pageSize)
-                    isLastPage = true
-                orderBinding.orderRv.adapter?.notifyDataSetChanged()
-            }
-        }
+        }, 1000)
+
     }
 
     override fun onFailure(requestCode: Int, data: String) {

@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
@@ -19,5 +21,4 @@ class LoadingDialog(context: Context) : Dialog(context) {
         this.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
         setContentView(binding.root)
     }
-
 }

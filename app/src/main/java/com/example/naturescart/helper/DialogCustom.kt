@@ -35,6 +35,7 @@ class DialogCustom(context: Context, private val iconId: Int, private val title:
         Handler(Looper.getMainLooper()).postDelayed({
             dismiss()
         }, 800)
+
     }
 
 }

@@ -7,6 +7,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -97,23 +99,25 @@ class UserDetailActivity : AppCompatActivity(), Results {
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
-        loadingView.dismiss()
-        when (requestCode) {
-            logoutRequest -> {
-                NatureDb.getInstance(this).userDao().logOut()
-                EventBus.getDefault().postSticky(LogoutEvent())
-                finish()
+        Handler(Looper.getMainLooper()).postDelayed({
+            loadingView.dismiss()
+            when (requestCode) {
+                logoutRequest -> {
+                    NatureDb.getInstance(this).userDao().logOut()
+                    EventBus.getDefault().postSticky(LogoutEvent())
+                    finish()
+                }
+                uploadAvatar -> {
+                    DialogCustom(this, R.drawable.ic_thumb, "Image Uploaded Successfully").showDialog()
+                    val user = Gson().fromJson(data, User::class.java)
+                    user.accessToken = loggedUser!!.accessToken
+                    NatureDb.getInstance(this).userDao().logOut()
+                    NatureDb.getInstance(this).userDao().login(user)
+                    loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
+                    Glide.with(this).load(loggedUser?.avatar).into(binding.profileBtn)
+                }
             }
-            uploadAvatar -> {
-                DialogCustom(this, R.drawable.ic_thumb, "Image Uploaded Successfully").showDialog()
-                val user = Gson().fromJson(data, User::class.java)
-                user.accessToken = loggedUser!!.accessToken
-                NatureDb.getInstance(this).userDao().logOut()
-                NatureDb.getInstance(this).userDao().login(user)
-                loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
-                Glide.with(this).load(loggedUser?.avatar).into(binding.profileBtn)
-            }
-        }
+        }, 1000)
     }
 
     override fun onFailure(requestCode: Int, data: String) {

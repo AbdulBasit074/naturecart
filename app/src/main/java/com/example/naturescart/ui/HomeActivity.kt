@@ -9,9 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.preference.PreferenceManager
+import androidx.transition.TransitionInflater
 import com.example.naturescart.R
 import com.example.naturescart.adapters.HomeFragmentsVpAdapter
 import com.example.naturescart.databinding.ActivityHomeBinding
+import com.example.naturescart.databinding.LiItemBinding
 import com.example.naturescart.helper.*
 import com.example.naturescart.model.CartDetail
 import com.example.naturescart.model.CollectionModel
@@ -22,6 +24,7 @@ import com.example.naturescart.services.auth.AuthService
 import com.example.naturescart.services.cart.CartService
 import com.example.naturescart.services.product.ProductService
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.greenrobot.eventbus.EventBus
@@ -92,7 +95,6 @@ class HomeActivity : AppCompatActivity(), Results {
         loadFragment(event.fragment)
         binding.homeFragmentsVp.visibility = View.GONE
         binding.homePageFragment.visibility = View.VISIBLE
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -218,18 +220,15 @@ class HomeActivity : AppCompatActivity(), Results {
             else -> finish()
         }
     }
-
     override fun onDestroy() {
         EventBus.getDefault().unregister(this)
         super.onDestroy()
     }
-
     private fun loadFragment(fragment: Fragment) {
         val fragmentTransition = supportFragmentManager.beginTransaction()
-        fragmentTransition.replace(binding.homePageFragment.id, fragment)
+//        fragmentTransition.replace(binding.homePageFragment.id, fragment)
+        fragmentTransition.add(binding.homePageFragment.id, fragment)
         fragmentTransition.addToBackStack(null)
         fragmentTransition.commit()
     }
-
-
 }

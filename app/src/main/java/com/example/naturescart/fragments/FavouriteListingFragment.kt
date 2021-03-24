@@ -14,6 +14,7 @@ import com.example.naturescart.databinding.FragmentCategoryListingBinding
 import com.example.naturescart.helper.FavoritesUpdatedEvent
 import com.example.naturescart.helper.HorizantalDoubleDivider
 import com.example.naturescart.helper.LogInEvent
+import com.example.naturescart.helper.MoveFragmentEvent
 import com.example.naturescart.model.CollectionModel
 import com.example.naturescart.model.Product
 import com.example.naturescart.model.room.NatureDb
@@ -50,7 +51,11 @@ class FavouriteListingFragment(private val categoryID: Long, private val categor
         binding.productRvDetail.layoutManager = GridLayoutManager(activity, 2)
         if (binding.productRvDetail.itemDecorationCount == 0)
             binding.productRvDetail.addItemDecoration(HorizantalDoubleDivider())
-        binding.productRvDetail.adapter = ItemAdapterRv(requireActivity(), allProductList, categoryName)
+        binding.productRvDetail.adapter = ItemAdapterRv(requireActivity(), allProductList, categoryName) { item -> onProductDetail(item) }
+    }
+
+    private fun onProductDetail(item: Product) {
+        EventBus.getDefault().postSticky(MoveFragmentEvent(ProductDetailsFragment(item)))
     }
 
     override fun onSuccess(requestCode: Int, data: String) {

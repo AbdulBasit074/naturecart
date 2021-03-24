@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.webkit.ValueCallback
 import android.webkit.WebView
@@ -15,6 +14,9 @@ import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityPaymentWebViewBinding
 import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.LoadingDialog
+import java.text.DateFormat
+import java.util.*
+
 
 class PaymentWebView : AppCompatActivity() {
 
@@ -45,8 +47,9 @@ class PaymentWebView : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun setWebView() {
         val loadingView = LoadingDialog(this)
+        val currentDateTimeString: String = DateFormat.getDateInstance().format(Date())
         loadingView.show()
-        binding.webView.loadUrl(Constants.paymentMethodUrl + "$cartID" + "/$userID" + "/$addressID/")
+        binding.webView.loadUrl(Constants.paymentMethodUrl + "$cartID" + "/$userID" + "/$addressID/"+"$currentDateTimeString/")
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {

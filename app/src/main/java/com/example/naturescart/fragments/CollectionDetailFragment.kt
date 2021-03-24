@@ -128,7 +128,7 @@ class CollectionDetailFragment(private val id: Long? = 0, private val name: Stri
     fun onCartUpdated(event: CartItemAddedEvent) {
         binding.itemsCountTv.text = StringBuilder().append("Total ${if (event.itemCount == 1) "Item" else "Items"}: ").append(event.itemCount)
         binding.totalTv.text = getString(R.string.aed_price, String.format("%.2f", event.total))
-        binding.itemAddedDialog.visibility = View.VISIBLE
+
     }
     override fun onResume() {
         super.onResume()

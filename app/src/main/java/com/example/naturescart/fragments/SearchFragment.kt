@@ -1,21 +1,23 @@
-package com.example.naturescart.ui
+package com.example.naturescart.fragments
 
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView.OnEditorActionListener
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.naturescart.R
 import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.adapters.SearchAdapterRv
 import com.example.naturescart.databinding.ActivitySearchBinding
-import com.example.naturescart.fragments.ProductDetailsFragment
 import com.example.naturescart.helper.*
 import com.example.naturescart.model.Product
 import com.example.naturescart.model.SearchHistory
@@ -28,11 +30,9 @@ import com.google.gson.reflect.TypeToken
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.lang.Exception
 import java.lang.StringBuilder
 
-
-class SearchActivity : AppCompatActivity(), Results {
+class SearchFragment : Fragment(), Results {
 
     private lateinit var binding: ActivitySearchBinding
     private val searchHistoryRequest: Int = 2203
@@ -48,28 +48,31 @@ class SearchActivity : AppCompatActivity(), Results {
     private var loggedUser: User? = null
     private var searchList: ArrayList<SearchHistory> = ArrayList()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
-        loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.activity_search, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loggedUser = NatureDb.getInstance(requireContext()).userDao().getLoggedUser()
         if (loggedUser != null) {
             DataService(searchHistoryRequest, this).getUserHistory(loggedUser!!.accessToken)
         }
         setAdapterForProducts()
         setSearchEtListener()
         binding.itemAddedDialog.setOnClickListener {
-            setResult(RESULT_OK)
-            onBackPressed()
+            EventBus.getDefault().postSticky(ClickCartItemEvent())
         }
     }
 
     private fun setAdapterForProducts() {
-        adapterProduct = ItemAdapterRv(this, searchProductList, "") { item -> onProductDetail(item) }
-        layoutManager = GridLayoutManager(this, 2)
+        adapterProduct = ItemAdapterRv(requireActivity(), searchProductList, "") { item -> onProductDetail(item) }
+        layoutManager = GridLayoutManager(requireActivity(), 2)
         binding.searchResultRv.layoutManager = layoutManager
         binding.searchResultRv.adapter = adapterProduct
         binding.searchResultRv.addItemDecoration(HorizantalDoubleDivider())
-
     }
 
     private fun onProductDetail(item: Product) {
@@ -84,7 +87,7 @@ class SearchActivity : AppCompatActivity(), Results {
             performSearch()
             binding.searchHistoryRv.visibility = View.GONE
         }
-        binding.searchEt.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+        binding.searchEt.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchProductList.clear()
                 performSearch()
@@ -115,7 +118,7 @@ class SearchActivity : AppCompatActivity(), Results {
             }
         })
         binding.backBtn.setOnClickListener {
-            onBackPressed()
+            requireActivity().onBackPressed()
         }
     }
 
@@ -192,13 +195,13 @@ class SearchActivity : AppCompatActivity(), Results {
                 pageNo++
                 if (loggedUser != null) {
                     val authToken = loggedUser!!.accessToken
-                    DataService(searchRequest, this@SearchActivity).getSearchResult(
+                    DataService(searchRequest, this@SearchFragment).getSearchResult(
                         "Bearer $authToken",
                         binding.searchEt.text.toString(),
                         pageSize, pageNo
                     )
                 } else {
-                    DataService(loadMoreRequest, this@SearchActivity).getSearchResult(
+                    DataService(loadMoreRequest, this@SearchFragment).getSearchResult(
                         null,
                         binding.searchEt.text.toString(),
                         pageSize, pageNo
@@ -227,7 +230,6 @@ class SearchActivity : AppCompatActivity(), Results {
     fun onCartUpdated(event: CartItemAddedEvent) {
         binding.itemsCountTv.text = StringBuilder().append("Total ${if (event.itemCount == 1) "Item" else "Items"}: ").append(event.itemCount)
         binding.totalTv.text = getString(R.string.aed_price, String.format("%.2f", event.total))
-        binding.itemAddedDialog.visibility = View.VISIBLE
     }
 
     override fun onResume() {

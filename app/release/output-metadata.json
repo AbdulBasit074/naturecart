@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.naturescart",
+  "applicationId": "com.ae.naturescart",
   "variantName": "processReleaseResources",
   "elements": [
     {

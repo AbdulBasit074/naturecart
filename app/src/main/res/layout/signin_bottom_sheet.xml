@@ -12,25 +12,18 @@
         android:background="@color/white"
         tools:ignore="HardcodedText">
 
-        <ImageView
-            android:id="@+id/cancleBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:padding="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:src="@drawable/ic_close"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_40sdp"
             android:layout_marginEnd="@dimen/_30sdp"
             android:src="@drawable/logo_text"
-            app:layout_constraintTop_toBottomOf="@id/cancleBtn" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/icon" />
 
         <TextView
             android:id="@+id/signIntitle"
@@ -78,7 +71,8 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/emailTitle" />
+                app:layout_constraintTop_toBottomOf="@id/emailTitle"
+                android:autofillHints="Search" />
 
             <TextView
                 android:id="@+id/passwordTitle"
@@ -100,11 +94,12 @@
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
                 android:hint="Enter Your Password"
+                android:inputType="textPassword"
                 android:textColor="@color/black"
-
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/passwordTitle" />
+                app:layout_constraintTop_toBottomOf="@id/passwordTitle"
+                android:autofillHints="Search" />
 
             <TextView
                 android:id="@+id/forgotBtn"

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -62,7 +62,6 @@
                         android:background="@color/confirm"
                         android:fontFamily="@font/roboto_slab_semi_bold"
                         android:gravity="center"
-                        android:text="Confirmed"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -113,7 +112,6 @@
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_20sdp"
                             android:fontFamily="@font/roboto_slab_regular"
-                            android:text="23 Jan 2021"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -124,7 +122,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_20sdp"
-
                             android:fontFamily="@font/roboto_slab_regular"
                             android:text="Sub Total"
                             android:textSize="@dimen/_12ssp"
@@ -135,10 +132,8 @@
                             android:id="@+id/itemCharges"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
                             android:layout_marginEnd="@dimen/_20sdp"
                             android:fontFamily="@font/roboto_slab_regular"
-                            android:text="43:00"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/dateTxt" />
@@ -161,7 +156,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/_20sdp"
                             android:fontFamily="@font/roboto_slab_regular"
-                            android:text="Free"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/itemCharges" />
@@ -174,7 +168,7 @@
                             android:fontFamily="@font/roboto_slab_regular"
                             android:text="Discount"
                             android:textSize="@dimen/_12ssp"
-
+                            android:visibility="gone"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/deliveryCharges" />
 
@@ -185,6 +179,7 @@
                             android:layout_marginEnd="@dimen/_20sdp"
                             android:fontFamily="@font/roboto_slab_regular"
                             android:text="5:00"
+                            android:visibility="gone"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/deliveryCharges" />
@@ -256,7 +251,6 @@
                             android:layout_margin="@dimen/_5sdp"
                             android:fontFamily="@font/roboto_slab_semi_bold"
                             android:singleLine="true"
-                            android:text="Home"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_13ssp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -272,11 +266,11 @@
                             android:fontFamily="@font/roboto_slab_regular"
                             android:maxLines="2"
                             android:paddingEnd="@dimen/_10sdp"
-                            android:text="29 Burj Dubai Boulevard - Moh’d Bin Rashed Blvd - Downtown Dubai - Dubai"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/addressTitleSelect" />
+                            app:layout_constraintTop_toBottomOf="@id/addressTitleSelect"
+                            tools:ignore="RtlSymmetry" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
@@ -345,6 +339,7 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:visibility="gone"
                         android:background="@drawable/border_cancle_round"
                         android:drawablePadding="@dimen/_10sdp"
                         android:fontFamily="@font/roboto_slab_regular"

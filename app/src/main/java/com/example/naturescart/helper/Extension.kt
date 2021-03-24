@@ -8,31 +8,60 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.naturescart.R
+import com.example.naturescart.model.Category
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
-import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.iid.FirebaseInstanceId
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 fun AppCompatActivity.moveTo(clazz: Class<*>) {
     startActivity(Intent(this, clazz))
 }
 
+fun AppCompatActivity.moveToWithoutHistory(clazz: Class<*>) {
+    startActivity(Intent(this, clazz))
+    finishAffinity()
+}
+
 
 fun Fragment.moveFromFragment(activity: Activity, clazz: Class<*>) {
     startActivity(Intent(activity, clazz))
 }
+
+fun Fragment.moveForResultFragment(activity: Activity, clazz: Class<*>, requestCode: Int) {
+    startActivityForResult(Intent(activity, clazz), requestCode)
+}
+
+fun AppCompatActivity.hasStoragePermission(): Boolean {
+    return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+}
+
+fun AppCompatActivity.requestedStoragePermission(requestCode: Int) {
+    val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    ActivityCompat.requestPermissions(this, permission, requestCode)
+}
+
+fun Fragment.moveFromFragment(intent: Intent) {
+    startActivity(intent)
+}
+
 
 fun AppCompatActivity.moveToIntent(intent: Intent) {
     startActivity(intent)
@@ -43,9 +72,8 @@ fun AppCompatActivity.moveForResult(clazz: Class<*>, requestCode: Int) {
     startActivityForResult(Intent(this, clazz), requestCode)
 }
 
-fun AppCompatActivity.moveToAndFinish(clazz: Class<*>) {
-    startActivity(Intent(this, clazz))
-    finish()
+fun AppCompatActivity.moveForResult(intent: Intent, requestCode: Int) {
+    startActivityForResult(intent, requestCode)
 }
 
 fun AppCompatActivity.showToast(text: String) {
@@ -53,29 +81,14 @@ fun AppCompatActivity.showToast(text: String) {
 }
 
 
-fun AppCompatActivity.snackBar(view: View, message: String, buttonText: String) {
-
-    val snack: Snackbar = Snackbar
-        .make(view, message, Snackbar.LENGTH_LONG)
-        .setAction(buttonText) {
-        }
-    snack.show()
+fun Context.showToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
 
-fun AppCompatActivity.snackBarAbove(
-    view: View,
-    aboveView: View,
-    message: String,
-    buttonText: String
-) {
-
-    val snack: Snackbar = Snackbar
-        .make(view, message, Snackbar.LENGTH_LONG)
-        .setAction(buttonText) {
-        }
-    snack.anchorView = aboveView
-    snack.show()
+fun Fragment.showToast(message: String) {
+    Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
 }
+
 
 fun Context.customTextView(text: String): TextView {
     val textView = TextView(this)
@@ -128,23 +141,20 @@ fun AppCompatActivity.askToEnableGPS(onActivityResult: (Int, Int, Intent?) -> Un
     }
 }
 
-fun AppCompatActivity.getCurrentLocation(
-    fields: ArrayList<Place.Field>,
-    onLocationAvailable: (Place) -> Unit
-) {
+fun convertDate(dateString: String?): String {
+    val sourceSdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH)
+    sourceSdf.timeZone = TimeZone.getTimeZone("GMT")
+    val destSdf = SimpleDateFormat("MMM dd yyyy", Locale.ENGLISH)
+    val date = sourceSdf.parse(dateString ?: "")!!
+    return destSdf.format(date)
+}
+
+fun AppCompatActivity.getCurrentLocation(fields: ArrayList<Place.Field>, onLocationAvailable: (Place) -> Unit) {
     if (!Places.isInitialized())
-        Places.initialize(
-            applicationContext,
-            getString(R.string.google_maps_api),
-            Locale.getDefault()
-        )
+        Places.initialize(applicationContext, getString(R.string.google_maps_api), Locale.getDefault())
     val request = FindCurrentPlaceRequest.newInstance(fields)
     val client = Places.createClient(this)
-    if (ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED
-    ) {
+    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         return
     } else {
         val placeResponse = client.findCurrentPlace(request)
@@ -162,11 +172,50 @@ fun AppCompatActivity.getCurrentLocation(
                 val place = response.placeLikelihoods[position].place
                 onLocationAvailable(place)
             }
-
-
         }
     }
 }
+fun Array<String?>.convertToString(): String {
+    val sb = StringBuilder()
+    for (string in this) {
+        sb.append(string)
+    }
+    return sb.toString()
+}
 
+fun Context.showKeyboard() {
+    try {
+        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+fun AppCompatActivity.hideKeyboard() {
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    var view = currentFocus
+    if (view == null) {
+        view = View(this)
+    }
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
 
+fun ArrayList<Category>.containsWithThisName(name: String): Boolean {
+    forEach {
+        if (it.name == name)
+            return true
+    }
+    return false
+}
 
+fun AppCompatActivity.checkAndFetchFcmToken() {
+    if (Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey) == null) {
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
+            val token = instanceIdResult.token
+            Persister.with(this).persist(Constants.fcmTokenPersistenceKey, token)
+            Log.d("TAGEE", token)
+        }
+    } else {
+        Log.d("TAGEE", Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey)!!)
+    }
+}

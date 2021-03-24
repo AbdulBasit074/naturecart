@@ -10,44 +10,119 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.naturescart.R
 import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.databinding.FragmentCategoryListingBinding
+import com.example.naturescart.helper.HorizantalDivider
 import com.example.naturescart.helper.HorizantalDoubleDivider
+import com.example.naturescart.helper.PaginationListeners
+import com.example.naturescart.helper.showToast
+import com.example.naturescart.model.CategoryDetail
+import com.example.naturescart.model.Product
+import com.example.naturescart.services.Results
+import com.example.naturescart.services.category.CategoryService
+import com.google.gson.Gson
 
-class CategoryListingFragment : Fragment() {
+class CategoryListingFragment(private val position: Int, private val categoryID: Long, private val categoryName: String) : Fragment(), Results {
+
     private lateinit var binding: FragmentCategoryListingBinding
     private var listItems: ArrayList<String> = ArrayList()
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_category_listing, container, false)
+    private var productList: ArrayList<Product> = ArrayList()
+    private val loadMoreRequest: Int = 5203
+    private val categoryWithRequest: Int = 5003
+    private val categoryDetailRequest: Int = 1003
+    private var categoryDetail: CategoryDetail = CategoryDetail()
+    private var isLastPage: Boolean = false
+    private var isLoading: Boolean = true
+    private var pageNo: Int = 1
+    private lateinit var paginationListener: PaginationListeners
+    private lateinit var layoutManager: GridLayoutManager
+    private lateinit var adapterProduct: ItemAdapterRv
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_category_listing, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dataSet()
-        binding.categoryRvDetail.layoutManager = GridLayoutManager(activity, 2)
-        binding.categoryRvDetail.adapter = ItemAdapterRv(listItems)
-        binding.categoryRvDetail.addItemDecoration(HorizantalDoubleDivider())
+
+        if (position == 0) {
+            CategoryService(categoryWithRequest, this).getCategory(
+                categoryID,
+                PaginationListeners.pageSize,
+                withProducts = true,
+                isChild = false, pageNo = pageNo
+            )
+
+        } else {
+            CategoryService(categoryWithRequest, this).getCategory(
+                categoryID,
+                PaginationListeners.pageSize,
+                withProducts = true,
+                isChild = true, pageNo = pageNo
+            )
+        }
+        layoutManager = GridLayoutManager(activity, 2)
+        binding.productRvDetail.layoutManager = layoutManager
+        adapterProduct = ItemAdapterRv(requireActivity(), productList, categoryName)
+        binding.productRvDetail.addItemDecoration(HorizantalDoubleDivider())
+        binding.productRvDetail.adapter = adapterProduct
     }
 
-    private fun dataSet() {
+    override fun onSuccess(requestCode: Int, data: String) {
 
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
-        listItems.add("Dummy Text")
+        when (requestCode) {
+            categoryWithRequest -> {
+                isLoading = false
+                productList.clear()
+                adapterProduct.stopLoading()
+                categoryDetail = Gson().fromJson(data, CategoryDetail::class.java)
+                productList.addAll(categoryDetail.products!!)
+                if (productList.size < PaginationListeners.pageSize)
+                    isLastPage = true
+                initPageListener()
+                binding.productRvDetail.addOnScrollListener(paginationListener)
+                binding.productRvDetail.adapter?.notifyDataSetChanged()
+            }
+            loadMoreRequest -> {
+                isLoading = false
+                adapterProduct.stopLoading()
+                val categoryDetailDummy = Gson().fromJson(data, CategoryDetail::class.java)
+                if (categoryDetailDummy.products?.size!! < PaginationListeners.pageSize)
+                    isLastPage = true
+                productList.addAll(categoryDetailDummy.products!!)
+                binding.productRvDetail.adapter?.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun initPageListener() {
+        paginationListener = object : PaginationListeners(layoutManager) {
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
+
+            override fun loadMoreItems() {
+                isLoading = true
+                pageNo++
+                CategoryService(loadMoreRequest, this@CategoryListingFragment).getCategory(
+                    categoryID,
+                    PaginationListeners.pageSize,
+                    withProducts = true,
+                    isChild = true, pageNo = pageNo
+                )
+                adapterProduct.startLoading()
+            }
+        }
+
+
+    }
+
+
+    override fun onFailure(requestCode: Int, data: String) {
+        showToast(data)
     }
 
 }

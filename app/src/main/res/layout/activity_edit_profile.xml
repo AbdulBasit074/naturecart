@@ -2,6 +2,15 @@
 
 <layout xmlns:tools="http://schemas.android.com/tools">
 
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.example.naturescart.model.User" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -80,6 +89,7 @@
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
                 android:hint="Please enter full name"
+                android:text="@{user.firstName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +115,7 @@
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
                 android:hint="for e.g (abc@demo.com)"
+                android:text="@{user.email}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +163,8 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
-
+                android:text="@{user.phone}"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/countryCodeLabel"
                 app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
 

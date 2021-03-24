@@ -4,6 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="user"
+            type="com.example.naturescart.model.User" />
+
+
+    </data>
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -53,6 +62,7 @@
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/backBtn" />
+
             <TextView
                 android:id="@+id/userName"
                 android:layout_width="wrap_content"
@@ -60,35 +70,34 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/roboto_slab_semi_bold"
-                android:text="Elon Mask"
+                android:text="@{user.firstName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/helloTitle" />
 
-
-            <ImageView
+            <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/profileBtn"
+                setCircularImage="@{user.avatar}"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                app:civ_border_width="@dimen/_1sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/backBtn" />
 
             <TextView
+                android:id="@+id/changeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/changeBtn"
-                android:text="Change"
-                android:fontFamily="@font/nunito_semi_bold"
-                android:textColor="@color/saleem_green"
-                app:layout_constraintTop_toBottomOf="@id/profileBtn"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_3sdp"
-                />
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:fontFamily="@font/nunito_semi_bold"
+                android:text="Change"
+                android:textColor="@color/saleem_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profileBtn" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/appOptionTop"
@@ -147,7 +156,6 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -259,6 +267,7 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <TextView
                 android:id="@+id/logout"
                 android:layout_width="match_parent"
@@ -270,16 +279,25 @@
                 android:fontFamily="@font/roboto_slab_regular"
                 android:paddingStart="@dimen/_12sdp"
                 android:paddingTop="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_12sdp"
-                android:textColor="@color/black"
-                android:text="Log out"
-                android:drawableEnd="@drawable/ic_next_black"
                 android:paddingEnd="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_12sdp"
+                android:text="Log out"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintTop_toBottomOf="@id/appOption"
-                tools:ignore="RtlSymmetry" />
+                tools:ignore="RtlSymmetry"
+                app:drawableEndCompat="@drawable/ic_next_black" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <include
+            android:id="@+id/pickImageOBS"
+            layout="@layout/li_pick_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:behavior_peekHeight="0dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

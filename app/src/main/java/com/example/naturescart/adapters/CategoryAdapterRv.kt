@@ -6,33 +6,32 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.naturescart.R
 import com.example.naturescart.databinding.LiCategoryBinding
+import com.example.naturescart.model.Category
 
-class CategoryAdapterRv(private val imageSliderList: ArrayList<String>) :
+class CategoryAdapterRv(
+    private val items: ArrayList<Category>,
+    private val seeAll: (Long, String) -> Unit
+) :
     RecyclerView.Adapter<CategoryAdapterRv.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                R.layout.li_category,
-                parent,
-                false
-            )
-        )
+        return ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.li_category, parent, false))
     }
 
     override fun getItemCount(): Int {
-        return imageSliderList.size
+        return items.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        holder.bindView(imageSliderList[position])
+        holder.bindView(items[position])
     }
 
     inner class ViewHolder(val binding: LiCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindView(s: String) {
-            binding.categoryTxt.text = s
+        fun bindView(item: Category) {
+            binding.category = item
+            binding.root.setOnClickListener {
+                seeAll(item.id ?: 0, item.name ?: "")
+            }
         }
     }
 

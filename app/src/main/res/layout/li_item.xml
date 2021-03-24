@@ -13,7 +13,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/_140sdp"
-        android:layout_height="@dimen/_180sdp"
+        android:layout_height="@dimen/_190sdp"
         app:cardCornerRadius="@dimen/_15sdp"
         app:cardElevation="0dp"
         tools:ignore="HardcodedText">
@@ -29,8 +29,8 @@
                 android:layout_height="@dimen/_80sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:contentDescription="@string/icon"
-                android:transitionName="ProductIcon"
                 android:scaleType="fitCenter"
+                android:transitionName="ProductIcon"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -79,6 +79,21 @@
                 app:layout_constraintTop_toBottomOf="@id/iconIv" />
 
             <TextView
+                android:id="@+id/countryTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_slab_regular"
+                android:singleLine="true"
+                android:text="@{product.country_code}"
+                android:textColor="@color/text_color_green"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameTv" />
+
+            <TextView
                 android:id="@+id/descriptionTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +105,7 @@
                 android:textColor="@color/transparent_black2"
                 android:textSize="@dimen/_8ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nameTv" />
+                app:layout_constraintTop_toBottomOf="@id/countryTv" />
 
             <TextView
                 android:id="@+id/priceTv"
@@ -101,10 +116,26 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_slab_semi_bold"
                 android:singleLine="false"
+                android:text="AED 20"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
+
+            <TextView
+                android:id="@+id/unitTv"
+                setUnit="@{product.unit}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_slab_light"
+                android:singleLine="false"
+                android:textColor="@color/transparent_black2"
+                android:textSize="@dimen/_8ssp"
+                app:layout_constraintStart_toEndOf="@id/priceTv"
+                app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/decrementBtn"

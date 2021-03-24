@@ -15,7 +15,6 @@ class RetrofitClient {
     companion object {
         private const val timeOut = 10L
         private const val extendedTimeOut = 20L
-
         private var instance: Retrofit? = null
         private var extendedTimeoutInstance: Retrofit? = null
 
@@ -23,7 +22,6 @@ class RetrofitClient {
         fun getInstance(): Retrofit {
 
             if (instance == null) {
-
                 val clientBuilder = OkHttpClient.Builder()
                 clientBuilder.connectTimeout(timeOut, TimeUnit.SECONDS)
                 clientBuilder.readTimeout(timeOut, TimeUnit.SECONDS)
@@ -38,8 +36,6 @@ class RetrofitClient {
             }
             return instance!!
         }
-
-
 
         fun getInstanceWithExtendedTimeout(): Retrofit {
             if (extendedTimeoutInstance == null) {

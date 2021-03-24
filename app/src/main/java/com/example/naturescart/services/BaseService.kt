@@ -8,11 +8,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-open class BaseService(
-    private val requestCode: Int,
-    private val callBack: Results,
-    private val returnRaw: Boolean = false
-) :
+open class BaseService(private val requestCode: Int, private val callBack: Results, private val returnRaw: Boolean = false) :
     Callback<ResponseBody> {
     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
         try {
@@ -31,7 +27,6 @@ open class BaseService(
     }
 
     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-
         try {
             if (response.isSuccessful && response.body() != null) {
                 val responseBody = response.body()!!.string()

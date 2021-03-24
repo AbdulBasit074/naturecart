@@ -74,7 +74,6 @@ class ItemAdapterRv(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (getItemViewType(position) == itemView)
             holder.bindView(items[position])
-
     }
 
     inner class ViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {

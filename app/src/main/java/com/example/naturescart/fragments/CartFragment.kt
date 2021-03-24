@@ -45,6 +45,7 @@ class CartFragment : Fragment(), Results {
         return cartBinding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadingView = LoadingDialog(requireContext())
@@ -63,6 +64,7 @@ class CartFragment : Fragment(), Results {
         }
         setListeners()
     }
+
 
     override fun onResume() {
         super.onResume()

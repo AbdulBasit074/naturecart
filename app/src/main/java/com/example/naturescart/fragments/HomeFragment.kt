@@ -145,9 +145,9 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun onCollectionClicked(collection: CollectionModel) {
-        activity?.startActivityForResult(CollectionDetailActivity.newInstance(requireActivity(), collection.id, collection.name), Constants.collectionDetailsActivityRc)
+        EventBus.getDefault().postSticky(MoveFragmentEvent(CollectionDetailFragment(collection.id,collection.name)))
+//        activity?.startActivityForResult(CollectionDetailActivity.newInstance(requireActivity(), collection.id, collection.name), Constants.collectionDetailsActivityRc)
     }
-
     private fun setDummyData() {
         dummyList.clear()
         dummyList.add("Dummy Data")

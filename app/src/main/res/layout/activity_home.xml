@@ -9,10 +9,19 @@
         android:animateLayoutChanges="true"
         tools:context=".ui.HomeActivity">
 
+        <FrameLayout
+            android:id="@+id/homePageFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.example.naturescart.helper.NonSwipeableViewPager
             android:id="@+id/homeFragmentsVp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,5 +38,7 @@
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/item_list" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

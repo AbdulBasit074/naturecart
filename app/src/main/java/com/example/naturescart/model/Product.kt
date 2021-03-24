@@ -19,8 +19,12 @@ class Product(
     @SerializedName("sku") var sku: String? = null,
     @SerializedName("unit") var unit: String? = null,
     @SerializedName("image") var image: String? = null,
-    @SerializedName("description") var description: String? = null
-) : Parcelable {
+    @SerializedName("description") var description: String? = null,
+    @SerializedName("long_description") var long_description: String? = null,
+    @SerializedName("country_code") var country_code: String? = null,
+    @SerializedName("country_name") var country_name: String? = null,
+
+    ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readValue(Long::class.java.classLoader) as? Long,
@@ -31,6 +35,9 @@ class Product(
         parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -50,6 +57,10 @@ class Product(
         parcel.writeString(unit)
         parcel.writeString(image)
         parcel.writeString(description)
+        parcel.writeString(long_description)
+        parcel.writeString(country_code)
+        parcel.writeString(country_name)
+
     }
 
     override fun describeContents(): Int {

@@ -38,6 +38,11 @@ fun setAddressOrder(textView: TextView, address: com.example.naturescart.model.A
 fun setTextPrice(textView: TextView, price: Float) {
     textView.text = textView.context.getString(R.string.aed_price, String.format("%.2f", price))
 }
+@BindingAdapter("setUnit")
+fun setUnit(textView: TextView,unit : String) {
+    textView.text = textView.context.getString(R.string.unit_text,unit)
+}
+
 
 @BindingAdapter("textNoItems")
 fun setTextNoItems(textView: TextView, src: Int) {

@@ -3,13 +3,15 @@ package com.example.naturescart.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.preference.PreferenceManager
 import com.example.naturescart.R
 import com.example.naturescart.adapters.HomeFragmentsVpAdapter
 import com.example.naturescart.databinding.ActivityHomeBinding
-import com.example.naturescart.fragments.*
 import com.example.naturescart.helper.*
 import com.example.naturescart.model.CartDetail
 import com.example.naturescart.model.CollectionModel
@@ -25,6 +27,7 @@ import com.google.gson.reflect.TypeToken
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+
 
 class HomeActivity : AppCompatActivity(), Results {
 
@@ -54,7 +57,6 @@ class HomeActivity : AppCompatActivity(), Results {
             ProductService(getFavoritesRc, this).getFavorites(loggedUser!!.accessToken)
         checkAndFetchFcmToken()
     }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCartUpdated(event: CartUpdateEvent) {
         val badge = binding.bottomNavigation.getOrCreateBadge(R.id.cart)
@@ -65,24 +67,32 @@ class HomeActivity : AppCompatActivity(), Results {
         badge.verticalOffset = resources.getDimension(R.dimen._10sdp).toInt()
         badge.horizontalOffset = resources.getDimension(R.dimen._10sdp).toInt()
     }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUserLoggedIn(event: LogInEvent) {
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         ProductService(getFavoritesRc, this).getFavorites(loggedUser!!.accessToken)
     }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onConnectivityEvent(event: ConnectivityEvent) {
         if (!event.connected)
             startActivity(Intent(this, NoInternetActivity::class.java))
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onClickItemCart(event: ClickCartItemEvent) {
+        removeAndHide()
+        binding.bottomNavigation.selectedItemId = R.id.cart
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onChangeHomeFragment(event: MoveFragmentEvent) {
+        loadFragment(event.fragment)
+        binding.homeFragmentsVp.visibility = View.GONE
+        binding.homePageFragment.visibility = View.VISIBLE
 
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun moveToAbout(event: MoveToAboutEvent) {
         binding.bottomNavigation.selectedItemId = R.id.about
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if ((requestCode == Constants.categoryDetailsActivityRc
@@ -93,11 +103,11 @@ class HomeActivity : AppCompatActivity(), Results {
             binding.bottomNavigation.selectedItemId = R.id.cart
         }
     }
-
     private fun bottomNavigationFragments() {
         val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener {
             setPreviousUiUpdate()
             previous = it
+
             when (it.itemId) {
                 R.id.homeNav -> {
                     binding.homeFragmentsVp.currentItem = 0
@@ -105,21 +115,25 @@ class HomeActivity : AppCompatActivity(), Results {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.favourite -> {
+                    removeAndHide()
                     binding.homeFragmentsVp.currentItem = 1
                     it.setIcon(R.drawable.ic_heart_checked)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.cart -> {
+                    removeAndHide()
                     binding.homeFragmentsVp.currentItem = 2
                     it.setIcon(R.drawable.ic_cart_checked)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.order -> {
+                    removeAndHide()
                     binding.homeFragmentsVp.currentItem = 3
                     it.setIcon(R.drawable.ic_order_checked)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
+                    removeAndHide()
                     binding.homeFragmentsVp.currentItem = 4
                     it.setIcon(R.drawable.ic_about_checked)
                     return@OnNavigationItemSelectedListener true
@@ -128,6 +142,11 @@ class HomeActivity : AppCompatActivity(), Results {
             return@OnNavigationItemSelectedListener false
         }
         binding.bottomNavigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
+    }
+    private fun removeAndHide() {
+        binding.homeFragmentsVp.visibility = View.VISIBLE
+        binding.homePageFragment.visibility = View.GONE
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     private fun setPreviousUiUpdate() {
@@ -177,16 +196,31 @@ class HomeActivity : AppCompatActivity(), Results {
     }
 
     override fun onFailure(requestCode: Int, data: String) {
-
     }
 
     override fun onBackPressed() {
-        finish()
+        when {
+            supportFragmentManager.backStackEntryCount == 1 -> {
+                binding.homeFragmentsVp.visibility = View.VISIBLE
+                binding.homePageFragment.visibility = View.GONE
+                supportFragmentManager.popBackStack()
+            }
+            supportFragmentManager.backStackEntryCount > 1 -> supportFragmentManager.popBackStack()
+            else -> finish()
+        }
     }
 
     override fun onDestroy() {
         EventBus.getDefault().unregister(this)
         super.onDestroy()
     }
+
+    private fun loadFragment(fragment: Fragment) {
+        val fragmentTransition = supportFragmentManager.beginTransaction()
+        fragmentTransition.replace(binding.homePageFragment.id, fragment)
+        fragmentTransition.addToBackStack(null)
+        fragmentTransition.commit()
+    }
+
 
 }

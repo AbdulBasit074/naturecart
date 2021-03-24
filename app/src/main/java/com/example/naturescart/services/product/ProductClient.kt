@@ -14,6 +14,9 @@ interface ProductClient {
         @Field("product_id") productID: Long
     ): Call<ResponseBody>
 
+
+
+
     @GET("favourite-detail")
     fun getFavorites(
         @Header("Authorization") authToken: String

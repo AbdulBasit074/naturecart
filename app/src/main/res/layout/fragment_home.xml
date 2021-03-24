@@ -53,14 +53,6 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="vertical">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/collectionRv"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_68sdp"
-                        android:layoutAnimation="@anim/item_anim"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:listitem="@layout/li_collection" />
-
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/topSliderVp"
                         android:layout_width="match_parent"
@@ -68,8 +60,7 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        android:alpha="0"
-                        app:layout_constraintTop_toBottomOf="@id/collectionRv" />
+                        android:alpha="0" />
 
                     <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
                         android:id="@+id/topSliderIndicator"
@@ -83,6 +74,14 @@
                         app:layout_constraintBottom_toBottomOf="@id/topSliderVp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/collectionRv"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_68sdp"
+                        android:layoutAnimation="@anim/item_anim"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        tools:listitem="@layout/li_collection" />
 
                     <TextView
                         android:id="@+id/categoryLabel"

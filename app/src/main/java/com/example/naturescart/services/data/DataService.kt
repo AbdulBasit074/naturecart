@@ -34,6 +34,13 @@ class DataService(requestCode: Int, callBack: Results) : BaseService(requestCode
     fun getSearchResult(authToken: String?, keyWord: String, limit: Int, pageNo: Int) {
         RetrofitClient.getInstance().create(DataClient::class.java).getSearchResult(authToken, keyWord, limit, pageNo).enqueue(this)
     }
+    fun getNewArrivalProducts() {
+        RetrofitClient.getInstance().create(DataClient::class.java).getNewArrivalProducts().enqueue(this)
+    }
+    fun getFrequentlyPurchasedProducts(authToken: String) {
+        RetrofitClient.getInstance().create(DataClient::class.java).getFrequentlyPurchasedProducts("Bearer $authToken").enqueue(this)
+    }
+
 
 
 }

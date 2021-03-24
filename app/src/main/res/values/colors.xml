@@ -9,6 +9,17 @@
     <color name="red">#D80404</color>
     <color name="new_light_green">#81CDEDCB</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="fresh_warm">#EDF9E4</color>
+    <color name="fresh_warm_text">#347B15</color>
+
+
+    <color name="whole_sale">#FFEBC6</color>
+    <color name="whole_sale_text">#363636</color>
+
+    <color name="customer_love">#FDDFE9</color>
+    <color name="customer_love_text">#363637</color>
+
+
     <color name="saleem_green">#1A804D</color>
     <color name="saleem_green2">#108148</color>
     <color name="otp_green">#4F108148</color>

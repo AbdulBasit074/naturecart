@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Nature\'s Cart</string>
     <string name="icon">icon</string>
+    <string name="email_contact"><u>Customercare@naturescart.ae</u></string>
     <string name="intro_second_title">Organic &amp; Fresh</string>
     <string name="intro_second_detail">Fresh &amp; Organic food as your fingertips</string>
 

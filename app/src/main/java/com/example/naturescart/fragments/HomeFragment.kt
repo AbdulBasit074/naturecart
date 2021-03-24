@@ -15,16 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.naturescart.R
-import com.example.naturescart.adapters.CategoryAdapterRv
-import com.example.naturescart.adapters.CategoryDetailProductsRvAdapter
-import com.example.naturescart.adapters.CollectionAdapterRv
-import com.example.naturescart.adapters.HomeSliderViewPagerAdapter
+import com.example.naturescart.adapters.*
 import com.example.naturescart.databinding.FragmentHomeBinding
 import com.example.naturescart.helper.*
-import com.example.naturescart.model.Category
-import com.example.naturescart.model.CategoryProducts
-import com.example.naturescart.model.CollectionModel
-import com.example.naturescart.model.User
+import com.example.naturescart.model.*
 import com.example.naturescart.model.room.NatureDb
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.data.DataService
@@ -41,11 +35,15 @@ class HomeFragment : Fragment(), Results {
     private val collectionRequest: Int = 1132
     private val loadMoreCollectionRC: Int = 1332
     private val categoriesRequest: Int = 2220
-    private val categoriesProductRequest: Int = 5554
+    private val frequentlyProductRequest: Int = 5154
+    private val newArrivalProductRequest: Int = 5254
+
     private var limit: Int = 6
     private lateinit var handler: Handler
     private var collectionData: ArrayList<CollectionModel> = ArrayList()
     private var categoriesData: ArrayList<Category> = ArrayList()
+    private var frequentlyPurchasedProducts: ArrayList<Product> = ArrayList()
+    private var newArrivalProducts: ArrayList<Product> = ArrayList()
     private val layoutManager = LinearLayoutManager(activity)
     private var categoryProductData: ArrayList<CategoryProducts> = ArrayList()
     private var loggedUser: User? = null
@@ -58,7 +56,9 @@ class HomeFragment : Fragment(), Results {
     private var animationShown = false
     private val collectionsDataPersistenceKey = "collectionsDataPersistenceKey"
     private val categoriesDataPersistenceKey = "categoriesDataPersistenceKey"
-    private val categoryProductsDataPersistenceKey = "categoryProductsDataPersistenceKey"
+    private val newArrivalDataPersistenceKey = "newArrivalDataPersistenceKey"
+    private val frequentlyPurchasedDataPersistenceKey = "frequentlyPurchasedDataPersistenceKey"
+
     private var runnable: Runnable? = null
 
     companion object {
@@ -83,18 +83,29 @@ class HomeFragment : Fragment(), Results {
     private fun getData() {
         val collectionsData = Persister.with(requireContext()).getPersisted(collectionsDataPersistenceKey, null)
         val categoriesData = Persister.with(requireContext()).getPersisted(categoriesDataPersistenceKey, null)
-        val categoryProductsData = Persister.with(requireContext()).getPersisted(categoryProductsDataPersistenceKey, null)
-        if (collectionsData == null || categoriesData == null || categoryProductsData == null)
+        val newArrivalData = Persister.with(requireContext()).getPersisted(newArrivalDataPersistenceKey, null)
+        var frequentlyPurchasedData: String? = ""
+        if (loggedUser != null)
+            frequentlyPurchasedData = Persister.with(requireContext()).getPersisted(frequentlyPurchasedDataPersistenceKey, null)
+
+
+        if (collectionsData == null || categoriesData == null || newArrivalData == null || frequentlyPurchasedData == null)
             loadingView?.show()
         if (collectionsData != null)
             onSuccess(collectionRequest, collectionsData)
         if (categoriesData != null)
             onSuccess(categoriesRequest, categoriesData)
-        if (categoryProductsData != null)
-            onSuccess(categoriesProductRequest, categoryProductsData)
+        if (newArrivalData != null)
+            onSuccess(newArrivalProductRequest, newArrivalData)
+        if (loggedUser != null && frequentlyPurchasedData != null)
+            onSuccess(frequentlyProductRequest, frequentlyPurchasedData)
+
+        if (loggedUser != null)
+            DataService(frequentlyProductRequest, this).getFrequentlyPurchasedProducts(loggedUser!!.accessToken)
+
         DataService(collectionRequest, this).getCollections(pageNo, limit)
         DataService(categoriesRequest, this).getCategories(limit, false)
-        DataService(categoriesProductRequest, this).getCategoryProducts(limit, true)
+        DataService(newArrivalProductRequest, this).getNewArrivalProducts()
     }
 
     private fun setListeners() {
@@ -110,7 +121,6 @@ class HomeFragment : Fragment(), Results {
         homeBinding.searchEt.setOnClickListener {
             activity?.startActivityForResult(Intent(requireContext(), SearchActivity::class.java), Constants.searchActivityRc)
         }
-
     }
 
     private fun setAllAdapters() {
@@ -128,7 +138,10 @@ class HomeFragment : Fragment(), Results {
         homeBinding.categoryRv.adapter = CategoryAdapterRv(categoriesData) { categoryId, categoryName -> seeAll(categoryId, categoryName) }
         homeBinding.categoryRv.addItemDecoration(HorizantalDivider())
 
-        homeBinding.categoryProductRvDetail.adapter = CategoryDetailProductsRvAdapter(requireActivity(), categoryProductData) { categoryId, categoryName -> seeAll(categoryId, categoryName) }
+        homeBinding.frequentlyPurchasedRv.adapter = ItemAdapterFNRv(requireActivity(), frequentlyPurchasedProducts)
+        homeBinding.newArrivalRv.adapter = ItemAdapterFNRv(requireActivity(), newArrivalProducts)
+        homeBinding.frequentlyPurchasedRv.addItemDecoration(HorizantalDivider())
+        homeBinding.newArrivalRv.addItemDecoration(HorizantalDivider())
     }
 
     private fun setTopSliderAnimator() {
@@ -141,13 +154,15 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun seeAll(categoryId: Long, categoryName: String) {
-        activity?.startActivityForResult(CategoryDetailActivity.newInstance(requireActivity(), categoryId, categoryName), Constants.categoryDetailsActivityRc)
+        EventBus.getDefault().postSticky(MoveFragmentEvent(CategoryDetailFragment(categoryId, categoryName)))
+//        activity?.startActivityForResult(CategoryDetailActivity.newInstance(requireActivity(), categoryId, categoryName), Constants.categoryDetailsActivityRc)
     }
 
     private fun onCollectionClicked(collection: CollectionModel) {
-        EventBus.getDefault().postSticky(MoveFragmentEvent(CollectionDetailFragment(collection.id,collection.name)))
+        EventBus.getDefault().postSticky(MoveFragmentEvent(CollectionDetailFragment(collection.id, collection.name)))
 //        activity?.startActivityForResult(CollectionDetailActivity.newInstance(requireActivity(), collection.id, collection.name), Constants.collectionDetailsActivityRc)
     }
+
     private fun setDummyData() {
         dummyList.clear()
         dummyList.add("Dummy Data")
@@ -155,12 +170,18 @@ class HomeFragment : Fragment(), Results {
         dummyList.add("Dummy Data")
         dummyList.add("Dummy Data")
         dummyList.add("Dummy Data")
-
     }
 
     override fun onResume() {
         super.onResume()
         loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
+        if (loggedUser != null)
+            DataService(frequentlyProductRequest, this).getFrequentlyPurchasedProducts(loggedUser!!.accessToken)
+        else {
+            homeBinding.frequentlyPurchasedRv.visibility = View.GONE
+            homeBinding.frequentlyPurchasedLabel.visibility = View.INVISIBLE
+        }
+
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
@@ -191,11 +212,17 @@ class HomeFragment : Fragment(), Results {
                 showData()
                 Persister.with(requireContext()).persist(categoriesDataPersistenceKey, data)
             }
-            categoriesProductRequest -> {
-                categoryProductData.clear()
-                categoryProductData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<CategoryProducts>>() {}.type))
+            newArrivalProductRequest -> {
+                newArrivalProducts.clear()
+                newArrivalProducts.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<Product>>() {}.type))
                 showData()
-                Persister.with(requireContext()).persist(categoryProductsDataPersistenceKey, data)
+                Persister.with(requireContext()).persist(newArrivalDataPersistenceKey, data)
+            }
+            frequentlyProductRequest -> {
+                frequentlyPurchasedProducts.clear()
+                frequentlyPurchasedProducts.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<Product>>() {}.type))
+                showData()
+                Persister.with(requireContext()).persist(frequentlyPurchasedDataPersistenceKey, data)
             }
         }
     }
@@ -224,25 +251,42 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun showData() {
-        if (!collectionData.isNullOrEmpty() && !categoriesData.isNullOrEmpty() && !categoryProductData.isNullOrEmpty()) {
-            loadingView?.dismiss()
-            //show collections data
-            homeBinding.collectionRv.adapter?.notifyDataSetChanged()
-            if (!animationShown) {
-                homeBinding.collectionRv.scheduleLayoutAnimation()
-                homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
-                homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
-                homeBinding.topSliderVp.alpha = 1f
-                homeBinding.topSliderIndicator.alpha = 1f
+        if (!collectionData.isNullOrEmpty() && !categoriesData.isNullOrEmpty() && !newArrivalProducts.isNullOrEmpty()) {
+            if (loggedUser != null && !frequentlyPurchasedProducts.isNullOrEmpty()) {
+                showDataLoggedUser()
+                if (frequentlyPurchasedProducts.size < 1) {
+                    homeBinding.frequentlyPurchasedRv.visibility = View.GONE
+                    homeBinding.frequentlyPurchasedLabel.visibility = View.GONE
+                } else {
+                    homeBinding.frequentlyPurchasedRv.visibility = View.VISIBLE
+                    homeBinding.frequentlyPurchasedLabel.visibility = View.VISIBLE
+                }
+                homeBinding.frequentlyPurchasedRv.adapter?.notifyDataSetChanged()
             }
-            //show categories data
-            homeBinding.categoryRv.adapter?.notifyDataSetChanged()
-            if (!animationShown)
-                homeBinding.categoryRv.scheduleLayoutAnimation()
-            //show category products data
-            homeBinding.categoryProductRvDetail.adapter?.notifyDataSetChanged()
-            animationShown = true
+            if (loggedUser == null) {
+                showDataLoggedUser()
+            }
         }
+    }
+
+    private fun showDataLoggedUser() {
+        loadingView?.dismiss()
+        //show collections data
+        homeBinding.collectionRv.adapter?.notifyDataSetChanged()
+        if (!animationShown) {
+            homeBinding.collectionRv.scheduleLayoutAnimation()
+            homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+            homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+            homeBinding.topSliderVp.alpha = 1f
+            homeBinding.topSliderIndicator.alpha = 1f
+        }
+        //show categories data
+        homeBinding.categoryRv.adapter?.notifyDataSetChanged()
+        if (!animationShown)
+            homeBinding.categoryRv.scheduleLayoutAnimation()
+        //show category products data
+        homeBinding.newArrivalRv.adapter?.notifyDataSetChanged()
+        animationShown = true
     }
 
     override fun onAttach(context: Context) {
@@ -256,6 +300,7 @@ class HomeFragment : Fragment(), Results {
         EventBus.getDefault().unregister(this)
         super.onDetach()
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCartUpdated(event: CartUpdateEvent) {

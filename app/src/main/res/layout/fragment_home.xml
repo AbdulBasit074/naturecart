@@ -79,8 +79,8 @@
                         android:id="@+id/collectionRv"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_68sdp"
-                        android:layoutAnimation="@anim/item_anim"
                         android:layout_marginTop="@dimen/_5sdp"
+                        android:layoutAnimation="@anim/item_anim"
                         tools:listitem="@layout/li_collection" />
 
                     <TextView
@@ -93,7 +93,7 @@
                         android:fontFamily="@font/roboto_slab_bold"
                         android:text="Category"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_18ssp"
+                        android:textSize="@dimen/_16ssp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/topSliderVp" />
 
@@ -109,15 +109,72 @@
                         app:layout_constraintTop_toBottomOf="@id/categoryLabel"
                         tools:listitem="@layout/li_category" />
 
+                    <TextView
+                        android:id="@+id/frequentlyPurchasedLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:fontFamily="@font/roboto_slab_bold"
+                        android:text="Frequently Purchased"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/categoryRv" />
+
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/categoryProductRvDetail"
+                        android:id="@+id/frequentlyPurchasedRv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintTop_toBottomOf="@id/categoryRv"
-                        tools:listitem="@layout/li_category_detail" />
+                        tools:listitem="@layout/li_item" />
+
+
+                    <include
+                        layout="@layout/li_why_choose"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_8sdp" />
+
+                    <include
+                        layout="@layout/li_how_works"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_8sdp" />
+
+                    <TextView
+                        android:id="@+id/newArrivalLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:fontFamily="@font/roboto_slab_bold"
+                        android:text="New Arrivals"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/frequentlyPurchasedRv" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/newArrivalRv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/newArrivalLabel"
+                        tools:listitem="@layout/li_item" />
+
 
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

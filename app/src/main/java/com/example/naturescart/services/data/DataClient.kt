@@ -52,4 +52,14 @@ interface DataClient {
     ): Call<ResponseBody>
 
 
+    @GET("new-arrival")
+    fun getNewArrivalProducts(): Call<ResponseBody>
+
+
+
+    @GET("frequently-purchased")
+    fun getFrequentlyPurchasedProducts(
+        @Header("Authorization") authToken: String?, ): Call<ResponseBody>
+
+
 }

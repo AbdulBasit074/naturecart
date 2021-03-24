@@ -53,6 +53,7 @@ class CollectionDetailFragment(private val id: Long? = 0, private val name: Stri
         binding = DataBindingUtil.inflate(inflater, R.layout.activity_collection_detail, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadingView = LoadingDialog(requireContext())
@@ -62,12 +63,14 @@ class CollectionDetailFragment(private val id: Long? = 0, private val name: Stri
         DataService(categoryDetailRequest, this).getCollectionProducts(collectionId, 1, PaginationListeners.pageSize)
         setListeners()
     }
+
     private fun setListeners() {
         binding.itemAddedDialog.setOnClickListener {
             EventBus.getDefault().postSticky(ClickCartItemEvent())
         }
         binding.backBtn.setOnClickListener {
             requireActivity().onBackPressed()
+
         }
     }
     private fun tabLayoutSetting() {

@@ -57,6 +57,7 @@ class HomeActivity : AppCompatActivity(), Results {
             ProductService(getFavoritesRc, this).getFavorites(loggedUser!!.accessToken)
         checkAndFetchFcmToken()
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCartUpdated(event: CartUpdateEvent) {
         val badge = binding.bottomNavigation.getOrCreateBadge(R.id.cart)
@@ -67,21 +68,25 @@ class HomeActivity : AppCompatActivity(), Results {
         badge.verticalOffset = resources.getDimension(R.dimen._10sdp).toInt()
         badge.horizontalOffset = resources.getDimension(R.dimen._10sdp).toInt()
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUserLoggedIn(event: LogInEvent) {
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         ProductService(getFavoritesRc, this).getFavorites(loggedUser!!.accessToken)
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onConnectivityEvent(event: ConnectivityEvent) {
         if (!event.connected)
             startActivity(Intent(this, NoInternetActivity::class.java))
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onClickItemCart(event: ClickCartItemEvent) {
         removeAndHide()
         binding.bottomNavigation.selectedItemId = R.id.cart
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onChangeHomeFragment(event: MoveFragmentEvent) {
         loadFragment(event.fragment)
@@ -89,10 +94,12 @@ class HomeActivity : AppCompatActivity(), Results {
         binding.homePageFragment.visibility = View.VISIBLE
 
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun moveToAbout(event: MoveToAboutEvent) {
         binding.bottomNavigation.selectedItemId = R.id.about
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if ((requestCode == Constants.categoryDetailsActivityRc
@@ -103,6 +110,7 @@ class HomeActivity : AppCompatActivity(), Results {
             binding.bottomNavigation.selectedItemId = R.id.cart
         }
     }
+
     private fun bottomNavigationFragments() {
         val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener {
             setPreviousUiUpdate()
@@ -143,6 +151,7 @@ class HomeActivity : AppCompatActivity(), Results {
         }
         binding.bottomNavigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
     }
+
     private fun removeAndHide() {
         binding.homeFragmentsVp.visibility = View.VISIBLE
         binding.homePageFragment.visibility = View.GONE

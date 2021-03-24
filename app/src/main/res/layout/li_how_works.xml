@@ -32,6 +32,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:contentDescription="@null"
                 android:layout_marginStart="@dimen/_25sdp"
                 android:src="@drawable/vertical_line"
                 app:layout_constraintBottom_toBottomOf="@id/containerFour"

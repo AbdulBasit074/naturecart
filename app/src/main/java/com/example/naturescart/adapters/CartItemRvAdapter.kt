@@ -50,7 +50,6 @@ class CartItemRvAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         holder.bindView(itemList[position])
     }
 

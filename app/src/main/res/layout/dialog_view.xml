@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -10,9 +11,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_200sdp"
-            android:minWidth="@dimen/_200sdp"
             android:layout_gravity="center"
+            android:minWidth="@dimen/_200sdp"
+            android:minHeight="@dimen/_200sdp"
             app:cardCornerRadius="@dimen/_24sdp"
             app:cardElevation="@dimen/_24sdp"
             app:cardUseCompatPadding="true"
@@ -25,13 +26,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/iconDialog"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_gravity="center"
+                    android:contentDescription="@null"
                     android:src="@drawable/ic_cart" />
 
                 <TextView
@@ -40,8 +43,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_3sdp"
-                    android:layout_marginEnd="@dimen/_3sdp"
                     android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginEnd="@dimen/_3sdp"
                     android:fontFamily="@font/roboto_slab_regular"
                     android:textColor="@android:color/black" />
             </LinearLayout>

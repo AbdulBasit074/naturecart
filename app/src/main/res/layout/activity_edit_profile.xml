@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <data>
@@ -12,7 +13,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_silver"
@@ -45,12 +45,12 @@
 
         <TextView
             android:id="@+id/title"
+            translationText='@{"edit_profile"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:fontFamily="@font/roboto_slab_semi_bold"
-            android:text="Edit Profile"
             android:textColor="@color/black"
             android:textSize="@dimen/_15ssp"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,10 +73,10 @@
 
             <TextView
                 android:id="@+id/nameTitle"
+                translationText='@{"name"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_regular"
-                android:text="Name"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,11 +84,11 @@
 
             <EditText
                 android:id="@+id/nameEt"
+                translationEditTextHint='@{"please_enter_full_name"}'
                 android:layout_width="@dimen/_260sdp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
-                android:hint="Please enter full name"
                 android:text="@{user.firstName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
@@ -97,11 +97,11 @@
 
             <TextView
                 android:id="@+id/emailTitle"
+                translationText='@{"email"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/nunito_regular"
-                android:text="Email"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -109,12 +109,12 @@
 
             <EditText
                 android:id="@+id/emailEt"
+                translationEditTextHint='@{"for_eg_(abc@demo.com)"}'
                 android:layout_width="@dimen/_260sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
-                android:hint="for e.g (abc@demo.com)"
                 android:text="@{user.email}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
@@ -123,11 +123,11 @@
 
             <TextView
                 android:id="@+id/phoneLabel"
+                translationText='@{"phone"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/nunito_regular"
-                android:text="Phone"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +144,7 @@
 
             <TextView
                 android:id="@+id/countryCodeLabel"
-                android:layout_width="@dimen/_30sdp"
+                android:layout_width="@dimen/_40sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginTop="@dimen/_7sdp"
@@ -157,7 +157,7 @@
 
             <EditText
                 android:id="@+id/phoneNo"
-                android:layout_width="@dimen/_200sdp"
+                android:layout_width="@dimen/_190sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
@@ -170,6 +170,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/saveBtn"
+                translationTextButton='@{"save_detail"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_30sdp"
@@ -177,7 +178,6 @@
                 android:fontFamily="@font/nunito_semi_bold"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
-                android:text="Save Detail"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13ssp"
@@ -188,21 +188,21 @@
 
         <TextView
             android:id="@+id/changePasswordBtn"
+            translationText='@{"change_password"}'
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:background="@drawable/border_white_round"
-            android:drawableEnd="@drawable/ic_next_black"
             android:fontFamily="@font/nunito_regular"
             android:paddingStart="@dimen/_12sdp"
             android:paddingTop="@dimen/_12sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingBottom="@dimen/_12sdp"
-            android:text="Change Password"
             android:textColor="@color/black"
             android:textSize="@dimen/_13ssp"
+            app:drawableEndCompat="@drawable/ic_next_black"
             app:layout_constraintTop_toBottomOf="@id/containerUserProfiile" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,11 +21,11 @@
 
             <TextView
                 android:id="@+id/headerTitle"
+                translationText='@{"your_cart"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:fontFamily="@font/roboto_slab_semi_bold"
-                android:text="Your Cart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_slab_semi_bold"
-                android:text="Empty cart"
+                translationText='@{"empty_cart"}'
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_18ssp"
                 app:layout_constraintBottom_toTopOf="@id/descriptionEmptyCart"
@@ -80,7 +80,7 @@
                 android:id="@+id/descriptionEmptyCart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="we are processing your order…"
+                translationText='@{"we_are_processing_order"}'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -121,13 +121,13 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/nextBtn"
+                translationText='@{"checkout"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:background="@drawable/button_orange"
                 android:paddingStart="@dimen/_30sdp"
                 android:paddingEnd="@dimen/_30sdp"
-                android:text="Checkout"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13ssp"

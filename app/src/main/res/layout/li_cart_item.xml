@@ -100,7 +100,6 @@
                         android:src="@drawable/ic_decrement_cart" />
 
                 </androidx.cardview.widget.CardView>
-
                 <TextView
                     android:id="@+id/itemCountTv"
                     android:layout_width="@dimen/_50sdp"

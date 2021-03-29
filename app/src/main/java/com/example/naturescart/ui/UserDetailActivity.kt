@@ -7,10 +7,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
@@ -22,7 +24,6 @@ import com.example.naturescart.services.Results
 import com.example.naturescart.services.auth.AuthService
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -30,6 +31,11 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import org.greenrobot.eventbus.EventBus
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.jvm.Throws
 
 
 class UserDetailActivity : AppCompatActivity(), Results {
@@ -39,11 +45,12 @@ class UserDetailActivity : AppCompatActivity(), Results {
     private val uploadAvatar: Int = 1123
     private lateinit var binding: ActivityUserDetailBinding
     private var loggedUser: User? = null
+    private var imageFilePath: String? = null
     private val logoutRequest: Int = 222
     private lateinit var loadingView: LoadingDialog
-    private val pickImageRequest: Int = 3331
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail)
         loadingView = LoadingDialog(this)
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
@@ -58,14 +65,27 @@ class UserDetailActivity : AppCompatActivity(), Results {
         binding.changeBtn.setOnClickListener {
             checkPermission()
             binding.pickImageOBS.cameraLayout.setOnClickListener {
-                val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(takePicture, cameraImagePick)
+                val takePicture = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
+                if (takePicture.resolveActivity(packageManager) != null) {
+                    val photoFile: File? = createImageFile()
+                    if (photoFile != null) {
+                        val photoURI: Uri = FileProvider.getUriForFile(this, "com.ae.naturescart.provider", photoFile)
+                        takePicture.putExtra(
+                            MediaStore.EXTRA_OUTPUT,
+                            photoURI
+                        )
+                        startActivityForResult(takePicture, cameraImagePick)
+                    }
+                }
             }
             binding.pickImageOBS.galleryLayout.setOnClickListener {
-                val takePicture = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                val takePicture = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 startActivityForResult(takePicture, galleryImagePick)
 
             }
+        }
+        binding.langBtn.setOnClickListener {
+            startActivity(Intent(this, LanguageSelectionActivity::class.java))
         }
         binding.manageAddressBtn.setOnClickListener {
             moveToIntent(AddressActivity.newInstance(this, false))
@@ -78,6 +98,23 @@ class UserDetailActivity : AppCompatActivity(), Results {
         binding.profileBtn.setOnClickListener {
             BottomSheetBehavior.from(binding.pickImageOBS.imagePickOL).state = BottomSheetBehavior.STATE_COLLAPSED
         }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File? {
+        val timeStamp: String = SimpleDateFormat(
+            "yyyyMMdd_HHmmss",
+            Locale.getDefault()
+        ).format(Date())
+        val imageFileName = "IMG_" + timeStamp + "_"
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val image = File.createTempFile(
+            imageFileName,
+            ".jpg",
+            storageDir /* directory */
+        )
+        imageFilePath = image.absolutePath
+        return image
     }
 
     private fun checkPermission() {
@@ -136,7 +173,7 @@ class UserDetailActivity : AppCompatActivity(), Results {
                 }
                 cameraImagePick -> {
                     loadingView.show()
-                    AuthService(uploadAvatar, this).uploadAvatar(convertToByteCode(data?.data!!), loggedUser!!.accessToken)
+                    AuthService(uploadAvatar, this).uploadAvatar(convertToByteCode(Uri.fromFile(File(imageFilePath))), loggedUser!!.accessToken)
                 }
             }
         }

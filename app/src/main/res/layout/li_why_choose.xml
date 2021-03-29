@@ -18,12 +18,11 @@
 
             <TextView
                 android:id="@+id/whyChooseLabel"
+                translationText='@{"why_choose_us"}'
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_slab_bold"
-
-                android:text="Why Choose Us"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp"
@@ -61,6 +60,7 @@
 
                     <TextView
                         android:id="@+id/txtFresh"
+                        translationText='@{"fresh_farm_produce"}'
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
@@ -69,9 +69,10 @@
                         android:contentDescription="@string/icon"
                         android:fontFamily="@font/nunito_semi_bold"
                         android:scaleType="fitXY"
+
                         android:src="@drawable/ic_fresh"
-                        android:text="FRESH FARM PRODUCE"
                         android:textAlignment="center"
+                        android:textAllCaps="true"
                         android:textColor="@color/fresh_warm_text"
                         android:textSize="@dimen/_9sdp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -112,6 +113,7 @@
 
                     <TextView
                         android:id="@+id/txtWholeSale"
+                        translationText='@{"whole_sale_price"}'
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
@@ -121,8 +123,8 @@
                         android:fontFamily="@font/nunito_semi_bold"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_fresh"
-                        android:text="WHOLESALE PRICES"
                         android:textAlignment="center"
+                        android:textAllCaps="true"
                         android:textColor="@color/whole_sale_text"
                         android:textSize="@dimen/_9sdp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -162,6 +164,7 @@
 
                     <TextView
                         android:id="@+id/txtLoveCustomer"
+                        translationText='@{"love_for_our_customer"}'
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
@@ -171,8 +174,8 @@
                         android:fontFamily="@font/nunito_semi_bold"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_fresh"
-                        android:text="LOVE FOR OUR CUSTOMER"
                         android:textAlignment="center"
+                        android:textAllCaps="true"
                         android:textColor="@color/customer_love_text"
                         android:textSize="@dimen/_9sdp"
                         app:layout_constraintEnd_toEndOf="parent"

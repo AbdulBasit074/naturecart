@@ -94,7 +94,7 @@ class FavouriteFragment : Fragment(), ViewPager.OnPageChangeListener {
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
         allCategoryList.forEach {
             if (it.name == "All")
-                binding.tabLayout.addTab(binding.tabLayout.newTab().setText("All").setTag(it.id))
+                binding.tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.all)).setTag(it.id))
             else
                 binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it.name).setTag(it.id))
         }

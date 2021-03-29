@@ -88,32 +88,27 @@ class CartItemRvAdapter(
         }
 
         private fun updateCart(context: Context, itemId: Long, quantity: Int, requestCode: Int) {
-            val loadingDialog = LoadingDialog(context)
-            loadingDialog.show()
+
             cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
             CartService(requestCode, object : Results {
                 override fun onSuccess(requestCode: Int, data: String) {
                     Handler(Looper.getMainLooper()).postDelayed({
 
-                    val count = binding.itemCountTv.text.toString().toInt()
-                    if (requestCode == incrementRc)
-                        binding.itemCountTv.text = (count + 1).toString()
-                    else
-                        binding.itemCountTv.text = (count - 1).toString()
+                        val count = binding.itemCountTv.text.toString().toInt()
+                        if (requestCode == incrementRc)
+                            binding.itemCountTv.text = (count + 1).toString()
+                        else
+                            binding.itemCountTv.text = (count - 1).toString()
 
-
-
-                    loadingDialog.dismiss()
-                    val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
-                    PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
-                    EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                        val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                        EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
 
                     }, 1000)
 
                 }
 
                 override fun onFailure(requestCode: Int, data: String) {
-                    loadingDialog.dismiss()
                     val dialog = DialogCustom(context, R.drawable.ic_cart, data)
                     dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
                     dialog.showDialog()
@@ -136,8 +131,8 @@ class CartItemRvAdapter(
                     loadingDialog.dismiss()
                     context.showToast(data)
                 }
-
             }).removeFromCart(itemId ?: 0)
         }
+
     }
 }

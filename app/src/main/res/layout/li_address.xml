@@ -43,12 +43,12 @@
                     android:id="@+id/addressTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
                     android:fontFamily="@font/roboto_slab_semi_bold"
                     android:singleLine="true"
-                    android:text="Home"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -58,31 +58,32 @@
                     android:id="@+id/addressDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_5sdp"
-
-                    android:layout_marginEnd="@dimen/_30sdp"
+                    android:layout_marginEnd="@dimen/_25sdp"
                     android:fontFamily="@font/roboto_slab_regular"
                     android:maxLines="2"
-                    android:paddingEnd="@dimen/_10sdp"
-                    android:text="29 Burj Dubai Boulevard - Moh’d Bin Rashed Blvd - Downtown Dubai - Dubai"
+
+                    android:textAlignment="viewStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/addressTitle"
-                    tools:ignore="RtlSymmetry" />
+                    />
 
                 <ImageView
                     android:id="@+id/icon"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:src="@drawable/ic_next_black"
+                    android:contentDescription="@null"
+                    android:padding="@dimen/_2sdp"
                     android:visibility="gone"
+                    android:src="@drawable/ic_next_black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>

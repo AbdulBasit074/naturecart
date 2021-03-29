@@ -16,12 +16,12 @@
 
         <TextView
             android:id="@+id/itemChargesTitle"
+            translationText='@{"subTotal"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/roboto_slab_regular"
-            android:text="Sub Total"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,11 +40,11 @@
 
         <TextView
             android:id="@+id/deliveryChargesTitle"
+            translationText='@{"delivery_Charges"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
             android:fontFamily="@font/roboto_slab_regular"
-            android:text="Delivery Charges"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/itemCharges" />
@@ -61,13 +61,13 @@
 
         <TextView
             android:id="@+id/vatChargesTitle"
+            translationText='@{"discount"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
             android:fontFamily="@font/roboto_slab_regular"
-            android:text="Discount"
-            android:visibility="gone"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/deliveryCharges" />
 
@@ -77,20 +77,19 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_20sdp"
             android:fontFamily="@font/roboto_slab_regular"
-            android:text="5:00"
-            android:visibility="gone"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/deliveryCharges" />
 
 
         <TextView
             android:id="@+id/totalChargesTitle"
+            translationText='@{"total_charges"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
             android:fontFamily="@font/roboto_slab_semi_bold"
-            android:text="Total Charges"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,6 +108,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/Btn"
+            translationTextButton='@{"confirm_order"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_25sdp"
@@ -118,7 +118,6 @@
             android:padding="@dimen/_10sdp"
             android:paddingStart="@dimen/_30sdp"
             android:paddingEnd="@dimen/_30sdp"
-            android:text="Confirm Order"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp"

@@ -48,6 +48,7 @@ class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_category_detail)
         loadingView = LoadingDialog(this)
         loadingView?.show()
@@ -77,9 +78,9 @@ class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListe
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
         list.forEach {
-            if (it.name == "All")
+            if (it.name == Constants.getTranslate(this, "all"))
                 binding.tabLayout.addTab(
-                    binding.tabLayout.newTab().setText(getString(R.string.all)).setTag(it.name)
+                    binding.tabLayout.newTab().setText(Constants.getTranslate(this, "all")).setTag(it.name)
                 )
             else
                 binding.tabLayout.addTab(
@@ -138,7 +139,7 @@ class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListe
             categoryDetailRequest -> {
                 loadingView?.dismiss()
                 categoryDetail = Gson().fromJson(data, CategoryDetail::class.java)
-                Glide.with(this).load(categoryDetail.image).into(binding.tabHeader)
+                        Glide.with(this).load(categoryDetail.image).into(binding.tabHeader)
                 binding.title.text = categoryDetail.name
                 list.add(CategoryDetail.Child())
                 list.addAll(categoryDetail.childs!!)
@@ -150,11 +151,14 @@ class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListe
     override fun onFailure(requestCode: Int, data: String) {
         loadingView?.dismiss()
         showToast(data)
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCartUpdated(event: CartItemAddedEvent) {
-        binding.itemsCountTv.text = StringBuilder().append("Total ${if (event.itemCount == 1) "Item" else "Items"}: ").append(event.itemCount)
+        binding.itemsCountTv.text =
+            StringBuilder().append(Constants.getTranslate(this, "total") + "${if (event.itemCount == 1) Constants.getTranslate(this, "item") else Constants.getTranslate(this, "items")}: ")
+                .append(event.itemCount)
         binding.totalTv.text = getString(R.string.aed_price, String.format("%.2f", event.total))
         binding.itemAddedDialog.visibility = View.VISIBLE
     }

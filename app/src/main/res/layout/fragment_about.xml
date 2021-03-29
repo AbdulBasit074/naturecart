@@ -43,16 +43,30 @@
 
                     <TextView
                         android:id="@+id/aboutLabel"
+                        translationText='@{"about"}'
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_30sdp"
                         android:fontFamily="@font/roboto_slab_semi_bold"
-                        android:text="About \n Nature’s Cart"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_22ssp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/appLogo" />
+                    <TextView
+                        android:id="@+id/aboutNatureLabel"
+                        translationText='@{"nature_cart"}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:fontFamily="@font/roboto_slab_semi_bold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_22ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/aboutLabel" />
+
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.cardview.widget.CardView
@@ -62,7 +76,6 @@
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
                     app:cardCornerRadius="@dimen/_20sdp"
-
                     app:cardElevation="@dimen/_2sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/topSectionAbout">
@@ -85,12 +98,14 @@
 
                         <TextView
                             android:id="@+id/aboutLabelAbout"
-                            android:layout_width="@dimen/_170sdp"
+                            translationText='@{"about_section_one"}'
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_30sdp"
+                            android:layout_marginEnd="@dimen/_30sdp"
                             android:fontFamily="@font/roboto_slab_semi_bold"
-                            android:text="Nature’s Cart’s Promoter is one of the largest fruit and vegetable importer, wholesaler &amp; distributor in GCC Countries over the last 20 years."
+                            android:lineSpacingExtra="@dimen/_3sdp"
                             android:textAlignment="textStart"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12ssp"
@@ -102,67 +117,11 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-
-                    android:id="@+id/missionContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_250sdp"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    app:cardCornerRadius="@dimen/_20sdp"
-                    app:cardElevation="@dimen/_2sdp"
+                <include
+                    android:id="@+id/ourMissionContainer"
+                    layout="@layout/item_our_mission"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/aboutContainer">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_250sdp"
-                        android:background="@drawable/mission_background">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/mission_text_bg"
-                            android:padding="@dimen/_10sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:id="@+id/aboutLabelMission"
-                                android:layout_width="@dimen/_170sdp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:layout_marginBottom="@dimen/_30sdp"
-                                android:fontFamily="@font/roboto_slab_semi_bold"
-                                android:text="Fresh from the farm, Delivered to your doorstep"
-                                android:textAlignment="textStart"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_12ssp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/aboutTitleMission" />
-
-                            <TextView
-                                android:id="@+id/aboutTitleMission"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto_slab_semi_bold"
-                                android:text="Our Mission"
-                                android:textAlignment="textStart"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_15ssp"
-                                app:layout_constraintBottom_toTopOf="@+id/aboutLabelMission"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.cardview.widget.CardView>
+                    app:layout_constraintTop_toBottomOf="@id/aboutContainer" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/contactContainer"
@@ -174,7 +133,7 @@
                     app:cardCornerRadius="@dimen/_20sdp"
                     app:cardElevation="@dimen/_3sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/missionContainer">
+                    app:layout_constraintTop_toBottomOf="@id/ourMissionContainer">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -183,6 +142,7 @@
 
                         <TextView
                             android:id="@+id/contactTitle"
+                            translationText='@{"contact_help"}'
                             android:layout_width="@dimen/_250sdp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_20sdp"
@@ -195,20 +155,11 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/emailBtn"
-                            android:layout_width="@dimen/_250sdp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:background="@drawable/contact_item_bg"
-                            android:drawablePadding="@dimen/_10sdp"
-                            android:fontFamily="@font/roboto_slab_semi_bold"
-                            android:padding="@dimen/_10sdp"
-                            android:text="customercare@naturescart.ae"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/_11ssp"
-                            app:drawableStartCompat="@drawable/ic_mail"
+                        <include
+                            android:id="@+id/emailContainer"
+                            layout="@layout/contact_help_email"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.457"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/contactTitle" />
 
@@ -227,7 +178,7 @@
                             app:drawableStartCompat="@drawable/ic_bx_support"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/emailBtn" />
+                            app:layout_constraintTop_toBottomOf="@+id/emailContainer" />
 
                         <TextView
                             android:id="@+id/facebookBtn"

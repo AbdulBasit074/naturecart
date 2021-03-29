@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,19 +13,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_30sdp"
+            android:contentDescription="@null"
             android:src="@drawable/icon_order_place"
             app:layout_constraintBottom_toBottomOf="@id/titleLmd"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-
-            />
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
             android:id="@+id/titleLmd"
+            translationText='@{"have_lemonade"}'
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_slab_semi_bold"
-            android:text="Have a lemonade"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_15ssp"
@@ -35,15 +33,17 @@
 
         <TextView
             android:id="@+id/titleProcessing"
+            translationText='@{"we_are_processing_order"}'
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_slab_regular"
-            android:text="We are processing your order..."
             android:textAlignment="center"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintTop_toBottomOf="@id/titleLmd" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/Btn"
+            translationTextButton='@{"go_back"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_25sdp"
@@ -53,7 +53,6 @@
             android:padding="@dimen/_10sdp"
             android:paddingStart="@dimen/_30sdp"
             android:paddingEnd="@dimen/_30sdp"
-            android:text="Go Back"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp"

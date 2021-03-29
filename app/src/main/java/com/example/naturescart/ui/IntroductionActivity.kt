@@ -8,10 +8,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.naturescart.R
 import com.example.naturescart.adapters.IntroductionViewPagerAdapter
 import com.example.naturescart.databinding.ActivityIntroductionBinding
-import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.Persister
-import com.example.naturescart.helper.moveToWithoutHistory
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.OnBoarding
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.auth.AuthService
@@ -24,14 +21,15 @@ class IntroductionActivity : AppCompatActivity(), Results {
     private lateinit var binding: ActivityIntroductionBinding
     private var boardList: ArrayList<OnBoarding> = ArrayList()
     private val onBoardRequest: Int = 1293
+    private var cacheImage: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_introduction)
         val data = Persister.with(this).getPersisted(Constants.onBoardingPersistenceKey)
-        if (data == null)
-            DataService(onBoardRequest, this).onBoarding()
-        else
+        DataService(onBoardRequest, this).onBoarding()
+        if (data != null)
             onSuccess(onBoardRequest, data)
         setViewPagerAdapter()
         setListeners()
@@ -55,8 +53,21 @@ class IntroductionActivity : AppCompatActivity(), Results {
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             onBoardRequest -> {
-                boardList.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<OnBoarding>>() {}.type))
-                binding.viewPagerIntroduction.adapter?.notifyDataSetChanged()
+
+
+                if (cacheImage) {
+                    boardList.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<OnBoarding>>() {}.type))
+                    boardList.forEach {
+                        it.description = ""
+                        it.name = ""
+                    }
+                    binding.viewPagerIntroduction.adapter?.notifyDataSetChanged()
+                    cacheImage = false
+                } else {
+                    boardList.clear()
+                    boardList.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<OnBoarding>>() {}.type))
+                    binding.viewPagerIntroduction.adapter?.notifyDataSetChanged()
+                }
             }
         }
     }

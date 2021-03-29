@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityEditProfileBinding
-import com.example.naturescart.helper.DialogCustom
-import com.example.naturescart.helper.DialogCustomPasswordChange
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
 import com.example.naturescart.services.Results
@@ -21,6 +19,7 @@ class EditProfileActivity : AppCompatActivity(), Results {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile)
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         binding.user = loggedUser
@@ -59,20 +58,21 @@ class EditProfileActivity : AppCompatActivity(), Results {
 
     private fun isInputOk(): Boolean {
 
-        when {
+        return when {
             binding.nameEt.text.isEmpty() -> {
-                showToast("Name must required")
-                return false
+
+                showToast(Constants.getTranslate(this, "name_req"))
+                false
             }
             binding.emailEt.text.isEmpty() -> {
-                showToast("Email must required")
-                return false
+                showToast(Constants.getTranslate(this, "email_required"))
+                false
             }
             binding.phoneNo.text.isEmpty() -> {
-                showToast("Email must required")
-                return false
+                showToast(Constants.getTranslate(this, "phone_req"))
+                false
             }
-            else -> return true
+            else -> true
         }
     }
 
@@ -92,6 +92,7 @@ class EditProfileActivity : AppCompatActivity(), Results {
         NatureDb.getInstance(this).userDao().logOut()
         NatureDb.getInstance(this).userDao().login(loggedUser!!)
     }
+
     override fun onFailure(requestCode: Int, data: String) {
         showToast(data)
     }

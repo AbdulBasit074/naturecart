@@ -22,12 +22,12 @@
 
             <TextView
                 android:id="@+id/favoriteTitle"
+                translationText='@{"favourite"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_slab_semi_bold"
-                android:text="Favourite"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -77,11 +77,11 @@
 
                 <TextView
                     android:id="@+id/labelNoFavorites"
+                    translationText='@{"no_favourities"}'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:fontFamily="@font/roboto_slab_semi_bold"
-                    android:text="No Favourities"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/_18ssp"
                     app:layout_constraintBottom_toTopOf="@id/descriptionNoFavorites"
@@ -91,9 +91,9 @@
 
                 <TextView
                     android:id="@+id/descriptionNoFavorites"
+                    translationText='@{"ghost_here"}'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ghost haunts here.."
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

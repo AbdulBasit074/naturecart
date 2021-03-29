@@ -40,7 +40,9 @@ class DataService(requestCode: Int, callBack: Results) : BaseService(requestCode
     fun getFrequentlyPurchasedProducts(authToken: String) {
         RetrofitClient.getInstance().create(DataClient::class.java).getFrequentlyPurchasedProducts("Bearer $authToken").enqueue(this)
     }
-
+    fun getTranslation(){
+        RetrofitClient.getInstance().create(DataClient::class.java).getTranslation().enqueue(this)
+    }
 
 
 }

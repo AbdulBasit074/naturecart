@@ -44,6 +44,7 @@
 
             <EditText
                 android:id="@+id/searchEt"
+                translationEditTextHint='@{"search_fruits_etc"}'
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -53,7 +54,6 @@
                 android:background="@drawable/ic_search_field"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="@dimen/_5sdp"
-                android:hint="Search fruits, herbs, spices…"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:paddingStart="@dimen/_10sdp"
@@ -61,7 +61,7 @@
                 android:paddingEnd="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 app:layout_constraintTop_toBottomOf="@id/topContainer"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,LabelFor" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/searchHistoryRv"
@@ -108,11 +108,11 @@
 
                 <TextView
                     android:id="@+id/labelNoResults"
+                    translationText='@{"no_search_results"}'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:fontFamily="@font/roboto_slab_semi_bold"
-                    android:text="No search results"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/_18ssp"
                     app:layout_constraintBottom_toTopOf="@id/descriptionNoResults"
@@ -122,9 +122,9 @@
 
                 <TextView
                     android:id="@+id/descriptionNoResults"
+                    translationText='@{"please_trying_searching_again"}'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Please trying searching again"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -161,12 +161,12 @@
 
                 <TextView
                     android:id="@+id/labelTotal"
+                    translationText='@{"total"}'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:fontFamily="@font/nunito_regular"
-                    android:text="Total"
                     android:textColor="@android:color/white"
                     app:layout_constraintBottom_toTopOf="@id/totalTv"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -187,8 +187,6 @@
                     app:layout_constraintVertical_chainStyle="packed" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.cardview.widget.CardView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

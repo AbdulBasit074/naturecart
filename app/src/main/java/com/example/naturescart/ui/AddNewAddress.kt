@@ -76,11 +76,11 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_new_address)
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         isUpdate = intent.getBooleanExtra(Constants.isUpdate, false)
-        showToast("Loading Map...")
-
+        showToast(Constants.getTranslate(this, "loading_map"))
         AddressService(nickRequestGet, this).getNickAddress(loggedUser?.accessToken ?: "")
         AddressService(citiesRequest, this).getCities(loggedUser?.accessToken ?: "")
         updateUI()
@@ -109,7 +109,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             binding.addressEt.setText(addressSave.address)
             binding.phoneNo.setText(addressSave.phone?.replace("+971", ""))
             binding.cityEt.setText(addressSave.city)
-            binding.addressAddBtn.text = "Update"
+            binding.addressAddBtn.text = Constants.getTranslate(this, "update")
             positionNickKey = addressSave.addressNick.toString().toLowerCase()
 
         } else {
@@ -154,7 +154,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
                 addressSave.city = binding.cityEt.text.toString()
                 if (latLng == null) {
-                    showToast("Map location not updated now...")
+                    showToast(Constants.getTranslate(this, "map_location_not_updated"))
                 } else {
                     addressSave.latitude = latLng!!.latitude
                     addressSave.longitude = latLng!!.longitude
@@ -172,11 +172,11 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             }
         }
         binding.addressNickEt.setOnClickListener {
-            setDataList("Select Nick", nickList, binding.addressNickEt)
+            setDataList(Constants.getTranslate(this, "select_nick"), nickList, binding.addressNickEt)
             binding.addressNickOther.visibility = View.GONE
         }
         binding.cityEt.setOnClickListener {
-            setDataList("Select City", citiesList, binding.cityEt)
+            setDataList(Constants.getTranslate(this, "select_city"), citiesList, binding.cityEt)
         }
     }
 
@@ -185,24 +185,24 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         when {
 
             binding.addressNickEt.text.isEmpty() -> {
-                showToast("Nick Address Field is Empty")
+                showToast(Constants.getTranslate(this, "nick_address_req"))
                 return false
             }
             binding.addressEt.text.isEmpty() -> {
-                showToast("Address Field is Empty")
+                showToast(Constants.getTranslate(this, "address_field_req"))
                 return false
             }
             binding.phoneNo.text.isEmpty() -> {
-                showToast("Phone Field is Empty")
+                showToast(Constants.getTranslate(this, "phone_field_req"))
                 return false
             }
             binding.cityEt.text.isEmpty() -> {
-                showToast("City Field is Empty")
+                showToast(Constants.getTranslate(this, "city_field_req"))
                 return false
             }
             positionNickKey == "other" -> {
                 if (binding.addressNickOther.text.isEmpty()) {
-                    showToast("Nick Other address is empty")
+                    showToast(Constants.getTranslate(this, "nick_other_req"))
                     return false
                 }
                 return true

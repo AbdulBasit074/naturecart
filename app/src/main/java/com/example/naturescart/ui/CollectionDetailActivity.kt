@@ -46,6 +46,7 @@ class CollectionDetailActivity : AppCompatActivity(), ViewPager.OnPageChangeList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_collection_detail)
         loadingView = LoadingDialog(this)
         loadingView?.show()
@@ -73,8 +74,8 @@ class CollectionDetailActivity : AppCompatActivity(), ViewPager.OnPageChangeList
         val categoryNames: ArrayList<String> = ArrayList()
         list.forEach {
             if (it.name == null) {
-                binding.tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.all)).setTag(getString(R.string.all)))
-                categoryNames.add(getString(R.string.all))
+                binding.tabLayout.addTab(binding.tabLayout.newTab().setText(Constants.getTranslate(this, "all")).setTag(Constants.getTranslate(this, "all")))
+                categoryNames.add(Constants.getTranslate(this, "all"))
             } else {
                 binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it.categoryName).setTag(it.categoryName))
                 categoryNames.add(it.categoryName ?: "")
@@ -128,10 +129,13 @@ class CollectionDetailActivity : AppCompatActivity(), ViewPager.OnPageChangeList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCartUpdated(event: CartItemAddedEvent) {
-        binding.itemsCountTv.text = StringBuilder().append("Total ${if (event.itemCount == 1) "Item" else "Items"}: ").append(event.itemCount)
+        binding.itemsCountTv.text =
+            StringBuilder().append(Constants.getTranslate(this, "total") + "${if (event.itemCount == 1) Constants.getTranslate(this, "item") else Constants.getTranslate(this, "items")}: ")
+                .append(event.itemCount)
         binding.totalTv.text = getString(R.string.aed_price, String.format("%.2f", event.total))
         binding.itemAddedDialog.visibility = View.VISIBLE
     }
+
     override fun onResume() {
         super.onResume()
         EventBus.getDefault().register(this)

@@ -7,7 +7,9 @@ import androidx.preference.PreferenceManager
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityLanguageSelectionBinding
 import com.example.naturescart.helper.Constants
+import com.example.naturescart.helper.TranslationsHelper
 import com.example.naturescart.helper.moveToWithoutHistory
+import com.example.naturescart.helper.setLanguage
 
 class LanguageSelectionActivity : AppCompatActivity() {
 
@@ -15,13 +17,21 @@ class LanguageSelectionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_language_selection)
         setListeners()
     }
 
     private fun setListeners() {
-        binding.englishBtn.setOnClickListener { checkStatus() }
-        binding.arabicBtn.setOnClickListener { checkStatus() }
+        binding.englishBtn.setOnClickListener {
+            TranslationsHelper.getInstance(this).setLanguage("en")
+            setLanguage()
+            checkStatus()
+        }
+        binding.arabicBtn.setOnClickListener {
+            TranslationsHelper.getInstance(this).setLanguage("ar")
+            checkStatus()
+        }
     }
 
     private fun checkStatus() {

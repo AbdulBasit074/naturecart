@@ -30,6 +30,7 @@
 
             <TextView
                 android:id="@+id/searchTv"
+                translationTextHint='@{"search_for_location"}'
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
@@ -38,7 +39,6 @@
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:background="@drawable/bg_search_et"
                 android:drawablePadding="@dimen/_16sdp"
-                android:hint="Search for location"
                 android:paddingStart="@dimen/_12sdp"
                 android:paddingTop="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_8sdp"
@@ -93,7 +93,7 @@
             android:fontFamily="@font/nunito_semi_bold"
             android:paddingStart="@dimen/_20sdp"
             android:paddingEnd="@dimen/_20sdp"
-            android:text="Confirm"
+            translationTextButton='@{"confirm"}'
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/_13ssp"

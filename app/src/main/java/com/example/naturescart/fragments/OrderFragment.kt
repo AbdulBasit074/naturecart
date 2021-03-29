@@ -130,10 +130,8 @@ class OrderFragment : Fragment(), Results {
             }
         }
     }
-
     override fun onSuccess(requestCode: Int, data: String) {
         Handler(Looper.getMainLooper()).postDelayed({
-
 
             when (requestCode) {
                 ordersRequest -> {

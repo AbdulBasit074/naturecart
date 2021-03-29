@@ -18,11 +18,11 @@
 
             <TextView
                 android:id="@+id/howWorkLabel"
+                translationText='@{"how_it_works"}'
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_slab_bold"
-                android:text="How it works"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp"
@@ -32,8 +32,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:contentDescription="@null"
                 android:layout_marginStart="@dimen/_25sdp"
+                android:contentDescription="@null"
                 android:src="@drawable/vertical_line"
                 app:layout_constraintBottom_toBottomOf="@id/containerFour"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,12 +65,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    translationText='@{"how_it_work_option_one"}'
                     android:layout_width="@dimen/_200sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:fontFamily="@font/nunito_semi_bold"
                     android:singleLine="false"
-                    android:text="Select from a fresh variety of fruits and vegetables"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -105,12 +105,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    translationText='@{"how_it_work_option_two"}'
                     android:layout_width="@dimen/_200sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:fontFamily="@font/nunito_semi_bold"
                     android:singleLine="false"
-                    android:text="Save your favorite items"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -145,12 +145,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    translationText='@{"how_it_work_option_three"}'
                     android:layout_width="@dimen/_200sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:fontFamily="@font/nunito_semi_bold"
                     android:singleLine="false"
-                    android:text="Order before 3 pm to get your order delivered on the same day"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -186,13 +186,13 @@
 
                 <TextView
                     android:id="@+id/contactUsTxt"
+                    translationText='@{"contact_us"}'
                     android:layout_width="@dimen/_200sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:fontFamily="@font/nunito_semi_bold"
                     android:singleLine="true"
-                    android:text="Contact us"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="parent"

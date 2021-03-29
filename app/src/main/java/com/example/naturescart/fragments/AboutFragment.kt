@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.naturescart.R
 import com.example.naturescart.databinding.FragmentAboutBinding
+import com.example.naturescart.helper.Constants
 
 
 class AboutFragment : Fragment() {
@@ -23,7 +24,8 @@ class AboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mBinding.emailBtn.setOnClickListener {
+        setTranslationForMissionSection()
+        mBinding.emailContainer.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:customercare@naturescart.ae")
             try {
@@ -44,6 +46,11 @@ class AboutFragment : Fragment() {
         mBinding.instagramBtn.setOnClickListener {
             openLink("https://www.instagram.com/naturescartuae/")
         }
+    }
+
+    private fun setTranslationForMissionSection() {
+        mBinding.ourMissionContainer.aboutTitleMission.text = Constants.getTranslate(requireContext(), "our_mission")
+        mBinding.ourMissionContainer.aboutLabelMission.text = Constants.getTranslate(requireContext(), "our_mission_detail")
     }
 
     private fun openLink(link: String) {

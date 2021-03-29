@@ -106,12 +106,12 @@
 
                 <TextView
                     android:id="@+id/labelTotal"
+                    translationText='@{"total"}'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:fontFamily="@font/nunito_regular"
-                    android:text="Total"
                     android:textColor="@android:color/white"
                     app:layout_constraintBottom_toTopOf="@id/totalTv"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_slab_semi_bold"
-            android:text="Connection Error"
+            translationText='@{"connection_error"}'
             android:textColor="@android:color/black"
             android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="@id/backBtn"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_12sdp"
             android:fontFamily="@font/nunito_regular"
-            android:text="No Internet!"
+            translationText='@{"no_internet"}'
             android:textColor="@android:color/black"
             android:textSize="@dimen/_18ssp"
             app:layout_constraintBottom_toTopOf="@id/labelDescription"
@@ -53,7 +53,7 @@
             android:gravity="center"
             android:paddingStart="@dimen/_30sdp"
             android:paddingEnd="@dimen/_30sdp"
-            android:text="Your device is not connected to internet!"
+            translationText='@{"not_connected"}'
             android:textColor="@android:color/black"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -72,7 +72,7 @@
             android:fontFamily="@font/nunito_semi_bold"
             android:paddingStart="@dimen/_20sdp"
             android:paddingEnd="@dimen/_20sdp"
-            android:text="Retry"
+            translationText='@{"retry"}'
             android:textColor="@color/white"
             android:textSize="@dimen/_13ssp"
             app:layout_constraintTop_toBottomOf="@id/labelDescription"

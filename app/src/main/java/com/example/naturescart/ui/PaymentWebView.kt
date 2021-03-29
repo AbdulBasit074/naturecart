@@ -14,6 +14,7 @@ import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityPaymentWebViewBinding
 import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.LoadingDialog
+import com.example.naturescart.helper.setLanguage
 import java.text.DateFormat
 import java.util.*
 
@@ -34,6 +35,7 @@ class PaymentWebView : AppCompatActivity() {
     private lateinit var binding: ActivityPaymentWebViewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_payment_web_view)
         cartID = intent.getLongExtra(Constants.cartID, 0)
         userID = intent.getIntExtra(Constants.userID, 0)

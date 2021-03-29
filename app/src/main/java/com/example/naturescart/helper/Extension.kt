@@ -39,7 +39,12 @@ fun AppCompatActivity.moveToWithoutHistory(clazz: Class<*>) {
     startActivity(Intent(this, clazz))
     finishAffinity()
 }
-
+fun AppCompatActivity.setLanguage() {
+    val displayMetrics = resources.displayMetrics
+    val configuration = resources.configuration
+    configuration.setLocale(Locale(TranslationsHelper.getInstance(this).getLocale()))
+    resources.updateConfiguration(configuration, displayMetrics)
+}
 
 fun Fragment.moveFromFragment(activity: Activity, clazz: Class<*>) {
     startActivity(Intent(activity, clazz))

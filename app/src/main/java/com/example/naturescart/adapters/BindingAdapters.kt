@@ -1,10 +1,10 @@
 package com.example.naturescart.adapters
 
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
+import com.example.naturescart.helper.TranslationsHelper
 import com.mikhaellopez.circularimageview.CircularImageView
 
 
@@ -12,6 +12,29 @@ import com.mikhaellopez.circularimageview.CircularImageView
 fun setCircularImage(imageView: CircularImageView, src: String?) {
     Glide.with(imageView.context).load(src).into(imageView)
 }
+@BindingAdapter("translationText")
+fun translationText(textView: TextView, key: String) {
+    textView.text = TranslationsHelper.getInstance(textView.context).getTranslation(key)
+}
+@BindingAdapter("translationRadioButton")
+fun translationRadioButton(radioBtn: RadioButton, key: String) {
+    radioBtn.text = TranslationsHelper.getInstance(radioBtn.context).getTranslation(key)
+}
+
+@BindingAdapter("translationTextButton")
+fun translationTextButton(btn: Button, key: String) {
+    btn.text = TranslationsHelper.getInstance(btn.context).getTranslation(key)
+}
+@BindingAdapter("translationTextHint")
+fun translationTextHint(textView: TextView, key: String) {
+    textView.hint= TranslationsHelper.getInstance(textView.context).getTranslation(key)
+}
+@BindingAdapter("translationEditTextHint")
+fun translationEditTextHint(textView: EditText, key: String) {
+    textView.hint= TranslationsHelper.getInstance(textView.context).getTranslation(key)
+}
+
+
 
 @BindingAdapter("setImage")
 fun setImage(imageView: ImageView, src: String) {

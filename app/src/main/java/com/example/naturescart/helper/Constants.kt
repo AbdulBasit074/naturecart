@@ -15,6 +15,7 @@ class Constants {
         const val addressID: String = "addressID"
         const val orderDetail: String = "orderDetail"
         const val onBoardingShow: String = "onBoardingShow"
+        const val localeKey = "localeKey"
         const val languageSelected = "languageSelected"
         const val categoryID = "categoryID"
         const val categoryName = "categoryName"
@@ -36,6 +37,12 @@ class Constants {
         const val selectionAddress = "selectionAddress"
         const val updateAddress = "updateAddress"
         const val deviceType = "android"
+
+
+        fun getTranslate(context: Context,key:String): String {
+           return TranslationsHelper.getInstance(context).getTranslation(key)
+        }
+
 
         fun geoCoding(latitude: Double, longitude: Double, context: Context): String {
             val addresses: List<Address>

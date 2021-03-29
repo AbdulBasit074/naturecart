@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:id="@+id/loading"
     app:cardElevation="@dimen/_4sdp">
-
     <ProgressBar
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -17,6 +17,7 @@ import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityNoInternetBinding
 import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.moveToWithoutHistory
+import com.example.naturescart.helper.setLanguage
 
 class NoInternetActivity : AppCompatActivity() {
 
@@ -35,6 +36,7 @@ class NoInternetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_no_internet)

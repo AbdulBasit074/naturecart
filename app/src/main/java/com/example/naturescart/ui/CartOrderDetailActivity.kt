@@ -8,10 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityCartOrderDetailBinding
-import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.moveForResult
-import com.example.naturescart.helper.moveTo
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.Address
 import com.example.naturescart.model.CartDetail
 import com.example.naturescart.model.User
@@ -43,6 +40,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_cart_order_detail)
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         cartDetail = intent.getParcelableExtra(Constants.cartDetail)
@@ -77,7 +75,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
                 )
 
             } else {
-                showToast("Please select Address")
+                showToast(Constants.getTranslate(this,"select_address"))
             }
         }
     }

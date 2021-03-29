@@ -85,7 +85,7 @@ class AddressesRvAdapter(
             binding.revealLayout.close(true)
             items.removeAt(deletedSelect)
             notifyDataSetChanged()
-            binding.deleteBtn.context.showToast("Address Deleted")
+            binding.deleteBtn.context.showToast(Constants.getTranslate(binding.icon.context, "address_deleted"))
         }
 
         override fun onFailure(requestCode: Int, data: String) {

@@ -18,13 +18,9 @@ class CartService(requestCode: Int, callBack: Results) : BaseService(requestCode
             .getCartDetail(cartId)
             .enqueue(this)
     }
-
-
     fun removeFromCart(itemId: Long) {
         RetrofitClient.getInstance().create(CartClient::class.java)
             .removeFromCart(itemId)
             .enqueue(this)
     }
-
-
 }

@@ -6,11 +6,13 @@ import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityMenuBinding
 import com.example.naturescart.databinding.ActivityNotificationBinding
+import com.example.naturescart.helper.setLanguage
 
 class NotificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNotificationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_notification)
         setListeners()
     }

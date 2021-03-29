@@ -9,10 +9,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.adapters.AddressesRvAdapter
 import com.example.naturescart.databinding.ActivityAddressBinding
-import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.DialogCustom
-import com.example.naturescart.helper.moveForResult
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.Address
 import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
@@ -46,6 +43,7 @@ class AddressActivity : AppCompatActivity(), Results {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_address)
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         isSelection = intent.getBooleanExtra(Constants.isAddressSelection, false)
@@ -56,7 +54,7 @@ class AddressActivity : AppCompatActivity(), Results {
 
     private fun setData() {
         if (isSelection)
-            binding.title.text = "Select Address"
+            binding.title.text = Constants.getTranslate(this, "select_address")
     }
 
     private fun setListener() {
@@ -96,7 +94,7 @@ class AddressActivity : AppCompatActivity(), Results {
                     DialogCustom(
                         this,
                         R.drawable.ic_thumb,
-                        "Address Update"
+                        Constants.getTranslate(this, "address_update")
                     ).show()
                     AddressService(addressList, this).getAddress(loggedUser?.accessToken ?: "")
                 }
@@ -104,7 +102,7 @@ class AddressActivity : AppCompatActivity(), Results {
                     DialogCustom(
                         this,
                         R.drawable.ic_thumb,
-                        "Address Added"
+                        Constants.getTranslate(this, "address_added")
                     ).show()
                     AddressService(addressList, this).getAddress(loggedUser?.accessToken ?: "")
                 }

@@ -23,6 +23,7 @@
 
             <TextView
                 android:id="@+id/searchEt"
+                translationTextHint='@{"search_fruits_etc"}'
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -31,7 +32,6 @@
                 android:background="@drawable/ic_search_field"
                 android:drawablePadding="@dimen/_5sdp"
                 android:gravity="center_vertical"
-                android:hint="Search fruits, herbs, spices…"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 app:drawableStartCompat="@drawable/ic_search"
@@ -85,13 +85,13 @@
 
                     <TextView
                         android:id="@+id/categoryLabel"
+                        translationText='@{"category"}'
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_8sdp"
                         android:fontFamily="@font/roboto_slab_bold"
-                        android:text="Category"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +117,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_8sdp"
                         android:fontFamily="@font/roboto_slab_bold"
-                        android:text="Frequently Purchased"
+                        translationText='@{"frequently_purchased"}'
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         android:visibility="gone"
@@ -158,8 +158,9 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_8sdp"
+                        translationText='@{"new_arrivals"}'
+
                         android:fontFamily="@font/roboto_slab_bold"
-                        android:text="New Arrivals"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16ssp"
                         app:layout_constraintStart_toStartOf="parent"

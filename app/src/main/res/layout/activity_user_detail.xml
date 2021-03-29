@@ -41,23 +41,22 @@
                     android:layout_height="@dimen/_30sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_2sdp"
+                    android:contentDescription="@null"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_back_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/helloTitle"
+                translationText='@{"greetings"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/roboto_slab_semi_bold"
-                android:text="Greetings,"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -82,19 +81,19 @@
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:civ_border_width="@dimen/_1sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                app:civ_border_width="@dimen/_1sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/backBtn" />
 
             <TextView
                 android:id="@+id/changeBtn"
+                translationText='@{"change"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/nunito_semi_bold"
-                android:text="Change"
                 android:textColor="@color/saleem_green"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profileBtn" />
@@ -114,14 +113,12 @@
 
                 <TextView
                     android:id="@+id/editProfileBtn"
+                    translationText='@{"view_and_edit_profile"}'
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-
                     android:fontFamily="@font/roboto_slab_regular"
-
-                    android:text="View and edit profile"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     app:drawableEndCompat="@drawable/ic_next_black"
@@ -142,13 +139,13 @@
 
                 <TextView
                     android:id="@+id/manageAddressBtn"
+                    translationText='@{"manage_address"}'
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_slab_regular"
-                    android:text="Manage addresses"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     app:drawableEndCompat="@drawable/ic_next_black"
@@ -173,14 +170,12 @@
 
                 <TextView
                     android:id="@+id/contactUsBtn"
+                    translationText='@{"contact_us"}'
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-
                     android:fontFamily="@font/roboto_slab_regular"
-
-                    android:text="Contact us"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     app:drawableEndCompat="@drawable/ic_next_black"
@@ -200,13 +195,13 @@
 
                 <TextView
                     android:id="@+id/rateUsBtn"
+                    translationText='@{"rate_us_app_store"}'
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_slab_regular"
-                    android:text="Rate us in the App store"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     app:drawableEndCompat="@drawable/ic_next_black"
@@ -226,13 +221,13 @@
 
                 <TextView
                     android:id="@+id/langBtn"
+                    translationText='@{"language"}'
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_slab_regular"
-                    android:text="Language"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     app:drawableEndCompat="@drawable/ic_next_black"
@@ -252,14 +247,13 @@
 
                 <TextView
                     android:id="@+id/aboutBtn"
+                    translationText='@{"about_nature"}'
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-
                     android:fontFamily="@font/roboto_slab_regular"
-                    android:text="About Nature’s Cart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     app:drawableEndCompat="@drawable/ic_next_black"
@@ -270,6 +264,7 @@
 
             <TextView
                 android:id="@+id/logout"
+                translationText='@{"logout"}'
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
@@ -281,12 +276,11 @@
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_12sdp"
-                android:text="Log out"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
+                app:drawableEndCompat="@drawable/ic_next_black"
                 app:layout_constraintTop_toBottomOf="@id/appOption"
-                tools:ignore="RtlSymmetry"
-                app:drawableEndCompat="@drawable/ic_next_black" />
+                tools:ignore="RtlSymmetry" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

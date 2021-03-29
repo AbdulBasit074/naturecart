@@ -43,6 +43,7 @@ class MenuActivity : AppCompatActivity(), Results {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu)
 
         loadingView = LoadingDialog(this)
@@ -91,7 +92,7 @@ class MenuActivity : AppCompatActivity(), Results {
                 loadingView?.show()
                 AuthService(forgotPasswordRq, this).forgotPassword(binding.forgotPasswordEmailBS.emailInput.text.toString())
             } else
-                showToast("Email is required")
+                showToast(Constants.getTranslate(this, "email_required"))
         }
         binding.forgotPasswordEmailBS.loginBtn.setOnClickListener {
 
@@ -182,10 +183,10 @@ class MenuActivity : AppCompatActivity(), Results {
             }
         })
         val textColor = ContextCompat.getColor(this, R.color.saleem_green2)
-        val privacyPolicyText = SpannableString("Terms Of Services and Privacy Policy")
+        val privacyPolicyText = SpannableString(Constants.getTranslate(this, "terms_and_policy"))
         privacyPolicyText.setSpan(object : ClickableSpan() {
             override fun onClick(textView: View) {
-                startActivity(WebViewActivity.newInstance(this@MenuActivity, "Terms Of Services", Constants.termsUrl))
+                startActivity(WebViewActivity.newInstance(this@MenuActivity, Constants.getTranslate(this@MenuActivity, "terms"), Constants.termsUrl))
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -196,7 +197,7 @@ class MenuActivity : AppCompatActivity(), Results {
         }, 0, 17, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         privacyPolicyText.setSpan(object : ClickableSpan() {
             override fun onClick(textView: View) {
-                startActivity(WebViewActivity.newInstance(this@MenuActivity, "Privacy Policy", Constants.privacyPolicyUrl))
+                startActivity(WebViewActivity.newInstance(this@MenuActivity, Constants.getTranslate(this@MenuActivity, "privacy"), Constants.privacyPolicyUrl))
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -212,21 +213,21 @@ class MenuActivity : AppCompatActivity(), Results {
     private fun isRegisterInputOk(): Boolean {
         when {
             binding.registerBottomSheet.fullNameEt.text.isEmpty() -> {
-                showToast("Full name must required")
+                showToast(Constants.getTranslate(this, "full_name_required"))
                 return false
             }
 
             binding.registerBottomSheet.emailEtRegister.text.isEmpty() -> {
-                showToast("Email name must required")
+                showToast(Constants.getTranslate(this, "email_required"))
                 return false
             }
             binding.registerBottomSheet.passwordEtRegister.text.isEmpty() -> {
-                showToast("Password must required")
+                showToast(Constants.getTranslate(this, "passwrod_must_req"))
                 return false
             }
 
             binding.registerBottomSheet.phoneNo.text.isEmpty() -> {
-                showToast("Phone must required")
+                showToast(Constants.getTranslate(this,"phone_req"))
                 return false
             }
             else -> return true
@@ -238,11 +239,11 @@ class MenuActivity : AppCompatActivity(), Results {
 
         return when {
             binding.signInBottomSheet.emailEt.text.isEmpty() -> {
-                showToast("Email must required")
+                showToast(Constants.getTranslate(this, "email_required"))
                 false
             }
             binding.signInBottomSheet.passwordEt.text.isEmpty() -> {
-                showToast("Email must required")
+                showToast(Constants.getTranslate(this, "passwrod_must_req"))
                 false
             }
             else -> true

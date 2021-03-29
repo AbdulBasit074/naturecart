@@ -44,6 +44,7 @@ class HomeActivity : AppCompatActivity(), Results {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         EventBus.getDefault().register(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         AuthService(deviceAddRequest, this).addDevice(Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey, "").toString(), true)

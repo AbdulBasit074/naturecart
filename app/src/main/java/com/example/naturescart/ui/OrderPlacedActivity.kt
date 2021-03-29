@@ -12,6 +12,7 @@ import com.example.naturescart.databinding.ActivityOrderPlacedBinding
 import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.DialogCustom
 import com.example.naturescart.helper.moveTo
+import com.example.naturescart.helper.setLanguage
 
 class OrderPlacedActivity : AppCompatActivity() {
 
@@ -19,13 +20,14 @@ class OrderPlacedActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOrderPlacedBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_order_placed)
         PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(Constants.cartID, 0).apply()
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             val dialog = DialogCustom(
                 binding.root.context,
                 R.drawable.ic_thumb,
-                "Order Placed"
+                Constants.getTranslate(this, "order_placed")
             )
             dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
             dialog.show()

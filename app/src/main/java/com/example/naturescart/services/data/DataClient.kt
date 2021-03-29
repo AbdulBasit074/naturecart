@@ -59,7 +59,10 @@ interface DataClient {
 
     @GET("frequently-purchased")
     fun getFrequentlyPurchasedProducts(
-        @Header("Authorization") authToken: String?, ): Call<ResponseBody>
+        @Header("Authorization") authToken: String? ): Call<ResponseBody>
+
+    @GET("translations")
+    fun getTranslation(): Call<ResponseBody>
 
 
 }

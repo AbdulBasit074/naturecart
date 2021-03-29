@@ -64,7 +64,7 @@ class CategoryDetailFragment(private val id: Long? = 0, private val name: String
     private fun tabLayoutSetting() {
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
         list.forEach {
-            if (it.name == "All")
+            if (it.name == getString(R.string.all))
                 binding.tabLayout.addTab(
                     binding.tabLayout.newTab().setText(getString(R.string.all)).setTag(it.name)
                 )
@@ -127,7 +127,9 @@ class CategoryDetailFragment(private val id: Long? = 0, private val name: String
                 categoryDetail = Gson().fromJson(data, CategoryDetail::class.java)
                 Glide.with(this).load(categoryDetail.image).into(binding.tabHeader)
                 binding.title.text = categoryDetail.name
-                list.add(CategoryDetail.Child())
+                val categoryForAll = CategoryDetail.Child()
+                categoryForAll.name = getString(R.string.all)
+                list.add(categoryForAll)
                 list.addAll(categoryDetail.childs!!)
                 tabLayoutSetting()
             }

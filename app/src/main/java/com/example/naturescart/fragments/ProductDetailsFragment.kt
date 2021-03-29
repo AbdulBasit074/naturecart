@@ -3,6 +3,8 @@ package com.example.naturescart.fragments
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +36,6 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
     private var cartID: Long? = null
     private val productFavouriteRequest: Int = 8222
     private val addToCartRequest = 222
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_details, container, false)
@@ -136,25 +137,23 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
     }
 
     private fun addToCart(context: Context, itemId: Long, quantity: Int) {
-        val loadingDialog = LoadingDialog(context)
-        loadingDialog.show()
+
         cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
         CartService(addToCartRequest, object : Results {
             override fun onSuccess(requestCode: Int, data: String) {
-                loadingDialog.dismiss()
-                val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
-                PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
-                EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
-                EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                    PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                    EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                    EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
+                }, 1000)
             }
 
             override fun onFailure(requestCode: Int, data: String) {
-                loadingDialog.dismiss()
                 val dialog = DialogCustom(context, R.drawable.ic_cart, data)
                 dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
                 dialog.showDialog()
             }
         }).addToCart(itemId, quantity, cartID)
     }
-
 }

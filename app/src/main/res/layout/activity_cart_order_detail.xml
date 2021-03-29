@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -28,6 +29,7 @@
                     android:id="@+id/backBtn"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
+                    android:contentDescription="@null"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_back_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -35,10 +37,10 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    translationText='@{"detail"}'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_slab_semi_bold"
-                    android:text="Detail"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_15ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -61,12 +63,12 @@
 
                     <TextView
                         android:id="@+id/title"
+                        translationText='@{"select_address"}'
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:fontFamily="@font/roboto_slab_regular"
-                        android:text="Select Address"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_15ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -76,11 +78,11 @@
                         android:id="@+id/selectedAddressContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/_15sdp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:background="@drawable/border_white_round"
+                        android:paddingTop="@dimen/_15sdp"
                         android:paddingBottom="@dimen/_15sdp"
                         app:layout_constraintTop_toBottomOf="@id/title">
 
@@ -110,13 +112,15 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11ssp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/addressTitle" />
+                            app:layout_constraintTop_toBottomOf="@id/addressTitle"
+                            tools:ignore="RtlSymmetry" />
 
                         <ImageView
                             android:id="@+id/icon"
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
                             android:layout_marginEnd="@dimen/_5sdp"
+                            android:contentDescription="@null"
                             android:padding="@dimen/_2sdp"
                             android:src="@drawable/ic_next_black"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -128,12 +132,12 @@
 
                     <TextView
                         android:id="@+id/paymenttitle"
+                        translationText='@{"payment"}'
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/roboto_slab_regular"
-                        android:text="Payment"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_15ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -152,31 +156,41 @@
 
                         <RadioButton
                             android:id="@+id/online"
+                            translationRadioButton='@{"credit_card"}'
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:background="@drawable/border_white_round"
                             android:buttonTint="@color/saleem_green"
-                            android:drawableStart="@drawable/ic_credit"
-                            android:paddingTop="@dimen/_10sdp"
-                            android:paddingBottom="@dimen/_10sdp"
                             android:checked="true"
+                            android:drawableStart="@drawable/ic_credit"
                             android:drawablePadding="@dimen/_7sdp"
                             android:fontFamily="@font/roboto_slab_regular"
                             android:paddingStart="@dimen/_5sdp"
-                            android:text="Credit Card"
+                            android:paddingTop="@dimen/_10sdp"
+                            android:paddingBottom="@dimen/_10sdp"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_12ssp" />
+                            android:textSize="@dimen/_12ssp"
+                            tools:ignore="RtlSymmetry" />
                     </RadioGroup>
 
-                    <ImageView
+                    <TextView
                         android:id="@+id/paymentMethodPrivacy"
+                        translationText='@{"sheild_detail"}'
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_70sdp"
+                        android:layout_height="@dimen/_60sdp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        android:src="@drawable/payment_card"
+                        android:background="@drawable/border_sheild_round"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:fontFamily="@font/nunito_light"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_10sdp"
+                        android:textSize="@dimen/_9ssp"
+                        app:drawableStartCompat="@drawable/ic_shield"
                         app:layout_constraintTop_toBottomOf="@id/radioContainer" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -185,19 +199,22 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:visibility="gone"
-                        android:paddingStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:background="@drawable/border_white_round"
-                        app:layout_constraintTop_toBottomOf="@id/paymentMethodPrivacy">
+                        android:paddingStart="@dimen/_10sdp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/paymentMethodPrivacy"
+                        tools:ignore="RtlSymmetry">
 
                         <EditText
                             android:layout_width="@dimen/_160sdp"
                             android:layout_height="wrap_content"
+                            android:autofillHints="Search"
+                            android:background="@drawable/border_white_round"
                             android:fontFamily="@font/roboto_slab_regular"
                             android:hint="Enter Your Discount Code"
+                            android:inputType="text"
                             android:paddingBottom="@dimen/_5sdp"
-                            android:background="@drawable/border_white_round"
                             android:singleLine="true"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12ssp"
@@ -221,15 +238,17 @@
 
                     <EditText
                         android:id="@+id/specialInstruction"
+                        translationEditTextHint='@{"add_instruction"}'
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_15sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:autofillHints="Search"
                         android:background="@drawable/border_white_round"
                         android:fontFamily="@font/roboto_slab_regular"
                         android:gravity="start"
-                        android:hint="Add Instruction"
+                        android:inputType="text"
                         android:minHeight="@dimen/_80sdp"
                         android:padding="@dimen/_10sdp"
                         android:singleLine="true"

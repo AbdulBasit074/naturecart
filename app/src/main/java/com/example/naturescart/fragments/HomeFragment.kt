@@ -77,6 +77,7 @@ class HomeFragment : Fragment(), Results {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         loadingView = LoadingDialog(requireContext())
         setAllAdapters()
         setDummyData()

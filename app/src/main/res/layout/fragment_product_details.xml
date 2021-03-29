@@ -66,13 +66,13 @@
 
                     <TextView
                         android:id="@+id/saveLabel"
+                        translationText='@{"save"}'
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_12sdp"
                         android:background="@color/button_color_orange"
                         android:fontFamily="@font/roboto_slab_regular"
                         android:padding="@dimen/_5sdp"
-                        android:text="Save 1.00"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_9ssp"
                         android:visibility="gone"
@@ -95,7 +95,7 @@
 
                     <TextView
                         android:id="@+id/nameTv"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
@@ -111,7 +111,7 @@
 
                     <TextView
                         android:id="@+id/countryTv"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
@@ -127,7 +127,7 @@
 
                     <TextView
                         android:id="@+id/descriptionTv"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
@@ -236,6 +236,7 @@
 
                     <TextView
                         android:id="@+id/labelSold"
+                        translationText='@{"out_of_stock"}'
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_marginStart="@dimen/_12sdp"
@@ -247,7 +248,6 @@
                         android:gravity="center"
                         android:paddingTop="@dimen/_3sdp"
                         android:paddingBottom="@dimen/_3sdp"
-                        android:text="Out of stock"
                         android:textColor="@color/white"
                         android:transitionName="LabelSold"
                         android:visibility="gone"
@@ -255,12 +255,12 @@
 
                     <TextView
                         android:id="@+id/labelDescription"
+                        translationText='@{"description"}'
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_16sdp"
                         android:fontFamily="@font/tisa_pro_bold"
-                        android:text="Description"
                         android:textColor="@android:color/black"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/itemCountTv" />

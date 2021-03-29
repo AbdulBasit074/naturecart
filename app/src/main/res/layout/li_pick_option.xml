@@ -4,10 +4,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/imagePickOL"
-        android:elevation="@dimen/_5sdp"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
-        android:layout_height="wrap_content">
+        android:elevation="@dimen/_5sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/galleryLayout"
@@ -29,24 +29,22 @@
 
             <TextView
                 android:id="@+id/gallery"
+                translationText='@{"gallery"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_semi_bold"
-                android:text="Gallery"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/gelleryIcon" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cameraLayout"
             android:layout_width="@dimen/_160sdp"
             android:layout_height="@dimen/_90sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
             <ImageView
                 android:id="@+id/cameraIcon"
                 android:layout_width="@dimen/_40sdp"
@@ -57,13 +55,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/camera"
+                translationText='@{"camera"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_semi_bold"
-                android:text="Camera"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintEnd_toEndOf="parent"

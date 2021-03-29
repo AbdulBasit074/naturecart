@@ -2,6 +2,7 @@ package com.example.naturescart.services
 
 
 import com.example.naturescart.helper.Constants
+import com.example.naturescart.helper.TranslationsHelper
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -72,7 +73,7 @@ class RetrofitClient {
             val newRequest = request.newBuilder()
                 .addHeader("Content-type","application/json")
                 .addHeader("Accept", "application/json")
-                .addHeader("language", "en")
+                .addHeader("Accept-Language", TranslationsHelper.getInstanceWithoutContext()?.getLocale() ?: "en")
                 .build()
             return chain.proceed(newRequest)
         }

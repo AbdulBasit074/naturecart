@@ -22,10 +22,11 @@
 
         <TextView
             android:id="@+id/addressTitle"
+            translationText='@{"add_new_address"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:fontFamily="@font/roboto_slab_semi_bold"
-            android:text="Add New Address"
             android:textColor="@color/black"
             android:textSize="@dimen/_15ssp"
             app:layout_constraintBottom_toBottomOf="@id/backBtn"
@@ -91,23 +92,23 @@
 
             <TextView
                 android:id="@+id/markLocationOnMapBtn"
+                translationText='@{"mark_location_on_map"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_regular"
                 android:padding="@dimen/_12sdp"
-                android:text="Mark location on map"
                 android:textColor="@color/saleem_green"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/addressNickLabel"
+                translationText='@{"address_nick"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/nunito_regular"
-                android:text="Address Nick"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -115,6 +116,7 @@
 
             <TextView
                 android:id="@+id/addressNickEt"
+                translationTextHint='@{"nick"}'
                 android:layout_width="@dimen/_280sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -122,7 +124,6 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
-                android:hint="Nick"
                 android:paddingStart="@dimen/_5sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
@@ -136,13 +137,15 @@
 
             <EditText
                 android:id="@+id/addressNickOther"
+                translationEditTextHint='@{"other_are"}'
                 android:layout_width="@dimen/_280sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:autofillHints="Search"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
-                android:hint="Other are.."
+                android:inputType="text"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addressNickEt"
@@ -150,13 +153,13 @@
 
             <TextView
                 android:id="@+id/addressLabel"
+                translationText='@{"address"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/nunito_regular"
-                android:text="Address"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -164,13 +167,15 @@
 
             <EditText
                 android:id="@+id/addressEt"
+                translationEditTextHint='@{"enter_address_name"}'
                 android:layout_width="@dimen/_280sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:autofillHints="Search"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
-                android:hint="enter address name"
+                android:inputType="text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addressLabel"
                 tools:ignore="MissingConstraints" />
@@ -178,15 +183,14 @@
 
             <TextView
                 android:id="@+id/phoneLabel"
+                translationText='@{"phone"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/nunito_regular"
-                android:text="Phone"
                 android:textColor="@color/black"
-
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addressEt" />
@@ -197,13 +201,14 @@
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:contentDescription="@null"
                 android:src="@drawable/ic_flag"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
 
             <TextView
                 android:id="@+id/countryCodeLabel"
-                android:layout_width="@dimen/_30sdp"
+                android:layout_width="@dimen/_40sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginTop="@dimen/_7sdp"
@@ -223,21 +228,20 @@
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
                 android:hint="50505050"
-                android:inputType="number"
+                android:inputType="phone"
                 android:maxLength="11"
                 app:layout_constraintStart_toEndOf="@id/countryCodeLabel"
                 app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
 
             <TextView
                 android:id="@+id/cityLabel"
+                translationText='@{"city"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/nunito_regular"
-
-                android:text="City"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -245,6 +249,7 @@
 
             <TextView
                 android:id="@+id/cityEt"
+                translationTextHint='@{"city"}'
                 android:layout_width="@dimen/_280sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -252,7 +257,6 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
-                android:hint="City"
                 android:paddingStart="@dimen/_5sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
@@ -267,6 +271,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/addressAddBtn"
+                translationText='@{"add_new_address"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -274,7 +279,6 @@
                 android:fontFamily="@font/nunito_semi_bold"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
-                android:text="Add New Address"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13ssp"

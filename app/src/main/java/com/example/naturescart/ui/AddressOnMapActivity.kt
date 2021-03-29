@@ -17,6 +17,7 @@ import com.example.naturescart.databinding.ActivityAddressOnMapBinding
 import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.askToEnableGPS
 import com.example.naturescart.helper.getCurrentLocation
+import com.example.naturescart.helper.setLanguage
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -51,6 +52,7 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_address_on_map)
         initView()
     }
@@ -132,7 +134,6 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
-
     private fun onLocationAvailable(place: Place) {
         latLng = LatLng(place.latLng!!.latitude, place.latLng!!.longitude)
         mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))

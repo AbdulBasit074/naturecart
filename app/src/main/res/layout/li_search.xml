@@ -15,7 +15,6 @@
             android:drawablePadding="@dimen/_7sdp"
             android:fontFamily="@font/roboto_slab_regular"
             android:padding="@dimen/_10sdp"
-            android:text="Fruit"
             android:textColor="@color/black"
             android:textSize="@dimen/_13ssp"
             app:drawableStartCompat="@drawable/ic_search_simple"

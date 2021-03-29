@@ -12,6 +12,7 @@ import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityWebViewBinding
 import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.LoadingDialog
+import com.example.naturescart.helper.setLanguage
 
 class WebViewActivity : AppCompatActivity() {
 
@@ -30,6 +31,7 @@ class WebViewActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_web_view)
         loadingView = LoadingDialog(this)
         loadingView?.show()

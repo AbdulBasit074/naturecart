@@ -12,6 +12,7 @@ import com.example.naturescart.databinding.ActivityOrderDetailBinding
 import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.HorizantalMidDivider
 import com.example.naturescart.helper.convertDate
+import com.example.naturescart.helper.setLanguage
 import com.example.naturescart.model.CartDetail
 import com.example.naturescart.model.OrderDetail
 
@@ -32,6 +33,7 @@ class OrderDetailActivity : AppCompatActivity() {
     private var list: ArrayList<String> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_order_detail)
         orderDetail =
             this.intent.getParcelableExtra<OrderDetail>(Constants.orderDetail) as OrderDetail
@@ -41,7 +43,7 @@ class OrderDetailActivity : AppCompatActivity() {
     }
 
     private fun setOrderData() {
-        binding.orderStatus.text = StringBuilder().append("Order Status: ").append(orderDetail.status)
+        binding.orderStatus.text = StringBuilder().append(Constants.getTranslate(this, "order_status")).append(orderDetail.status)
         binding.dateTxt.text = convertDate(orderDetail.orderData.toString())
         binding.itemCharges.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.subtotal))
         binding.deliveryCharges.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary?.deliveryChanges))

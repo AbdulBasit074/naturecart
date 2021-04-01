@@ -95,11 +95,7 @@ class ItemAdapterFNRv(
                 if (NatureDb.getInstance(context).favouriteDao().getProduct(item.id!!) != null) {
                     binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav_add))
                 }
-                binding.iconIv.setOnClickListener {
-                    val pair: Pair<View, String> = Pair.create(binding.iconIv as View?, "ProductIcon")
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, pair)
-                    context.startActivity(ImageViewActivity.newInstance(context, item.image ?: ""), options.toBundle())
-                }
+
                 binding.favouriteImage.setOnClickListener {
                     val loadingDialog = LoadingDialog(context)
                     if (loggedUser != null) {

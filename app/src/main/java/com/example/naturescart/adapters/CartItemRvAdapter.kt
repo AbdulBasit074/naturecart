@@ -92,7 +92,6 @@ class CartItemRvAdapter(
             cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
             CartService(requestCode, object : Results {
                 override fun onSuccess(requestCode: Int, data: String) {
-                    Handler(Looper.getMainLooper()).postDelayed({
 
                         val count = binding.itemCountTv.text.toString().toInt()
                         if (requestCode == incrementRc)
@@ -104,7 +103,6 @@ class CartItemRvAdapter(
                         PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
                         EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
 
-                    }, 1000)
 
                 }
 

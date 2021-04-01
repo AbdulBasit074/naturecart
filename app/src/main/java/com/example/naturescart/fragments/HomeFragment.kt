@@ -1,8 +1,6 @@
 package com.example.naturescart.fragments
 
-import android.app.Activity.RESULT_OK
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -38,8 +36,9 @@ class HomeFragment : Fragment(), Results {
     private val categoriesRequest: Int = 2220
     private val frequentlyProductRequest: Int = 5154
     private val newArrivalProductRequest: Int = 5254
+    private val bannerRequest: Int = 5222
 
-    private var limit: Int = 6
+    private var limit: Int = 20
     private lateinit var handler: Handler
     private var collectionData: ArrayList<CollectionModel> = ArrayList()
     private var categoriesData: ArrayList<Category> = ArrayList()
@@ -47,6 +46,8 @@ class HomeFragment : Fragment(), Results {
     private var newArrivalProducts: ArrayList<Product> = ArrayList()
     private val layoutManager = LinearLayoutManager(activity)
     private var categoryProductData: ArrayList<CategoryProducts> = ArrayList()
+    private var bannerDataLoad: ArrayList<Banner> = ArrayList()
+
     private var loggedUser: User? = null
     private var isLoading: Boolean = true
     private var isLast: Boolean = false
@@ -62,12 +63,11 @@ class HomeFragment : Fragment(), Results {
     private val categoriesDataPersistenceKey = "categoriesDataPersistenceKey"
     private val newArrivalDataPersistenceKey = "newArrivalDataPersistenceKey"
     private val frequentlyPurchasedDataPersistenceKey = "frequentlyPurchasedDataPersistenceKey"
+    private val bannerDataPersistenceKey = "bannerDataPersistenceKey"
+
 
     private var runnable: Runnable? = null
 
-    companion object {
-        var dummyList: ArrayList<String> = ArrayList()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
@@ -80,7 +80,6 @@ class HomeFragment : Fragment(), Results {
 
         loadingView = LoadingDialog(requireContext())
         setAllAdapters()
-        setDummyData()
         setListeners()
         Handler(Looper.getMainLooper()).postDelayed({ getData() }, 500)
     }
@@ -89,13 +88,19 @@ class HomeFragment : Fragment(), Results {
         val collectionsData = Persister.with(requireContext()).getPersisted(collectionsDataPersistenceKey, null)
         val categoriesData = Persister.with(requireContext()).getPersisted(categoriesDataPersistenceKey, null)
         val newArrivalData = Persister.with(requireContext()).getPersisted(newArrivalDataPersistenceKey, null)
+        val bannerPersistData = Persister.with(requireContext()).getPersisted(bannerDataPersistenceKey, null)
+
+
         var frequentlyPurchasedData: String? = ""
         if (loggedUser != null)
             frequentlyPurchasedData = Persister.with(requireContext()).getPersisted(frequentlyPurchasedDataPersistenceKey, null)
 
 
-        if (collectionsData == null || categoriesData == null || newArrivalData == null || frequentlyPurchasedData == null)
+        if (collectionsData == null || categoriesData == null || newArrivalData == null || frequentlyPurchasedData == null || bannerPersistData == null)
             loadingView?.show()
+
+        if (bannerPersistData != null)
+            onSuccess(bannerRequest, bannerPersistData)
         if (collectionsData != null)
             onSuccess(collectionRequest, collectionsData)
         if (categoriesData != null)
@@ -108,6 +113,9 @@ class HomeFragment : Fragment(), Results {
         if (loggedUser != null)
             DataService(frequentlyProductRequest, this).getFrequentlyPurchasedProducts(loggedUser!!.accessToken)
 
+
+
+        DataService(bannerRequest, this).getBanner()
         DataService(collectionRequest, this).getCollections(pageNo, limit)
         DataService(categoriesRequest, this).getCategories(limit, false)
         DataService(newArrivalProductRequest, this).getNewArrivalProducts()
@@ -135,7 +143,7 @@ class HomeFragment : Fragment(), Results {
         homeBinding.collectionRv.adapter = adapterCollection
         homeBinding.collectionRv.addItemDecoration(HorizantalDivider())
 
-        homeBinding.topSliderVp.adapter = HomeSliderViewPagerAdapter(dummyList)
+        homeBinding.topSliderVp.adapter = HomeSliderViewPagerAdapter(bannerDataLoad)
         homeBinding.topSliderVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         homeBinding.topSliderIndicator.setViewPager2(homeBinding.topSliderVp)
         setTopSliderAnimator()
@@ -174,15 +182,6 @@ class HomeFragment : Fragment(), Results {
 //        activity?.startActivityForResult(CollectionDetailActivity.newInstance(requireActivity(), collection.id, collection.name), Constants.collectionDetailsActivityRc)
     }
 
-    private fun setDummyData() {
-        dummyList.clear()
-        dummyList.add("Dummy Data")
-        dummyList.add("Dummy Data")
-        dummyList.add("Dummy Data")
-        dummyList.add("Dummy Data")
-        dummyList.add("Dummy Data")
-    }
-
     override fun onResume() {
         super.onResume()
         loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
@@ -200,6 +199,7 @@ class HomeFragment : Fragment(), Results {
             collectionRequest -> {
                 isLoading = false
                 collectionData.clear()
+
                 collectionData.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<CollectionModel>>() {}.type))
                 if (collectionData.size < PaginationListeners.pageSize)
                     isLast = true
@@ -235,6 +235,14 @@ class HomeFragment : Fragment(), Results {
                 showData()
                 Persister.with(requireContext()).persist(frequentlyPurchasedDataPersistenceKey, data)
             }
+            bannerRequest -> {
+                bannerDataLoad.clear()
+                bannerDataLoad.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<Banner>>() {}.type))
+                showData()
+                Persister.with(requireContext()).persist(bannerDataPersistenceKey, data)
+
+            }
+
         }
     }
 
@@ -262,7 +270,7 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun showData() {
-        if (!collectionData.isNullOrEmpty() && !categoriesData.isNullOrEmpty() && !newArrivalProducts.isNullOrEmpty()) {
+        if (!collectionData.isNullOrEmpty() && !categoriesData.isNullOrEmpty() && !newArrivalProducts.isNullOrEmpty() && !bannerDataLoad.isNullOrEmpty()) {
             if (loggedUser != null && !frequentlyPurchasedProducts.isNullOrEmpty()) {
                 showDataLoggedUser()
                 if (frequentlyPurchasedProducts.size < 1) {
@@ -281,10 +289,10 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun showDataLoggedUser() {
-        Handler(Looper.getMainLooper()).postDelayed({
             loadingView?.dismiss()
             //show collections data
             homeBinding.collectionRv.adapter?.notifyDataSetChanged()
+            homeBinding.topSliderVp.adapter?.notifyDataSetChanged()
             if (!animationShown) {
                 homeBinding.collectionRv.scheduleLayoutAnimation()
                 homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
@@ -299,9 +307,6 @@ class HomeFragment : Fragment(), Results {
             //show category products data
             homeBinding.newArrivalRv.adapter?.notifyDataSetChanged()
             animationShown = true
-        }, 1000)
-
-
     }
 
     override fun onAttach(context: Context) {

@@ -130,41 +130,39 @@ class OrderFragment : Fragment(), Results {
             }
         }
     }
+
     override fun onSuccess(requestCode: Int, data: String) {
-        Handler(Looper.getMainLooper()).postDelayed({
 
-            when (requestCode) {
-                ordersRequest -> {
+        when (requestCode) {
+            ordersRequest -> {
 
-                    loadingView?.dismiss()
-                    orderList.clear()
-                    isLoading = false
-                    orderList.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<OrderDetail>>() {}.type))
-                    adapter.stopLoading()
+                loadingView?.dismiss()
+                orderList.clear()
+                isLoading = false
+                orderList.addAll(Gson().fromJson(data, object : TypeToken<ArrayList<OrderDetail>>() {}.type))
+                adapter.stopLoading()
 
-                    if (orderList.size < PaginationListeners.pageSize)
-                        isLastPage = true
-                    initPageListener()
-                    orderBinding.orderRv.addOnScrollListener(paginationListeners)
-                    orderBinding.orderRv.adapter?.notifyDataSetChanged()
-                    orderBinding.noOrdersContainer.visibility = if (orderList.isNullOrEmpty()) View.VISIBLE else View.GONE
-                    Persister.with(requireContext()).persist(ordersDataPersistenceKey, data)
-                }
-                loadMoreRequest -> {
-                    adapter.stopLoading()
-                    isLoading = false
-                    val listNewOrder = Gson().fromJson(
-                        data,
-                        object : TypeToken<ArrayList<OrderDetail>>() {}.type
-                    ) as ArrayList<OrderDetail>
-                    orderList.addAll(listNewOrder)
-                    if (listNewOrder.size < PaginationListeners.pageSize)
-                        isLastPage = true
-                    orderBinding.orderRv.adapter?.notifyDataSetChanged()
-                }
+                if (orderList.size < PaginationListeners.pageSize)
+                    isLastPage = true
+                initPageListener()
+                orderBinding.orderRv.addOnScrollListener(paginationListeners)
+                orderBinding.orderRv.adapter?.notifyDataSetChanged()
+                orderBinding.noOrdersContainer.visibility = if (orderList.isNullOrEmpty()) View.VISIBLE else View.GONE
+                Persister.with(requireContext()).persist(ordersDataPersistenceKey, data)
             }
-        }, 1000)
-
+            loadMoreRequest -> {
+                adapter.stopLoading()
+                isLoading = false
+                val listNewOrder = Gson().fromJson(
+                    data,
+                    object : TypeToken<ArrayList<OrderDetail>>() {}.type
+                ) as ArrayList<OrderDetail>
+                orderList.addAll(listNewOrder)
+                if (listNewOrder.size < PaginationListeners.pageSize)
+                    isLastPage = true
+                orderBinding.orderRv.adapter?.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun onFailure(requestCode: Int, data: String) {

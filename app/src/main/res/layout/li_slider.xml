@@ -22,9 +22,7 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/icon"
                 android:src="@drawable/dummy_slider" />
-
         </androidx.cardview.widget.CardView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

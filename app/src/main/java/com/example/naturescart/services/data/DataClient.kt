@@ -18,6 +18,11 @@ interface DataClient {
         @Query("limit") limit: Int
     ): Call<ResponseBody>
 
+    @GET("banners")
+    fun getBanners(): Call<ResponseBody>
+
+
+
     @GET("collection/{collectionId}")
     fun getCollectionProducts(
         @Path("collectionId") collectionId: Long,

@@ -141,12 +141,10 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
         cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
         CartService(addToCartRequest, object : Results {
             override fun onSuccess(requestCode: Int, data: String) {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
-                    PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
-                    EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
-                    EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
-                }, 1000)
+                val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
             }
 
             override fun onFailure(requestCode: Int, data: String) {

@@ -14,6 +14,10 @@ class DataService(requestCode: Int, callBack: Results) : BaseService(requestCode
     fun getCollections(pageNo: Int, limit: Int) {
         RetrofitClient.getInstance().create(DataClient::class.java).getCollections(pageNo, limit).enqueue(this)
     }
+    fun getBanner() {
+        RetrofitClient.getInstance().create(DataClient::class.java).getBanners().enqueue(this)
+    }
+
 
     fun getCollectionProducts(collectionId: Long, pageNo: Int, limit: Int) {
         RetrofitClient.getInstance().create(DataClient::class.java).getCollectionProducts(collectionId, pageNo, limit).enqueue(this)

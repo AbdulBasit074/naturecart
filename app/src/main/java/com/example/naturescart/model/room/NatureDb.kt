@@ -11,7 +11,7 @@ import com.example.naturescart.model.User
 
 @Database(
     entities = [User::class, Product::class, Category::class],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class NatureDb : RoomDatabase() {

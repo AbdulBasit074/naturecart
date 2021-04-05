@@ -29,6 +29,8 @@ class CategoryDetail(
     @SerializedName("description")
     @Expose
     var description: String? = null,
+    @SerializedName("icon") var icon: String? = null,
+
 
     @SerializedName("products")
     @Expose

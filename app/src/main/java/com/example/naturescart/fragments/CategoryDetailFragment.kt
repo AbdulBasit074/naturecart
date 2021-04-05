@@ -126,7 +126,6 @@ class CategoryDetailFragment(private val id: Long? = 0, private val name: String
                 loadingView?.dismiss()
                 categoryDetail = Gson().fromJson(data, CategoryDetail::class.java)
                 Glide.with(this).load(categoryDetail.image).into(binding.tabHeader)
-                binding.title.text = categoryDetail.name
                 val categoryForAll = CategoryDetail.Child()
                 categoryForAll.name = getString(R.string.all)
                 list.add(categoryForAll)

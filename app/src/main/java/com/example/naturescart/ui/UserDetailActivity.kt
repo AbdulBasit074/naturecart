@@ -2,19 +2,19 @@ package com.example.naturescart.ui
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
+import com.example.naturescart.BuildConfig
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityUserDetailBinding
 import com.example.naturescart.helper.*
@@ -63,26 +63,7 @@ class UserDetailActivity : AppCompatActivity(), Results {
             moveTo(EditProfileActivity::class.java)
         }
         binding.changeBtn.setOnClickListener {
-            checkPermission()
-            binding.pickImageOBS.cameraLayout.setOnClickListener {
-                val takePicture = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
-                if (takePicture.resolveActivity(packageManager) != null) {
-                    val photoFile: File? = createImageFile()
-                    if (photoFile != null) {
-                        val photoURI: Uri = FileProvider.getUriForFile(this, "com.ae.naturescart.provider", photoFile)
-                        takePicture.putExtra(
-                            MediaStore.EXTRA_OUTPUT,
-                            photoURI
-                        )
-                        startActivityForResult(takePicture, cameraImagePick)
-                    }
-                }
-            }
-            binding.pickImageOBS.galleryLayout.setOnClickListener {
-                val takePicture = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                startActivityForResult(takePicture, galleryImagePick)
-
-            }
+            profileImageChange()
         }
         binding.langBtn.setOnClickListener {
             startActivity(Intent(this, LanguageSelectionActivity::class.java))
@@ -95,8 +76,42 @@ class UserDetailActivity : AppCompatActivity(), Results {
             loadingView.show()
             AuthService(logoutRequest, this).userLogout(loggedUser!!.accessToken)
         }
+        binding.contactUsBtn.setOnClickListener {
+            EventBus.getDefault().postSticky(MoveToAboutEvent())
+            finish()
+        }
+        binding.aboutBtn.setOnClickListener {
+            EventBus.getDefault().postSticky(MoveToAboutEvent())
+            finish()
+        }
+        binding.rateUsBtn.setOnClickListener {
+            moveToPlayStore()
+        }
         binding.profileBtn.setOnClickListener {
-            BottomSheetBehavior.from(binding.pickImageOBS.imagePickOL).state = BottomSheetBehavior.STATE_COLLAPSED
+            profileImageChange()
+        }
+    }
+
+    private fun profileImageChange() {
+        checkPermission()
+        binding.pickImageOBS.cameraLayout.setOnClickListener {
+            val takePicture = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
+            if (takePicture.resolveActivity(packageManager) != null) {
+                val photoFile: File? = createImageFile()
+                if (photoFile != null) {
+                    val photoURI: Uri = FileProvider.getUriForFile(this, "com.ae.naturescart.provider", photoFile)
+                    takePicture.putExtra(
+                        MediaStore.EXTRA_OUTPUT,
+                        photoURI
+                    )
+                    startActivityForResult(takePicture, cameraImagePick)
+                }
+            }
+        }
+        binding.pickImageOBS.galleryLayout.setOnClickListener {
+            val takePicture = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(takePicture, galleryImagePick)
+
         }
     }
 
@@ -188,5 +203,21 @@ class UserDetailActivity : AppCompatActivity(), Results {
         val baos = ByteArrayOutputStream()
         image.compress(Bitmap.CompressFormat.JPEG, 80, baos)
         return baos.toByteArray()
+    }
+
+    private fun moveToPlayStore() {
+        val uri = Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")
+                )
+            )
+        }
     }
 }

@@ -10,9 +10,30 @@ interface CartClient {
     @POST("carts")
     fun addToCart(
         @Field("product_id") productId: Long,
-        @Field("quantity") quantity: Int,
+        @Field("quantity") quantity: Float,
         @Field("cart_id") cartId: Long?
     ): Call<ResponseBody>
+
+
+
+    @FormUrlEncoded
+    @POST("coupon/add")
+    fun applyCoupon(
+        @Header("Authorization") authToken: String,
+        @Field("code") codeCoupon: String,
+        @Field("cart_id") cartId: Long
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("coupon/remove")
+    fun removeCoupon(
+        @Header("Authorization") authToken: String,
+        @Field("code") codeCoupon: String,
+        @Field("cart_id") cartId: Long?
+    ): Call<ResponseBody>
+
+
+
 
 
     @GET("carts")

@@ -10,7 +10,9 @@ import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
+import android.text.method.HideReturnsTransformationMethod
 import android.text.method.LinkMovementMethod
+import android.text.method.PasswordTransformationMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +29,9 @@ import com.example.naturescart.services.auth.AuthService
 import com.example.naturescart.services.product.ProductService
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
+import com.skydoves.powerspinner.OnSpinnerItemSelectedListener
 import org.greenrobot.eventbus.EventBus
+import java.util.*
 
 class MenuActivity : AppCompatActivity(), Results {
 
@@ -39,15 +43,19 @@ class MenuActivity : AppCompatActivity(), Results {
     private var loadingView: LoadingDialog? = null
     private val otpArray = arrayOfNulls<String>(4)
     private lateinit var binding: ActivityMenuBinding
+    private val countries = ArrayList<String>()
     private var loggedUser: User? = null
+    private var genderSelectForRegister: String? = null
+    private var countrySelectForRegister: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu)
-
         loadingView = LoadingDialog(this)
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
+        getCountryFromLocale()
         setViews()
         setListeners()
         if (loggedUser == null)
@@ -58,6 +66,7 @@ class MenuActivity : AppCompatActivity(), Results {
         binding.contactUsBtn.setOnClickListener {
             EventBus.getDefault().postSticky(MoveToAboutEvent())
             finish()
+
         }
         binding.rateUsBtn.setOnClickListener {
             moveToPlayStore()
@@ -73,12 +82,52 @@ class MenuActivity : AppCompatActivity(), Results {
             BottomSheetBehavior.from(binding.signInBottomSheet.parent).state =
                 BottomSheetBehavior.STATE_EXPANDED
         }
-        binding.signInBottomSheet.registerNewBtn.setOnClickListener {
-            BottomSheetBehavior.from(binding.signInBottomSheet.parent).state =
-                BottomSheetBehavior.STATE_COLLAPSED
+        binding.signInBottomSheet.hideSHowPassword.setOnClickListener {
 
-            BottomSheetBehavior.from(binding.registerBottomSheet.parent).state =
-                BottomSheetBehavior.STATE_EXPANDED
+            if (binding.signInBottomSheet.passwordEt.transformationMethod == PasswordTransformationMethod.getInstance()) {
+                //For Show Password
+                binding.signInBottomSheet.hideSHowPassword.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_password_show))
+                binding.signInBottomSheet.passwordEt.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.signInBottomSheet.passwordEt.setSelection(binding.signInBottomSheet.passwordEt.text.length)
+
+            } else {
+                binding.signInBottomSheet.hideSHowPassword.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_password_hide))
+                binding.signInBottomSheet.passwordEt.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.signInBottomSheet.passwordEt.setSelection(binding.signInBottomSheet.passwordEt.text.length)
+            }
+        }
+        binding.registerBottomSheet.hideSHowPassword.setOnClickListener {
+
+            if (binding.registerBottomSheet.passwordEtRegister.transformationMethod == PasswordTransformationMethod.getInstance()) {
+                //For Show Password
+                binding.registerBottomSheet.hideSHowPassword.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_password_show))
+                binding.registerBottomSheet.passwordEtRegister.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.registerBottomSheet.passwordEtRegister.setSelection(binding.registerBottomSheet.passwordEtRegister.text.length)
+
+            } else {
+                binding.registerBottomSheet.hideSHowPassword.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_password_hide))
+                binding.registerBottomSheet.passwordEtRegister.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.registerBottomSheet.passwordEtRegister.setSelection(binding.registerBottomSheet.passwordEtRegister.text.length)
+            }
+        }
+
+
+        binding.signInBottomSheet.registerNewBtn.setOnClickListener {
+            val bottomSheetSignIn = BottomSheetBehavior.from(binding.signInBottomSheet.parent)
+            bottomSheetSignIn.state = BottomSheetBehavior.STATE_COLLAPSED
+
+            val bottomSheetRegister = BottomSheetBehavior.from(binding.registerBottomSheet.parent)
+            bottomSheetRegister.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetRegister.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
+
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                        binding.registerBottomSheet.countrySelectionSpinner.showOrDismiss()
+                    }
+                }
+            })
         }
         binding.backBtn.setOnClickListener {
             onBackPressed()
@@ -103,31 +152,55 @@ class MenuActivity : AppCompatActivity(), Results {
             BottomSheetBehavior.from(binding.forgotPasswordEmailBS.parent).state =
                 BottomSheetBehavior.STATE_COLLAPSED
         }
-
         binding.registerBottomSheet.loginBtn.setOnClickListener {
             BottomSheetBehavior.from(binding.signInBottomSheet.parent).state =
                 BottomSheetBehavior.STATE_EXPANDED
 
             BottomSheetBehavior.from(binding.registerBottomSheet.parent).state =
                 BottomSheetBehavior.STATE_COLLAPSED
-
         }
 
         binding.profileBtn.setOnClickListener {
             moveTo(UserDetailActivity::class.java)
         }
-        binding.registerBottomSheet.registerBtn.setOnClickListener {
+        binding.registerBottomSheet.male.setOnClickListener {
+            resetGenderView()
+            binding.registerBottomSheet.male.setTextColor(ContextCompat.getColor(this, R.color.black))
+            binding.registerBottomSheet.male.background = ContextCompat.getDrawable(this, R.drawable.border_black)
+            genderSelectForRegister = binding.registerBottomSheet.male.text.toString()
+        }
+        binding.registerBottomSheet.female.setOnClickListener {
+            resetGenderView()
+            binding.registerBottomSheet.female.setTextColor(ContextCompat.getColor(this, R.color.black))
+            binding.registerBottomSheet.female.background = ContextCompat.getDrawable(this, R.drawable.border_black)
+            genderSelectForRegister = binding.registerBottomSheet.female.text.toString()
 
+
+        }
+        binding.registerBottomSheet.ratherGender.setOnClickListener {
+            resetGenderView()
+            binding.registerBottomSheet.ratherGender.setTextColor(ContextCompat.getColor(this, R.color.black))
+            binding.registerBottomSheet.ratherGender.background = ContextCompat.getDrawable(this, R.drawable.border_black)
+            genderSelectForRegister = binding.registerBottomSheet.ratherGender.text.toString()
+        }
+        binding.registerBottomSheet.registerBtn.setOnClickListener {
             if (isRegisterInputOk()) {
                 loadingView?.show()
                 AuthService(registerUserRequest, this).userRegister(
-                    binding.registerBottomSheet.fullNameEt.text.toString(),
+                    binding.registerBottomSheet.firstName.text.toString(),
+                    binding.registerBottomSheet.lastName.text.toString(),
                     binding.registerBottomSheet.emailEtRegister.text.toString(),
                     binding.registerBottomSheet.passwordEtRegister.text.toString(),
-                    getString(R.string.country_phone_code) + binding.registerBottomSheet.phoneNo.text.toString()
+                    getString(R.string.country_phone_code) + binding.registerBottomSheet.phoneNo.text.toString(), genderSelectForRegister, countrySelectForRegister
                 )
             }
         }
+        binding.registerBottomSheet.countrySelectionSpinner.setOnSpinnerItemSelectedListener(object : OnSpinnerItemSelectedListener<String> {
+            override fun onItemSelected(oldIndex: Int, oldItem: String?, newIndex: Int, newItem: String) {
+                countrySelectForRegister = newItem
+            }
+        })
+
         binding.signInBottomSheet.loginBtn.setOnClickListener {
             if (isLoginInputOk()) {
                 loadingView?.show()
@@ -210,13 +283,26 @@ class MenuActivity : AppCompatActivity(), Results {
         binding.registerBottomSheet.termsAndConditionTv.movementMethod = LinkMovementMethod.getInstance()
     }
 
+    private fun resetGenderView() {
+        binding.registerBottomSheet.male.background = ContextCompat.getDrawable(this, R.drawable.border_grey)
+        binding.registerBottomSheet.female.background = ContextCompat.getDrawable(this, R.drawable.border_grey)
+        binding.registerBottomSheet.ratherGender.background = ContextCompat.getDrawable(this, R.drawable.border_grey)
+        binding.registerBottomSheet.male.setTextColor(ContextCompat.getColor(this, R.color.divider))
+        binding.registerBottomSheet.female.setTextColor(ContextCompat.getColor(this, R.color.divider))
+        binding.registerBottomSheet.ratherGender.setTextColor(ContextCompat.getColor(this, R.color.divider))
+    }
+
     private fun isRegisterInputOk(): Boolean {
         when {
-            binding.registerBottomSheet.fullNameEt.text.isEmpty() -> {
-                showToast(Constants.getTranslate(this, "full_name_required"))
+
+            binding.registerBottomSheet.firstName.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "first_name_req"))
                 return false
             }
-
+            binding.registerBottomSheet.lastName.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "last_name_req"))
+                return false
+            }
             binding.registerBottomSheet.emailEtRegister.text.isEmpty() -> {
                 showToast(Constants.getTranslate(this, "email_required"))
                 return false
@@ -227,7 +313,7 @@ class MenuActivity : AppCompatActivity(), Results {
             }
 
             binding.registerBottomSheet.phoneNo.text.isEmpty() -> {
-                showToast(Constants.getTranslate(this,"phone_req"))
+                showToast(Constants.getTranslate(this, "phone_req"))
                 return false
             }
             else -> return true
@@ -254,6 +340,7 @@ class MenuActivity : AppCompatActivity(), Results {
     private fun setViews() {
         BottomSheetBehavior.from(binding.signInBottomSheet.parent).state =
             BottomSheetBehavior.STATE_COLLAPSED
+        binding.registerBottomSheet.countrySelectionSpinner.setItems(countries)
     }
 
 
@@ -326,6 +413,17 @@ class MenuActivity : AppCompatActivity(), Results {
         }
     }
 
+    private fun getCountryFromLocale() {
+        /**get Countries from local*/
+        val locales = Locale.getAvailableLocales()
+        for (locale in locales) {
+            val country = locale.displayCountry
+            if (country.trim { it <= ' ' }.isNotEmpty() && !countries.contains(country)) {
+                countries.add(country)
+            }
+        }
+        countries.sort()
+    }
     override fun onFailure(requestCode: Int, data: String) {
         loadingView?.dismiss()
         showToast(data)

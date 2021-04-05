@@ -7,10 +7,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/viewParent"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_150sdp"
+        android:layout_height="@dimen/_170sdp"
         android:background="@color/white"
         android:elevation="20dp"
-        app:behavior_peekHeight="@dimen/_160sdp"
+        app:behavior_peekHeight="@dimen/_170sdp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         tools:ignore="HardcodedText">
 
@@ -25,7 +25,6 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/itemCharges"
             android:layout_width="wrap_content"
@@ -36,6 +35,29 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/discountAmountTitle"
+            translationText='@{"discount"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_slab_regular"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/itemCharges"
+            />
+        <TextView
+            android:id="@+id/discountAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:fontFamily="@font/roboto_slab_regular"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/itemCharges"
+            />
 
 
         <TextView
@@ -47,7 +69,7 @@
             android:fontFamily="@font/roboto_slab_regular"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemCharges" />
+            app:layout_constraintTop_toBottomOf="@id/discountAmount" />
 
         <TextView
             android:id="@+id/deliveryCharges"
@@ -57,17 +79,16 @@
             android:fontFamily="@font/roboto_slab_regular"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemCharges" />
+            app:layout_constraintTop_toBottomOf="@id/discountAmount" />
 
         <TextView
             android:id="@+id/vatChargesTitle"
-            translationText='@{"discount"}'
+            translationText='@{"vat_charges"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
             android:fontFamily="@font/roboto_slab_regular"
             android:textSize="@dimen/_12ssp"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/deliveryCharges" />
 
@@ -78,11 +99,8 @@
             android:layout_marginEnd="@dimen/_20sdp"
             android:fontFamily="@font/roboto_slab_regular"
             android:textSize="@dimen/_12ssp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/deliveryCharges" />
-
-
         <TextView
             android:id="@+id/totalChargesTitle"
             translationText='@{"total_charges"}'

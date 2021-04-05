@@ -202,37 +202,41 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:background="@drawable/border_white_round"
                         android:paddingStart="@dimen/_10sdp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintTop_toBottomOf="@id/paymentMethodPrivacy"
                         tools:ignore="RtlSymmetry">
 
                         <EditText
-                            android:layout_width="@dimen/_160sdp"
+                            android:id="@+id/couponCodeText"
+                            translationEditTextHint='@{"enter_discount_code"}'
+                            android:layout_width="@dimen/_170sdp"
                             android:layout_height="wrap_content"
                             android:autofillHints="Search"
                             android:background="@drawable/border_white_round"
                             android:fontFamily="@font/roboto_slab_regular"
-                            android:hint="Enter Your Discount Code"
                             android:inputType="text"
+                            android:padding="@dimen/_5sdp"
                             android:paddingBottom="@dimen/_5sdp"
                             android:singleLine="true"
+                            android:textAlignment="viewStart"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_12ssp"
+                            android:textSize="@dimen/_11ssp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="LabelFor" />
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/applyDiscountCode"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_30sdp"
-                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginEnd="16dp"
                             android:background="@drawable/item_element_border_cart"
-                            android:text="Apply"
                             android:textSize="@dimen/_11ssp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.538" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -257,12 +261,13 @@
                         android:textColorHint="@color/divider"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/dicountContainer" />
+                        app:layout_constraintTop_toBottomOf="@id/dicountContainer"
+                        tools:ignore="LabelFor" />
 
                     <View
                         android:id="@+id/dividerView"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_200sdp"
+                        android:layout_height="@dimen/_250sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/specialInstruction" />
 
@@ -273,7 +278,7 @@
         <include
             android:id="@+id/bottomSheetCO"
             layout="@layout/checkout_bottom_sheet"
-            app:behavior_peekHeight="@dimen/_150sdp"
+            app:behavior_peekHeight="@dimen/_160sdp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

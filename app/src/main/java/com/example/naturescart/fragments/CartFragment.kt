@@ -72,6 +72,9 @@ class CartFragment : Fragment(), Results {
     }
 
     private fun setListeners() {
+        cartBinding.toolBar.appLogo.setOnClickListener {
+            EventBus.getDefault().postSticky(LogoClickEvent())
+        }
         cartBinding.toolBar.notificationBtn.setOnClickListener {
             moveFromFragment(requireActivity(), NotificationActivity::class.java)
         }
@@ -82,9 +85,9 @@ class CartFragment : Fragment(), Results {
                 moveFromFragment(requireActivity(), UserDetailActivity::class.java)
         }
         cartBinding.nextBtn.setOnClickListener {
-            if (loggedUser != null)
-                moveFromFragment(CartOrderDetailActivity.newInstance(requireActivity(), cartDetail))
-            else
+            if (loggedUser != null) {
+                moveFromFragment(requireActivity(), CartOrderDetailActivity::class.java)
+            } else
                 moveForResultFragment(requireActivity(), MenuActivity::class.java, loginRequest)
         }
     }
@@ -127,7 +130,19 @@ class CartFragment : Fragment(), Results {
     }
 
     private fun upDateUi() {
+
+
         cartBinding.totalItem.text = getString(R.string.total_cart, cartDetail.summary?.totalItems.toString())
+        if (cartDetail.summary?.subTotal!! < 50) {
+            cartBinding.freeDeliveryNotesPrice.text = String.format("%.2f", (50 - cartDetail.summary?.subTotal!!))
+            cartBinding.freeDeliveryNotesPrice.visibility = View.VISIBLE
+            cartBinding.freeDeliveryNotesAdd.visibility = View.VISIBLE
+            cartBinding.freeDeliveryNotesdelivery.visibility = View.VISIBLE
+        } else {
+            cartBinding.freeDeliveryNotesPrice.visibility = View.GONE
+            cartBinding.freeDeliveryNotesAdd.visibility = View.GONE
+            cartBinding.freeDeliveryNotesdelivery.visibility = View.GONE
+        }
         cartBinding.totalAmount.text = getString(R.string.aed_price, String.format("%.2f", cartDetail.summary?.subTotal))
     }
 

@@ -11,10 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.naturescart.R
 import com.example.naturescart.adapters.FavouriteViewPagerAdapter
 import com.example.naturescart.databinding.FragmentFavouriteBinding
-import com.example.naturescart.helper.FavoritesUpdatedEvent
-import com.example.naturescart.helper.containsWithThisName
-import com.example.naturescart.helper.moveForResultFragment
-import com.example.naturescart.helper.moveFromFragment
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.Category
 import com.example.naturescart.model.Product
 import com.example.naturescart.model.User
@@ -73,6 +70,10 @@ class FavouriteFragment : Fragment(), ViewPager.OnPageChangeListener {
 
 
     private fun setListeners() {
+        binding.toolBar.appLogo.setOnClickListener {
+            EventBus.getDefault().postSticky(LogoClickEvent())
+        }
+
         binding.toolBar.notificationBtn.setOnClickListener {
             moveFromFragment(requireActivity(), NotificationActivity::class.java)
         }

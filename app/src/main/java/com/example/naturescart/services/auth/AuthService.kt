@@ -11,9 +11,9 @@ import okhttp3.RequestBody
 
 class AuthService(requestCode: Int, callBack: Results) : BaseService(requestCode, callBack) {
 
-    fun userRegister(fullName: String, email: String, password: String, phone: String) {
+    fun userRegister(first: String, last: String, email: String, password: String, phone: String, gender: String?, nationality: String?) {
         RetrofitClient.getInstance().create(AuthClient::class.java)
-            .userRegister(fullName, email, password, phone).enqueue(this)
+            .userRegister(first,last, email, password, phone,gender,nationality).enqueue(this)
     }
 
     fun userLogin(email: String, password: String, deviceToken: String) {
@@ -27,8 +27,8 @@ class AuthService(requestCode: Int, callBack: Results) : BaseService(requestCode
             .enqueue(this)
     }
 
-    fun editProfile(authToken: String, name: String, email: String, phone: String) {
-        RetrofitClient.getInstance().create(AuthClient::class.java).updateProfile("Bearer $authToken", name, email, phone)
+    fun editProfile(authToken: String,first: String, last: String, email: String, phone: String, gender: String?, nationality: String?) {
+        RetrofitClient.getInstance().create(AuthClient::class.java).updateProfile("Bearer $authToken", first,last, email, phone,gender,nationality)
             .enqueue(this)
     }
 

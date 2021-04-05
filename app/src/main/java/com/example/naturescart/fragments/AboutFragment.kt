@@ -41,7 +41,9 @@ class AboutFragment : Fragment() {
             startActivity(intent)
         }
         mBinding.facebookBtn.setOnClickListener {
-            openLink("https://www.facebook.com/Naturescartuae")
+
+
+            openLink("fb://page/105451777942295")
         }
         mBinding.instagramBtn.setOnClickListener {
             openLink("https://www.instagram.com/naturescartuae/")
@@ -63,5 +65,4 @@ class AboutFragment : Fragment() {
             startActivity(Intent.createChooser(i, "Open Link"))
         }
     }
-
 }

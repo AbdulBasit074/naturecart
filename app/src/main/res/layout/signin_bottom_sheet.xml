@@ -35,9 +35,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_16ssp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/logo"
-
-            />
+            app:layout_constraintTop_toBottomOf="@id/logo" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -54,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_regular"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
+                android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,9 +67,10 @@
                 android:fontFamily="@font/nunito_regular"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
+                android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/emailTitle" />
+                app:layout_constraintTop_toBottomOf="@id/emailTitle"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/passwordTitle"
@@ -81,7 +80,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/nunito_regular"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
+                android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/emailEt" />
 
@@ -95,13 +94,23 @@
                 android:autofillHints="Search"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
-                android:textAlignment="viewStart"
                 android:inputType="textPassword"
+                android:textAlignment="viewStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
+                android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/passwordTitle"
                 tools:ignore="LabelFor" />
+            <ImageView
+                android:id="@+id/hideSHowPassword"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:contentDescription="@string/icon"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_password_hide"
+                app:layout_constraintBottom_toBottomOf="@id/passwordEt"
+                app:layout_constraintEnd_toEndOf="@id/passwordEt"
+                app:layout_constraintTop_toBottomOf="@id/emailEt" />
 
             <TextView
                 android:id="@+id/forgotBtn"

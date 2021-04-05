@@ -29,7 +29,7 @@
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:contentDescription="@null"
                 android:padding="@dimen/_5sdp"
@@ -118,7 +118,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/roboto_slab_regular"
                         android:singleLine="true"
-                        android:text="@{product.country_code}"
+                        android:text="@{product.country_name}"
                         android:textColor="@color/text_color_green"
                         android:textSize="@dimen/_10ssp"
                         android:transitionName="CountryTv"
@@ -199,17 +199,17 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_16sdp"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:layout_marginBottom="@dimen/_12sdp"
                         android:background="@drawable/item_element_border_count"
                         android:gravity="center"
                         android:paddingTop="@dimen/_3sdp"
                         android:paddingBottom="@dimen/_3sdp"
                         android:text="0"
                         android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp"
                         android:transitionName="ItemCountTv"
+                        app:layout_constraintBottom_toBottomOf="@id/guideLineMid"
                         app:layout_constraintEnd_toStartOf="@id/incrementBtn"
-                        app:layout_constraintStart_toEndOf="@id/decrementBtn"
-                        app:layout_constraintTop_toBottomOf="@id/priceTv" />
+                        app:layout_constraintStart_toEndOf="@id/decrementBtn" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/incrementBtn"
@@ -242,16 +242,45 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_16sdp"
                         android:layout_marginEnd="@dimen/_12sdp"
-                        android:layout_marginBottom="@dimen/_12sdp"
                         android:background="@drawable/bg_label_sold"
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center"
-                        android:paddingTop="@dimen/_3sdp"
-                        android:paddingBottom="@dimen/_3sdp"
+                        android:paddingTop="@dimen/_4sdp"
+                        android:paddingBottom="@dimen/_4sdp"
                         android:textColor="@color/white"
                         android:transitionName="LabelSold"
                         android:visibility="gone"
-                        app:layout_constraintTop_toBottomOf="@id/priceTv" />
+                        app:layout_constraintBottom_toBottomOf="@id/guideLineMid" />
+
+                    <TextView
+                        android:id="@+id/totalPriceLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:background="@drawable/item_element_border_cart"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_4sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="@dimen/_4sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp"
+                        android:transitionName="LabelSold"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/itemCountTv"
+                        />
+
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideLineMid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.6" />
 
                     <TextView
                         android:id="@+id/labelDescription"
@@ -263,7 +292,7 @@
                         android:fontFamily="@font/tisa_pro_bold"
                         android:textColor="@android:color/black"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/itemCountTv" />
+                        app:layout_constraintTop_toBottomOf="@id/totalPriceLabel" />
 
                     <TextView
                         android:id="@+id/longDescriptionTv"

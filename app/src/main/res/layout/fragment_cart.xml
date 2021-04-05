@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -65,10 +66,10 @@
 
             <TextView
                 android:id="@+id/labelEmptyCart"
+                translationText='@{"empty_cart"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_slab_semi_bold"
-                translationText='@{"empty_cart"}'
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_18ssp"
                 app:layout_constraintBottom_toTopOf="@id/descriptionEmptyCart"
@@ -78,9 +79,9 @@
 
             <TextView
                 android:id="@+id/descriptionEmptyCart"
+                translationText='@{"we_are_processing_order"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                translationText='@{"we_are_processing_order"}'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -91,21 +92,65 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/checkoutContainer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_70sdp"
+            android:layout_height="@dimen/_80sdp"
             android:background="@color/white"
             android:elevation="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/freeDeliveryNotesAdd"
+                translationText='@{"add_aed"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/roboto_slab_regular"
+                android:singleLine="true"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/freeDeliveryNotesPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/roboto_slab_regular"
+                android:singleLine="true"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintStart_toEndOf="@id/freeDeliveryNotesAdd"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/freeDeliveryNotesdelivery"
+                translationText='@{"more_and_get_free_delivery"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_slab_regular"
+                android:singleLine="true"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintStart_toEndOf="@id/freeDeliveryNotesPrice"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/totalItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_slab_regular"
+                android:singleLine="true"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/freeDeliveryNotesAdd" />
 
             <TextView
                 android:id="@+id/totalAmount"
@@ -114,8 +159,9 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/roboto_slab_regular"
+                android:singleLine="true"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp"
+                android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/totalItem" />
 
@@ -125,6 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
                 android:background="@drawable/button_orange"
                 android:paddingStart="@dimen/_30sdp"
                 android:paddingEnd="@dimen/_30sdp"
@@ -132,8 +179,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

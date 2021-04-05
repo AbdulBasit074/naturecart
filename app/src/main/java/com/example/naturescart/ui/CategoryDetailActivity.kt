@@ -64,6 +64,7 @@ class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListe
     }
 
     private fun setListeners() {
+
         binding.itemAddedDialog.setOnClickListener {
             setResult(RESULT_OK)
             onBackPressed()
@@ -140,7 +141,6 @@ class CategoryDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListe
                 loadingView?.dismiss()
                 categoryDetail = Gson().fromJson(data, CategoryDetail::class.java)
                         Glide.with(this).load(categoryDetail.image).into(binding.tabHeader)
-                binding.title.text = categoryDetail.name
                 list.add(CategoryDetail.Child())
                 list.addAll(categoryDetail.childs!!)
                 tabLayoutSetting()

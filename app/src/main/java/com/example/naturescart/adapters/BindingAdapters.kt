@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.example.naturescart.R
 import com.example.naturescart.helper.TranslationsHelper
 import com.mikhaellopez.circularimageview.CircularImageView
+import com.skydoves.powerspinner.PowerSpinnerView
 
 
 @BindingAdapter("setCircularImage")
@@ -32,6 +33,10 @@ fun translationTextHint(textView: TextView, key: String) {
 @BindingAdapter("translationEditTextHint")
 fun translationEditTextHint(textView: EditText, key: String) {
     textView.hint= TranslationsHelper.getInstance(textView.context).getTranslation(key)
+}
+@BindingAdapter("translationSpinnerTextHint")
+fun translationEditTextHint(spinner: PowerSpinnerView, key: String) {
+    spinner.hint= TranslationsHelper.getInstance(spinner.context).getTranslation(key)
 }
 
 

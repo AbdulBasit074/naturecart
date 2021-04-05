@@ -21,13 +21,14 @@
 
             <ImageView
                 android:id="@+id/categoryImage"
-                setImage="@{category.image}"
+                setImage="@{category.icon}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/icon"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/categoryTxt"
                 android:layout_width="@dimen/_80sdp"

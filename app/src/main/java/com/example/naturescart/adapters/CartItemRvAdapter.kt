@@ -8,6 +8,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
@@ -30,7 +31,7 @@ class CartItemRvAdapter(
     private var refreshCallBack: () -> Unit
 ) :
     RecyclerView.Adapter<CartItemRvAdapter.ViewHolder>() {
-    private var totalItemSelect: Int = 0
+    private var totalItemSelect: Float = 0f
     private var cartID: Long? = null
     private val incrementRc = 3821
     private val decrementRc = 8343
@@ -58,25 +59,33 @@ class CartItemRvAdapter(
     inner class ViewHolder(val binding: LiCartItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindView(item: CartDetail.Item) {
+            var factorIncrement: Float = 0.5f
+            factorIncrement = if (item.product!!.factor!! > 0.5f)
+                1f
+            else
+                0.5f
+
             binding.nameTv.text = item.product?.name.toString()
-            binding.itemCountTv.text = item.quantity.toString()
+            showItemCountText(binding.itemCountTv, item.quantity!!, factorIncrement)
             totalItemSelect = item.quantity!!
             binding.priceTv.text = context.getString(R.string.aed_price, item.price.toString())
-            binding.totalPriceTv.text = context.getString(R.string.aed_price, String.format("%.2f", item.price!! * item.quantity!!))
+            binding.totalPriceTv.text = context.getString(R.string.aed_price, String.format("%.2f", item.amount))
             Glide.with(context).load(item.product?.image).into(binding.iconIv)
+
+
             binding.iconIv.setOnClickListener {
                 val pair: Pair<View, String> = Pair.create(binding.iconIv as View?, "ProductIcon")
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, pair)
                 context.startActivity(ImageViewActivity.newInstance(context, item.product?.image ?: ""), options.toBundle())
             }
             binding.incrementBtn.setOnClickListener {
-                val count = binding.itemCountTv.text.toString().toInt()
-                updateCart(binding.incrementBtn.context, item.product?.id!!, count + 1, incrementRc)
+                val count = binding.itemCountTv.text.toString().toFloat()
+                updateCart(binding.incrementBtn.context, item.product?.id!!, count + factorIncrement, incrementRc, factorIncrement)
             }
             binding.decrementBtn.setOnClickListener {
-                val count = binding.itemCountTv.text.toString().toInt()
-                if (count > 1) {
-                    updateCart(binding.incrementBtn.context, item.product?.id!!, count - 1, decrementRc)
+                val count = binding.itemCountTv.text.toString().toFloat()
+                if (count > factorIncrement) {
+                    updateCart(binding.incrementBtn.context, item.product?.id!!, count - factorIncrement, decrementRc, factorIncrement)
                 } else {
                     deleteFromCart(item.id)
                 }
@@ -87,21 +96,21 @@ class CartItemRvAdapter(
             }
         }
 
-        private fun updateCart(context: Context, itemId: Long, quantity: Int, requestCode: Int) {
+        private fun updateCart(context: Context, itemId: Long, quantity: Float, requestCode: Int, factorIncrement: Float) {
 
             cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
             CartService(requestCode, object : Results {
                 override fun onSuccess(requestCode: Int, data: String) {
 
-                        val count = binding.itemCountTv.text.toString().toInt()
-                        if (requestCode == incrementRc)
-                            binding.itemCountTv.text = (count + 1).toString()
-                        else
-                            binding.itemCountTv.text = (count - 1).toString()
+                    val count = binding.itemCountTv.text.toString().toFloat()
+                    if (requestCode == incrementRc)
+                        showItemCountText(binding.itemCountTv, (count + factorIncrement), factorIncrement)
+                    else
+                        showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
 
-                        val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
-                        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
-                        EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                    val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                    PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                    EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
 
 
                 }
@@ -132,5 +141,14 @@ class CartItemRvAdapter(
             }).removeFromCart(itemId ?: 0)
         }
 
+        fun showItemCountText(textView: TextView, value: Float, factor: Float) {
+            var afterDigit = 1
+            if (factor > 0.5)
+                afterDigit = 0
+            if (value == 0f)
+                afterDigit = 0
+
+            textView.text = (String.format("%.$afterDigit" + "f", value))
+        }
     }
 }

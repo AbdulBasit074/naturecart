@@ -43,7 +43,7 @@
 
                 <ImageView
                     android:id="@+id/iconIv"
-                    android:layout_width="@dimen/_80sdp"
+                    android:layout_width="@dimen/_70sdp"
                     android:layout_height="@dimen/_80sdp"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -82,8 +82,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/decrementBtn"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
                     android:layout_marginStart="@dimen/_12sdp"
                     app:cardBackgroundColor="#4F108148"
                     app:cardCornerRadius="@dimen/_4sdp"
@@ -93,18 +93,19 @@
                     app:layout_constraintTop_toTopOf="@id/itemCountTv">
 
                     <ImageView
-                        android:layout_width="@dimen/_16sdp"
-                        android:layout_height="@dimen/_16sdp"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_gravity="center"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_decrement_cart" />
 
                 </androidx.cardview.widget.CardView>
+
                 <TextView
                     android:id="@+id/itemCountTv"
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     android:layout_marginBottom="@dimen/_12sdp"
                     android:background="@drawable/item_element_border_count"
@@ -118,9 +119,9 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/incrementBtn"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:padding="@dimen/_8sdp"
                     app:cardBackgroundColor="#4F108148"
                     app:cardCornerRadius="@dimen/_4sdp"
@@ -130,8 +131,8 @@
                     app:layout_constraintTop_toTopOf="@id/itemCountTv">
 
                     <ImageView
-                        android:layout_width="@dimen/_16sdp"
-                        android:layout_height="@dimen/_16sdp"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_gravity="center"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_increment_cart" />
@@ -143,13 +144,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:maxWidth="@dimen/_80sdp"
+                    android:maxLines="2"
                     android:layout_marginBottom="@dimen/_12sdp"
                     android:fontFamily="@font/roboto_slab_semi_bold"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_13ssp"
+                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/incrementBtn" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>

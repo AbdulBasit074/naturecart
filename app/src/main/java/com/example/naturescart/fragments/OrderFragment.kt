@@ -97,6 +97,10 @@ class OrderFragment : Fragment(), Results {
     }
 
     private fun setListeners() {
+
+        orderBinding.toolBar.appLogo.setOnClickListener{
+            EventBus.getDefault().postSticky(LogoClickEvent())
+        }
         orderBinding.toolBar.profileBtn.setOnClickListener {
             if (loggedUser == null)
                 moveForResultFragment(requireActivity(), MenuActivity::class.java, loginRequest)

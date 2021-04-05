@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
@@ -41,7 +42,10 @@ class ItemAdapterRv(
     private val loadingView = 0
     private val productFavouriteRequest: Int = 8222
     private var cartID: Long? = null
-    private val addToCartRequest = 222
+    private val addToCartRequest = 2211
+    private val removeFromCartRc = 222
+    private var cartItemId: Long? = null
+    private var quantityShow: Float? = null
 
     private val loggedUser: User? = NatureDb.getInstance(context).userDao().getLoggedUser()
 
@@ -83,20 +87,28 @@ class ItemAdapterRv(
 
         fun bindView(item: Product) {
             if (binding is LiItemBinding) {
+                 var factorIncrement: Float = 0.5f
+
                 binding.itemContainer.setOnClickListener {
                     onItemClick(item)
                 }
                 binding.product = item
-                binding.itemCountTv.text = Persister.with(context).getCartQuantity(item.id).toString()
+
+                factorIncrement = if (item.factor!! > 0.5f)
+                    1f
+                else
+                    0.5f
+
+                showItemCountText(binding.itemCountTv, Persister.with(context).getCartQuantity(item.id), factorIncrement)
                 binding.descriptionTv.visibility = if (item.description.isNullOrEmpty()) View.GONE else View.VISIBLE
-                binding.labelSold.visibility = if (item.quantity == 0) View.VISIBLE else View.GONE
-                binding.incrementBtn.visibility = if (item.quantity == 0) View.GONE else View.VISIBLE
-                binding.decrementBtn.visibility = if (item.quantity == 0) View.GONE else View.VISIBLE
-                binding.itemCountTv.visibility = if (item.quantity == 0) View.GONE else View.VISIBLE
+                binding.labelSold.visibility = if (item.quantity == 0f) View.VISIBLE else View.GONE
+                binding.incrementBtn.visibility = if (item.quantity == 0f) View.GONE else View.VISIBLE
+                binding.decrementBtn.visibility = if (item.quantity == 0f) View.GONE else View.VISIBLE
+                binding.itemCountTv.visibility = if (item.quantity == 0f) View.GONE else View.VISIBLE
+
                 if (NatureDb.getInstance(context).favouriteDao().getProduct(item.id!!) != null) {
                     binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav_add))
                 }
-
                 binding.favouriteImage.setOnClickListener {
                     val loadingDialog = LoadingDialog(context)
                     if (loggedUser != null) {
@@ -145,32 +157,39 @@ class ItemAdapterRv(
                     }
                 }
                 binding.incrementBtn.setOnClickListener {
-                    val count = binding.itemCountTv.text.toString().toInt()
+                    val count = binding.itemCountTv.text.toString().toFloat()
                     if (count == item.quantity) {
                         AlertDialog.Builder(context).setTitle(Constants.getTranslate(context, "no_add_more")).setMessage(Constants.getTranslate(context, "out_of_stock"))
                             .setPositiveButton(Constants.getTranslate(context, "ok")) { dialog, _ ->
                                 dialog.dismiss()
                             }.show()
                     } else {
-                        binding.itemCountTv.text = (count + 1).toString()
-                        addToCart(binding.incrementBtn.context, item.id!!, count + 1)
+                        showItemCountText(binding.itemCountTv, (count + factorIncrement), factorIncrement)
+                        addToCart(binding.incrementBtn.context, item.id!!, count + factorIncrement)
                     }
                 }
                 binding.decrementBtn.setOnClickListener {
-                    val count = binding.itemCountTv.text.toString().toInt()
-                    if (count > 0) {
-                        binding.itemCountTv.text = (count - 1).toString()
-                        addToCart(binding.incrementBtn.context, item.id!!, count - 1)
+                    val count = binding.itemCountTv.text.toString().toFloat()
+                    if (count > factorIncrement) {
+                        showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
+                        addToCart(binding.incrementBtn.context, item.id!!, count - factorIncrement)
+                    } else if (count == factorIncrement) {
+                        showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
+                        deleteFromCart(Persister.with(context).getCartItemId(item.id))
                     }
                 }
             }
         }
 
-        private fun addToCart(context: Context, itemId: Long, quantity: Int) {
+        private fun addToCart(context: Context, itemId: Long, quantity: Float) {
             cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
             CartService(addToCartRequest, object : Results {
                 override fun onSuccess(requestCode: Int, data: String) {
                     val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                    cartDetail.items!!.forEach {
+                        if (it.product!!.id == itemId)
+                            cartItemId = it.id
+                    }
                     PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
                     EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
                     EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
@@ -184,7 +203,30 @@ class ItemAdapterRv(
             }).addToCart(itemId, quantity, cartID)
         }
 
+        private fun deleteFromCart(itemId: Long?) {
+            CartService(removeFromCartRc, object : Results {
+                override fun onSuccess(requestCode: Int, data: String) {
+                    val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                    EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                }
 
+                override fun onFailure(requestCode: Int, data: String) {
+                    context.showToast(data)
+                }
+            }).removeFromCart(itemId ?: 0)
+        }
     }
+
+    fun showItemCountText(textView: TextView, value: Float, factor: Float) {
+        var afterDigit = 1
+        if (factor > 0.5)
+            afterDigit = 0
+        if (value == 0f)
+            afterDigit = 0
+
+        textView.text = (String.format("%.$afterDigit" + "f", value))
+    }
+
+
 }
 

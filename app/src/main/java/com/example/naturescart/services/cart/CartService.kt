@@ -6,18 +6,30 @@ import com.example.naturescart.services.RetrofitClient
 
 class CartService(requestCode: Int, callBack: Results) : BaseService(requestCode, callBack) {
 
-    fun addToCart(productId: Long, quantity: Int, cartId: Long?) {
+    fun addToCart(productId: Long, quantity: Float, cartId: Long?) {
         RetrofitClient.getInstance().create(CartClient::class.java)
             .addToCart(productId, quantity, cartId)
             .enqueue(this)
     }
 
+    fun applyCoupon(authToken:String,couponCode:String,cartId: Long) {
+        RetrofitClient.getInstance().create(CartClient::class.java)
+            .applyCoupon("Bearer $authToken",couponCode,cartId)
+            .enqueue(this)
+    }
+
+    fun removeCoupon(authToken:String,couponCode:String,cartId: Long){
+        RetrofitClient.getInstance().create(CartClient::class.java)
+            .removeCoupon("Bearer $authToken",couponCode,cartId)
+            .enqueue(this)
+    }
 
     fun getCartDetail(cartId: Long?) {
         RetrofitClient.getInstance().create(CartClient::class.java)
             .getCartDetail(cartId)
             .enqueue(this)
     }
+
     fun removeFromCart(itemId: Long) {
         RetrofitClient.getInstance().create(CartClient::class.java)
             .removeFromCart(itemId)

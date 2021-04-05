@@ -3,11 +3,10 @@ package com.example.naturescart.fragments
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
@@ -34,8 +33,10 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
     private lateinit var mBinding: FragmentProductDetailsBinding
     private var loggedUser: User? = null
     private var cartID: Long? = null
+    private val removeFromCartRc = 222
     private val productFavouriteRequest: Int = 8222
     private val addToCartRequest = 222
+    private var factorIncrement: Float = 0.5f
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_details, container, false)
@@ -54,20 +55,29 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
             requireActivity().onBackPressed()
         }
 
+        if (product.factor!! > 0.5)
+            factorIncrement = 1f
 
-        mBinding.itemCountTv.text = Persister.with(requireContext()).getCartQuantity(product.id).toString()
+
+        if (Persister.with(requireContext()).getCartQuantity(product.id) > 0)
+            updateTotalAmount()
+
+        showItemCountText(mBinding.itemCountTv, Persister.with(requireContext()).getCartQuantity(product.id), factorIncrement)
+
         mBinding.descriptionTv.visibility = if (product.description.isNullOrEmpty()) View.GONE else View.VISIBLE
-        mBinding.labelSold.visibility = if (product.quantity == 0) View.VISIBLE else View.GONE
-        mBinding.incrementBtn.visibility = if (product.quantity == 0) View.GONE else View.VISIBLE
-        mBinding.decrementBtn.visibility = if (product.quantity == 0) View.GONE else View.VISIBLE
-        mBinding.itemCountTv.visibility = if (product.quantity == 0) View.GONE else View.VISIBLE
+        mBinding.labelSold.visibility = if (product.quantity == 0f) View.VISIBLE else View.GONE
+        mBinding.incrementBtn.visibility = if (product.quantity == 0f) View.GONE else View.VISIBLE
+        mBinding.decrementBtn.visibility = if (product.quantity == 0f) View.GONE else View.VISIBLE
+        mBinding.itemCountTv.visibility = if (product.quantity == 0f) View.GONE else View.VISIBLE
         if (NatureDb.getInstance(requireContext()).favouriteDao().getProduct(product.id!!) != null) {
             mBinding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart_fav_add))
         }
         mBinding.iconIv.setOnClickListener {
+
             val pair: Pair<View, String> = Pair.create(mBinding.iconIv as View?, "ProductIcon")
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), pair)
             context?.startActivity(ImageViewActivity.newInstance(requireContext(), product.image ?: ""), options.toBundle())
+
         }
         mBinding.favouriteImage.setOnClickListener {
             val loadingDialog = LoadingDialog(requireContext())
@@ -98,15 +108,14 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
                 }).addToFavourite(loggedUser!!.accessToken, product.id!!)
             } else {
                 loadingDialog.dismiss()
-                val dialogMsg: String
-                if (NatureDb.getInstance(requireContext()).favouriteDao().getProduct(product.id!!) == null) {
+                val dialogMsg: String = if (NatureDb.getInstance(requireContext()).favouriteDao().getProduct(product.id!!) == null) {
                     NatureDb.getInstance(requireContext()).favouriteDao().insertProduct(product)
                     mBinding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart_fav_add))
-                    dialogMsg = "Add to favourite"
+                    "Add to favourite"
                 } else {
                     NatureDb.getInstance(requireContext()).favouriteDao().removeProduct(product.id!!)
                     mBinding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart_fav))
-                    dialogMsg = "Remove from favourite"
+                    "Remove from favourite"
                 }
                 EventBus.getDefault().postSticky(FavoritesUpdatedEvent())
                 val dialog = DialogCustom(requireContext(), R.drawable.ic_add_fav, dialogMsg)
@@ -115,34 +124,51 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
             }
         }
         mBinding.incrementBtn.setOnClickListener {
-            val count = mBinding.itemCountTv.text.toString().toInt()
+            val count = mBinding.itemCountTv.text.toString().toFloat()
             if (count == product.quantity) {
                 AlertDialog.Builder(requireContext()).setTitle("Couldn't add more").setMessage("Out of stock").setPositiveButton("OK") { dialog, _ ->
                     dialog.dismiss()
                 }.show()
             } else {
-                mBinding.itemCountTv.text = (count + 1).toString()
-                addToCart(mBinding.incrementBtn.context, product.id!!, count + 1)
+                addToCart(mBinding.incrementBtn.context, product.id!!, count + factorIncrement)
             }
         }
         mBinding.decrementBtn.setOnClickListener {
-            val count = mBinding.itemCountTv.text.toString().toInt()
-            if (count > 0) {
-                mBinding.itemCountTv.text = (count - 1).toString()
-                addToCart(mBinding.incrementBtn.context, product.id!!, count - 1)
+            val count = mBinding.itemCountTv.text.toString().toFloat()
+            if (count > factorIncrement) {
+                addToCart(mBinding.incrementBtn.context, product.id!!, count - factorIncrement)
+            } else if (count == factorIncrement) {
+                deleteFromCart(Persister.with(requireContext()).getCartItemId(product.id))
             }
         }
-
-
     }
 
-    private fun addToCart(context: Context, itemId: Long, quantity: Int) {
+    private fun deleteFromCart(itemId: Long?) {
+        CartService(removeFromCartRc, object : Results {
+            override fun onSuccess(requestCode: Int, data: String) {
+                val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                val count = mBinding.itemCountTv.text.toString().toFloat()
+                showItemCountText(mBinding.itemCountTv, (count - factorIncrement), factorIncrement)
+                mBinding.totalPriceLabel.visibility = View.GONE
+            }
+
+            override fun onFailure(requestCode: Int, data: String) {
+                showToast(data)
+            }
+        }).removeFromCart(itemId ?: 0)
+    }
+
+    private fun addToCart(context: Context, itemId: Long, quantity: Float) {
 
         cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
         CartService(addToCartRequest, object : Results {
             override fun onSuccess(requestCode: Int, data: String) {
                 val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
                 PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                Persister.with(requireContext()).persist(Constants.cartPersistenceKey, data)
+                showItemCountText(mBinding.itemCountTv, quantity, factorIncrement)
+                updateTotalAmount()
                 EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
                 EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
             }
@@ -154,4 +180,21 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
             }
         }).addToCart(itemId, quantity, cartID)
     }
+
+    private fun updateTotalAmount() {
+        mBinding.totalPriceLabel.visibility = View.VISIBLE
+        mBinding.totalPriceLabel.text = getString(R.string.aed_total_price, Persister.with(requireContext()).getCartItemAmount(product.id).toString())
+    }
+
+    private fun showItemCountText(textView: TextView, value: Float, factor: Float) {
+        var afterDigit = 1
+        if (factor > 0.5)
+            afterDigit = 0
+        if (value == 0f)
+            afterDigit = 0
+
+        textView.text = (String.format("%.$afterDigit" + "f", value))
+    }
+
+
 }

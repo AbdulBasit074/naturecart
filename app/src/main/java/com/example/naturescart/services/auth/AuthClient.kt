@@ -13,9 +13,13 @@ interface AuthClient {
     @POST("auth/register")
     fun userRegister(
         @Field("first_name") firstName: String,
+        @Field("last_name") lastName: String,
         @Field("email") email: String,
         @Field("password") password: String,
-        @Field("phone") phone: String
+        @Field("phone") phone: String,
+        @Field("gender") gender: String?,
+        @Field("nationality") nationality: String?
+
 
     ): Call<ResponseBody>
 
@@ -40,9 +44,12 @@ interface AuthClient {
     @PUT("update-profile")
     fun updateProfile(
         @Header("Authorization") authToken: String,
-        @Field("username") userName: String,
+        @Field("first_name") firstName: String,
+        @Field("last_name") lastName: String,
         @Field("email") email: String,
-        @Field("phone") phone: String
+        @Field("phone") phone: String,
+        @Field("gender") gender: String?,
+        @Field("nationality") nationality: String?
     ): Call<ResponseBody>
 
     @FormUrlEncoded

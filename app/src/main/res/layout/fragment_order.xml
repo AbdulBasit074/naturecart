@@ -17,13 +17,13 @@
 
         <TextView
             android:id="@+id/orderTitle"
+            translationText='@{"orders"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/roboto_slab_semi_bold"
 
-            translationText='@{"orders"}'
+            android:fontFamily="@font/roboto_slab_semi_bold"
             android:textColor="@color/black"
             android:textSize="@dimen/_15ssp"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,10 +62,10 @@
 
             <TextView
                 android:id="@+id/labelNoOrders"
+                translationText='@{"have_lemonade"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
-                translationText='@{"have_lemonade"}'
                 android:fontFamily="@font/roboto_slab_semi_bold"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_18ssp"
@@ -76,9 +76,9 @@
 
             <TextView
                 android:id="@+id/descriptionNoOrders"
+                translationText='@{"no_order_yet"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                translationText='@{"no_order_yet"}'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

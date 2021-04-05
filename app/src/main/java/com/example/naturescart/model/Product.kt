@@ -15,7 +15,7 @@ class Product(
     @SerializedName("name") var name: String? = null,
     @SerializedName("purchase_rate") var purchaseRate: Float? = null,
     @SerializedName("sell_price") var sellPrice: Float? = null,
-    @SerializedName("quantity") var quantity: Int? = null,
+    @SerializedName("quantity") var quantity: Float? = null,
     @SerializedName("sku") var sku: String? = null,
     @SerializedName("unit") var unit: String? = null,
     @SerializedName("image") var image: String? = null,
@@ -23,9 +23,10 @@ class Product(
     @SerializedName("long_description") var long_description: String? = null,
     @SerializedName("country_code") var country_code: String? = null,
     @SerializedName("country_name") var country_name: String? = null,
+    @SerializedName("factor") var factor: Float? = null,
 
-    ) : Parcelable {
 
+    ):Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readValue(Long::class.java.classLoader) as? Long,
         parcel.readValue(Long::class.java.classLoader) as? Long,
@@ -34,20 +35,22 @@ class Product(
         parcel.readString(),
         parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readValue(Float::class.java.classLoader) as? Float,
-        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString()
-    )
+        parcel.readString(),
+        parcel.readValue(Float::class.java.classLoader) as? Float
+    ) {
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeValue(categoryID)
         parcel.writeValue(id)
         parcel.writeValue(itemId)
+        parcel.writeValue(categoryID)
         parcel.writeString(categoryName)
         parcel.writeString(name)
         parcel.writeValue(purchaseRate)
@@ -60,7 +63,7 @@ class Product(
         parcel.writeString(long_description)
         parcel.writeString(country_code)
         parcel.writeString(country_name)
-
+        parcel.writeValue(factor)
     }
 
     override fun describeContents(): Int {

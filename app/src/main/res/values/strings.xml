@@ -1,16 +1,26 @@
 <resources>
     <string name="app_name">Nature\'s Cart</string>
     <string name="icon">icon</string>
+    <string name="connection_error">Connection Error</string>
+    <string name="retry">Retry</string>
+    <string name="not_connected">Your device is not connected to internet!</string>
+    <string name="no_internet">No Internet!</string>
     <string name="email_contact"><u>Customercare@naturescart.ae</u></string>
     <string name="intro_second_title">Organic &amp; Fresh</string>
     <string name="intro_second_detail">Fresh &amp; Organic food as your fingertips</string>
-
     <string name="country_phone_code">+971</string>
     <string name="aed_price">AED %1$s</string>
+
+    <string name="aed_total_price">Total Price AED %1$s</string>
+
     <string name="unit_text">/ %1$s</string>
     <string name="order_no">OrderNo: %1$s</string>
     <string name="all">All</string>
     <string name="total_cart">Total Items: %1$s</string>
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
 
     <string name="no_items">%1$s Items</string>
     <string name="intro_third_title">Fast &amp; Reliable Delivery</string>

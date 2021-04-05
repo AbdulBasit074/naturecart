@@ -98,6 +98,12 @@ class HomeActivity : AppCompatActivity(), Results {
         binding.homePageFragment.visibility = View.VISIBLE
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLogoClick(event: LogoClickEvent) {
+        binding.bottomNavigation.selectedItemId = R.id.homeNav
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun moveToAbout(event: MoveToAboutEvent) {
         binding.bottomNavigation.selectedItemId = R.id.about
@@ -144,7 +150,6 @@ class HomeActivity : AppCompatActivity(), Results {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
-                    removeAndHide()
                     binding.homeFragmentsVp.currentItem = 4
                     it.setIcon(R.drawable.ic_about_checked)
                     return@OnNavigationItemSelectedListener true
@@ -221,10 +226,12 @@ class HomeActivity : AppCompatActivity(), Results {
             else -> finish()
         }
     }
+
     override fun onDestroy() {
         EventBus.getDefault().unregister(this)
         super.onDestroy()
     }
+
     private fun loadFragment(fragment: Fragment) {
         val fragmentTransition = supportFragmentManager.beginTransaction()
 //        fragmentTransition.replace(binding.homePageFragment.id, fragment)

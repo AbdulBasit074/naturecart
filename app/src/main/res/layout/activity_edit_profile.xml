@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
 
@@ -12,7 +13,7 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_silver"
@@ -33,7 +34,6 @@
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_10sdp"
-
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/ic_back_arrow"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -72,28 +72,67 @@
             app:layout_constraintTop_toBottomOf="@id/title">
 
             <TextView
-                android:id="@+id/nameTitle"
-                translationText='@{"name"}'
+                android:id="@+id/firstNameLabel"
+                translationText='@{"first_name"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/nunito_regular"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
+                android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/nameEt"
-                translationEditTextHint='@{"please_enter_full_name"}'
-                android:layout_width="@dimen/_260sdp"
+                android:id="@+id/firstName"
+                translationEditTextHint='@{"enter_here"}'
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:autofillHints="Search"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
+
+                android:inputType="textPersonName"
+                android:paddingTop="@dimen/_5sdp"
+                android:singleLine="true"
                 android:text="@{user.firstName}"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
+                android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nameTitle" />
+                app:layout_constraintTop_toBottomOf="@id/firstNameLabel"
+                tools:ignore="LabelFor,MissingConstraints" />
+
+            <TextView
+                android:id="@+id/lastNameLabel"
+                translationText='@{"last_name"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:fontFamily="@font/nunito_regular"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toEndOf="@id/firstName"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/lastName"
+                translationEditTextHint='@{"enter_here"}'
+                android:layout_width="@dimen/_125sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:autofillHints="Search"
+                android:backgroundTint="@color/divider"
+                android:fontFamily="@font/nunito_regular"
+                android:inputType="textPersonName"
+                android:paddingTop="@dimen/_5sdp"
+                android:singleLine="true"
+                android:text="@{user.lastName}"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toEndOf="@id/firstName"
+                app:layout_constraintTop_toBottomOf="@id/lastNameLabel"
+                tools:ignore="LabelFor,MissingConstraints" />
 
             <TextView
                 android:id="@+id/emailTitle"
@@ -105,7 +144,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nameEt" />
+                app:layout_constraintTop_toBottomOf="@id/lastName" />
 
             <EditText
                 android:id="@+id/emailEt"
@@ -163,10 +202,123 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:backgroundTint="@color/divider"
                 android:fontFamily="@font/nunito_regular"
-                android:text="@{user.phone}"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/countryCodeLabel"
                 app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
+
+            <TextView
+                android:id="@+id/genderLabel"
+                translationText='@{"gender"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:fontFamily="@font/nunito_regular"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phoneNo" />
+
+            <TextView
+                android:id="@+id/male"
+                translationText='@{"male"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/border_grey"
+                android:fontFamily="@font/nunito_regular"
+                android:paddingStart="@dimen/_7sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/genderLabel" />
+
+            <TextView
+                android:id="@+id/female"
+                translationText='@{"female"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/border_grey"
+                android:fontFamily="@font/nunito_regular"
+                android:paddingStart="@dimen/_7sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintStart_toEndOf="@id/male"
+                app:layout_constraintTop_toBottomOf="@id/genderLabel" />
+
+
+            <TextView
+                android:id="@+id/ratherGender"
+                translationText='@{"rater_not_say"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/border_grey"
+                android:fontFamily="@font/nunito_regular"
+                android:paddingStart="@dimen/_7sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintStart_toEndOf="@id/female"
+                app:layout_constraintTop_toBottomOf="@id/genderLabel" />
+
+            <TextView
+                android:id="@+id/countryLabel"
+                translationText='@{"country"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/nunito_regular"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/male" />
+
+            <com.skydoves.powerspinner.PowerSpinnerView
+                android:id="@+id/countrySelectionSpinner"
+                translationSpinnerTextHint='@{"select_country"}'
+                android:layout_width="@dimen/_280sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:fontFamily="@font/nunito_regular"
+                android:gravity="start"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:shadowColor="@color/background_silver"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/countryLabel"
+                app:spinner_arrow_animate_duration="200"
+                app:spinner_arrow_padding="@dimen/_10sdp"
+                app:spinner_arrow_show="true"
+                app:spinner_arrow_tint="@color/black"
+                app:spinner_divider_color="@color/divider"
+                app:spinner_divider_show="true"
+                app:spinner_divider_size="0.4dp"
+                app:spinner_item_array="@array/gender"
+                app:spinner_popup_animation="dropdown"
+                app:spinner_popup_background="@color/white"
+                app:spinner_popup_elevation="14dp" />
+
+            <View
+                android:id="@+id/countryDivider"
+                android:layout_width="@dimen/_280sdp"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@color/divider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/countrySelectionSpinner" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/saveBtn"
@@ -183,7 +335,7 @@
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/phoneNo" />
+                app:layout_constraintTop_toBottomOf="@id/countryDivider" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView

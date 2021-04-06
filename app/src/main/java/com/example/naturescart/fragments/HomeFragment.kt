@@ -191,6 +191,7 @@ class HomeFragment : Fragment(), Results {
             homeBinding.frequentlyPurchasedRv.visibility = View.GONE
             homeBinding.frequentlyPurchasedLabel.visibility = View.INVISIBLE
         }
+        notifyAdapters()
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
@@ -289,24 +290,24 @@ class HomeFragment : Fragment(), Results {
     }
 
     private fun showDataLoggedUser() {
-            loadingView?.dismiss()
-            //show collections data
-            homeBinding.collectionRv.adapter?.notifyDataSetChanged()
-            homeBinding.topSliderVp.adapter?.notifyDataSetChanged()
-            if (!animationShown) {
-                homeBinding.collectionRv.scheduleLayoutAnimation()
-                homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
-                homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
-                homeBinding.topSliderVp.alpha = 1f
-                homeBinding.topSliderIndicator.alpha = 1f
-            }
-            //show categories data
-            homeBinding.categoryRv.adapter?.notifyDataSetChanged()
-            if (!animationShown)
-                homeBinding.categoryRv.scheduleLayoutAnimation()
-            //show category products data
-            homeBinding.newArrivalRv.adapter?.notifyDataSetChanged()
-            animationShown = true
+        loadingView?.dismiss()
+        //show collections data
+        homeBinding.collectionRv.adapter?.notifyDataSetChanged()
+        homeBinding.topSliderVp.adapter?.notifyDataSetChanged()
+        if (!animationShown) {
+            homeBinding.collectionRv.scheduleLayoutAnimation()
+            homeBinding.topSliderVp.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+            homeBinding.topSliderIndicator.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pop_up))
+            homeBinding.topSliderVp.alpha = 1f
+            homeBinding.topSliderIndicator.alpha = 1f
+        }
+        //show categories data
+        homeBinding.categoryRv.adapter?.notifyDataSetChanged()
+        if (!animationShown)
+            homeBinding.categoryRv.scheduleLayoutAnimation()
+        //show category products data
+        homeBinding.newArrivalRv.adapter?.notifyDataSetChanged()
+        animationShown = true
     }
 
     override fun onAttach(context: Context) {
@@ -328,6 +329,12 @@ class HomeFragment : Fragment(), Results {
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    private fun notifyAdapters() {
+        homeBinding.newArrivalRv.adapter?.notifyDataSetChanged()
+        if (loggedUser != null)
+            homeBinding.frequentlyPurchasedRv.adapter?.notifyDataSetChanged()
     }
 
 }

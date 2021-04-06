@@ -25,11 +25,11 @@ class OrderDetail
 
     @SerializedName("subtotal")
     @Expose
-    var subtotal: Double? = null,
+    var subtotal: Float? = null,
 
     @SerializedName("total")
     @Expose
-    var total: Double? = null,
+    var total: Float? = null,
 
     @SerializedName("payment_type")
     @Expose
@@ -54,13 +54,13 @@ class OrderDetail
     @SerializedName("summary")
     @Expose
     var summary: Summary? = null
-):Parcelable {
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Double::class.java.classLoader) as? Double,
-        parcel.readValue(Double::class.java.classLoader) as? Double,
+        parcel.readValue(Float::class.java.classLoader) as? Float,
+        parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),

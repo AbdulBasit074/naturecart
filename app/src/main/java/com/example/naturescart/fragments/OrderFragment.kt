@@ -21,6 +21,7 @@ import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.order.OrderService
+import com.example.naturescart.services.product.ProductService
 import com.example.naturescart.ui.MenuActivity
 import com.example.naturescart.ui.NotificationActivity
 import com.example.naturescart.ui.OrderDetailActivity
@@ -70,11 +71,7 @@ class OrderFragment : Fragment(), Results {
                 loadingView?.show()
             else
                 onSuccess(ordersRequest, ordersData)
-            OrderService(ordersRequest, this).getOrders(
-                loggedUser!!.accessToken,
-                PaginationListeners.pageSize,
-                pageNo
-            )
+            OrderService(ordersRequest, this).getOrders(loggedUser!!.accessToken, PaginationListeners.pageSize, pageNo)
         } else {
             orderBinding.noOrdersContainer.visibility = View.VISIBLE
         }
@@ -201,5 +198,10 @@ class OrderFragment : Fragment(), Results {
         orderList.clear()
         orderBinding.orderRv.adapter?.notifyDataSetChanged()
         orderBinding.noOrdersContainer.visibility = View.VISIBLE
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUserLoggedIn(event: LogInEvent) {
+        loggedUser = NatureDb.getInstance(requireContext()).userDao().getLoggedUser()
+        callOrderDetail()
     }
 }

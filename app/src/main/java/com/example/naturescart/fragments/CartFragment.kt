@@ -108,6 +108,7 @@ class CartFragment : Fragment(), Results {
 
     private fun refreshData() {
         cartID = PreferenceManager.getDefaultSharedPreferences(activity).getLong(Constants.cartID, 0)
+        if(cartID!! > 0)
         CartService(cartDetailRequest, this).getCartDetail(cartID)
     }
 

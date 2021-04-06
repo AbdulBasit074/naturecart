@@ -158,6 +158,8 @@
                         <include
                             android:id="@+id/emailContainer"
                             layout="@layout/contact_help_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.457"
                             app:layout_constraintStart_toStartOf="parent"
@@ -172,6 +174,7 @@
                             android:drawablePadding="@dimen/_10sdp"
                             android:fontFamily="@font/roboto_slab_semi_bold"
                             android:padding="@dimen/_10sdp"
+                            translationText='@{"about_phone"}'
                             android:text="+971509341258"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/_11ssp"

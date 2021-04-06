@@ -1,12 +1,10 @@
 package com.example.naturescart.ui
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityCartOrderDetailBinding
@@ -53,7 +51,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
             binding.bottomSheetCO.vatCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary?.vat))
             binding.bottomSheetCO.itemCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.subTotal))
             binding.bottomSheetCO.deliveryCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary!!.deliveryChanges))
-            binding.bottomSheetCO.totalCharges.text = getString(R.string.aed_price, String.format("%.2f", (cartDetail!!.summary!!.deliveryChanges!! + cartDetail!!.summary!!.subTotal!!)))
+            binding.bottomSheetCO.totalCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary!!.total!!))
             if (cartDetail!!.summary!!.couponDiscount!! > 0) {
                 binding.bottomSheetCO.discountAmountTitle.visibility = View.VISIBLE
                 binding.bottomSheetCO.discountAmount.visibility = View.VISIBLE
@@ -151,6 +149,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
             }
         }
     }
+
     override fun onFailure(requestCode: Int, data: String) {
         loading?.dismiss()
         showToast(data)

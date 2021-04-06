@@ -263,7 +263,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/dicountContainer"
                         tools:ignore="LabelFor" />
-
                     <View
                         android:id="@+id/dividerView"
                         android:layout_width="match_parent"

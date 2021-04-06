@@ -25,6 +25,10 @@ class Persister(context: Context) {
         prefs.edit().putString(key, data).apply()
     }
 
+    fun persistsRemove(key:String){
+        prefs.edit().remove(key).apply()
+    }
+
     fun persist(key: String, data: Long) {
         prefs.edit().putLong(key, data).apply()
     }

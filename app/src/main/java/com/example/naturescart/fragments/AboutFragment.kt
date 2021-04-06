@@ -16,6 +16,8 @@ import com.example.naturescart.helper.Constants
 class AboutFragment : Fragment() {
 
     private lateinit var mBinding: FragmentAboutBinding
+    private lateinit var phone: String
+    private lateinit var email: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)
@@ -25,9 +27,12 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setTranslationForMissionSection()
-        mBinding.emailContainer.setOnClickListener {
+
+        phone = Constants.getTranslate(requireContext(), "about_phone")
+        email = Constants.getTranslate(requireContext(), "email_about")
+        mBinding.emailContainer.emailBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
-            intent.data = Uri.parse("mailto:customercare@naturescart.ae")
+            intent.data = Uri.parse("mailto:$email")
             try {
                 startActivity(intent)
             } catch (e: Exception) {
@@ -37,7 +42,7 @@ class AboutFragment : Fragment() {
         }
         mBinding.phoneBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse(StringBuilder().append("tel:").append("+971509341258").toString())
+            intent.data = Uri.parse(StringBuilder().append("tel:").append(phone).toString())
             startActivity(intent)
         }
         mBinding.facebookBtn.setOnClickListener {

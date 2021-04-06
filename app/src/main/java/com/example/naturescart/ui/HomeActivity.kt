@@ -9,11 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.preference.PreferenceManager
-import androidx.transition.TransitionInflater
 import com.example.naturescart.R
 import com.example.naturescart.adapters.HomeFragmentsVpAdapter
 import com.example.naturescart.databinding.ActivityHomeBinding
-import com.example.naturescart.databinding.LiItemBinding
 import com.example.naturescart.helper.*
 import com.example.naturescart.model.CartDetail
 import com.example.naturescart.model.CollectionModel
@@ -24,7 +22,6 @@ import com.example.naturescart.services.auth.AuthService
 import com.example.naturescart.services.cart.CartService
 import com.example.naturescart.services.product.ProductService
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.greenrobot.eventbus.EventBus
@@ -68,9 +65,15 @@ class HomeActivity : AppCompatActivity(), Results {
         badge.backgroundColor = getColor(R.color.red)
         badge.badgeTextColor = getColor(R.color.white)
         badge.number = event.itemCount
-        badge.isVisible = event.itemCount > 0
+        if (event.itemCount > 0)
+            badge.isVisible = true
+        else {
+            PreferenceManager.getDefaultSharedPreferences(this).edit().remove(Constants.cartID).apply()
+            badge.isVisible = false
+        }
         badge.verticalOffset = resources.getDimension(R.dimen._10sdp).toInt()
         badge.horizontalOffset = resources.getDimension(R.dimen._10sdp).toInt()
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -78,6 +81,7 @@ class HomeActivity : AppCompatActivity(), Results {
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         ProductService(getFavoritesRc, this).getFavorites(loggedUser!!.accessToken)
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onConnectivityEvent(event: ConnectivityEvent) {
@@ -230,6 +234,10 @@ class HomeActivity : AppCompatActivity(), Results {
     override fun onDestroy() {
         EventBus.getDefault().unregister(this)
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun loadFragment(fragment: Fragment) {

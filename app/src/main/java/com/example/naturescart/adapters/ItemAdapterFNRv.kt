@@ -79,6 +79,7 @@ class ItemAdapterFNRv(
 
         fun bindView(item: Product) {
             if (binding is LiItemBinding) {
+
                 var factorIncrement: Float = 0.5f
 
                 binding.itemContainer.setOnClickListener {
@@ -99,6 +100,8 @@ class ItemAdapterFNRv(
                 binding.itemCountTv.visibility = if (item.quantity == 0f) View.GONE else View.VISIBLE
                 if (NatureDb.getInstance(context).favouriteDao().getProduct(item.id!!) != null) {
                     binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav_add))
+                } else {
+                    binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav))
                 }
                 binding.favouriteImage.setOnClickListener {
                     val loadingDialog = LoadingDialog(context)

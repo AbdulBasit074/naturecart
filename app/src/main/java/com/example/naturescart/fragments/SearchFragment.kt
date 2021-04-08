@@ -123,22 +123,24 @@ class SearchFragment : Fragment(), Results {
     }
 
     private fun performSearch() {
-        binding.searchEt.clearFocus()
-        isLoading = true
-        pageNo = 1
-        if (loggedUser != null) {
-            val authToken = loggedUser!!.accessToken
-            DataService(searchRequest, this).getSearchResult(
-                "Bearer $authToken",
-                binding.searchEt.text.toString(),
-                PaginationListeners.pageSize, pageNo
-            )
-        } else {
-            DataService(searchRequest, this).getSearchResult(
-                null,
-                binding.searchEt.text.toString(),
-                PaginationListeners.pageSize, pageNo
-            )
+        if (binding.searchEt.text.toString().isNotEmpty()) {
+            binding.searchEt.clearFocus()
+            isLoading = true
+            pageNo = 1
+            if (loggedUser != null) {
+                val authToken = loggedUser!!.accessToken
+                DataService(searchRequest, this).getSearchResult(
+                    "Bearer $authToken",
+                    binding.searchEt.text.toString(),
+                    PaginationListeners.pageSize, pageNo
+                )
+            } else {
+                DataService(searchRequest, this).getSearchResult(
+                    null,
+                    binding.searchEt.text.toString(),
+                    PaginationListeners.pageSize, pageNo
+                )
+            }
         }
     }
 
@@ -236,7 +238,6 @@ class SearchFragment : Fragment(), Results {
         super.onResume()
         EventBus.getDefault().register(this)
     }
-
     override fun onPause() {
         EventBus.getDefault().unregister(this)
         super.onPause()

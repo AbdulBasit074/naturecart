@@ -20,6 +20,7 @@ abstract class PaginationListeners(private val layoutManager: LinearLayoutManage
             if ((totalVisibleItem + firstVisibleItemPosition) >= totalItemCount && totalItemCount >= pageSize) {
                 loadMoreItems()
             }
+
         }
 
     }

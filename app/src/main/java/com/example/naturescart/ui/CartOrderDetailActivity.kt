@@ -49,7 +49,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
     private fun setCartDetail() {
         if (cartDetail != null) {
             binding.bottomSheetCO.vatCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary?.vat))
-            binding.bottomSheetCO.itemCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.subTotal))
+            binding.bottomSheetCO.itemCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary?.subTotal))
             binding.bottomSheetCO.deliveryCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary!!.deliveryChanges))
             binding.bottomSheetCO.totalCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary!!.total!!))
             if (cartDetail!!.summary!!.couponDiscount!! > 0) {

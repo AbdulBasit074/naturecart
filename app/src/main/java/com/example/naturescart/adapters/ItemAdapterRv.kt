@@ -109,6 +109,9 @@ class ItemAdapterRv(
                 if (NatureDb.getInstance(context).favouriteDao().getProduct(item.id!!) != null) {
                     binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav_add))
                 }
+                else {
+                    binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav))
+                }
                 binding.favouriteImage.setOnClickListener {
                     val loadingDialog = LoadingDialog(context)
                     if (loggedUser != null) {

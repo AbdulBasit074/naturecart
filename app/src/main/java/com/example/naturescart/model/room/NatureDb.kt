@@ -11,7 +11,7 @@ import com.example.naturescart.model.User
 
 @Database(
     entities = [User::class, Product::class, Category::class],
-    version = 6,
+    version = 1,
     exportSchema = false
 )
 abstract class NatureDb : RoomDatabase() {
@@ -20,7 +20,6 @@ abstract class NatureDb : RoomDatabase() {
     abstract fun favouriteDao(): FavouriteDao
 
     companion object {
-
         private var databaseName: String = "NatureDb"
         private var instance: NatureDb? = null
 
@@ -32,6 +31,5 @@ abstract class NatureDb : RoomDatabase() {
             return instance!!
         }
     }
-
 
 }

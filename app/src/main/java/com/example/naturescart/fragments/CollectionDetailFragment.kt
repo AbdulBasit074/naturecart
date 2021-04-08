@@ -1,16 +1,13 @@
 package com.example.naturescart.fragments
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import com.example.naturescart.R
 import com.example.naturescart.adapters.CollectionViewPagerAdapter
@@ -21,13 +18,11 @@ import com.example.naturescart.model.Product
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.data.DataService
 import com.example.naturescart.ui.CollectionDetailActivity
-import com.example.naturescart.ui.HomeActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.lang.StringBuilder
 
 class CollectionDetailFragment(private val id: Long? = 0, private val name: String = "") : Fragment(), ViewPager.OnPageChangeListener, Results {
 
@@ -73,6 +68,7 @@ class CollectionDetailFragment(private val id: Long? = 0, private val name: Stri
 
         }
     }
+
     private fun tabLayoutSetting() {
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
         val categoryNames: ArrayList<String> = ArrayList()
@@ -81,11 +77,13 @@ class CollectionDetailFragment(private val id: Long? = 0, private val name: Stri
                 binding.tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.all)).setTag(getString(R.string.all)))
                 categoryNames.add(getString(R.string.all))
             } else {
-                binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it.categoryName).setTag(it.categoryName))
-                categoryNames.add(it.categoryName ?: "")
+                if (!categoryNames.contains(it.parentCategoryName)) {
+                    binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it.parentCategoryName).setTag(it.parentCategoryName))
+                    categoryNames.add(it.parentCategoryName!!)
+                }
             }
         }
-        binding.viewPager.adapter = CollectionViewPagerAdapter(requireActivity().supportFragmentManager, list.size, categoryNames, collectionId, collectionName)
+        binding.viewPager.adapter = CollectionViewPagerAdapter(requireActivity().supportFragmentManager, categoryNames.size, categoryNames, collectionId, collectionName)
         binding.viewPager.addOnPageChangeListener(this@CollectionDetailFragment)
         onPageSelected(0)
         binding.viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout))
@@ -101,13 +99,17 @@ class CollectionDetailFragment(private val id: Long? = 0, private val name: Stri
             }
         })
     }
+
     override fun onPageScrollStateChanged(state: Int) {
     }
+
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
     }
+
     override fun onPageSelected(position: Int) {
         binding.tabLayout.getTabAt(position)!!.select()
     }
+
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             categoryDetailRequest -> {
@@ -120,15 +122,16 @@ class CollectionDetailFragment(private val id: Long? = 0, private val name: Stri
             }
         }
     }
+
     override fun onFailure(requestCode: Int, data: String) {
         loadingView?.dismiss()
         showToast(data)
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCartUpdated(event: CartItemAddedEvent) {
         binding.itemsCountTv.text = StringBuilder().append("Total ${if (event.itemCount == 1) "Item" else "Items"}: ").append(event.itemCount)
         binding.totalTv.text = getString(R.string.aed_price, String.format("%.2f", event.total))
-
     }
     override fun onResume() {
         super.onResume()

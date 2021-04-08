@@ -57,7 +57,7 @@ class OrderDetailActivity : AppCompatActivity() {
         binding.addressTitleSelect.text = orderDetail.address!![0].addressNick.toString()
         binding.addressDetail.text = orderDetail.address!![0].address.toString()
         binding.orderNo.text = getString(R.string.order_no, orderDetail.orderId.toString())
-        binding.bottomSheetTotal.total.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.total))
+        binding.bottomSheetTotal.total.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary!!.total))
     }
 
     private fun setListeners() {

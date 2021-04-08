@@ -8,14 +8,20 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.preference.PreferenceManager
+import com.example.naturescart.BuildConfig
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivitySplashBinding
 import com.example.naturescart.helper.*
 import com.example.naturescart.model.OnBoarding
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.data.DataService
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class SplashActivity : AppCompatActivity(), Results {
 
@@ -28,6 +34,10 @@ class SplashActivity : AppCompatActivity(), Results {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash)
+        checkLatestVersion()
+    }
+
+    private fun moveForward() {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val isConnected = connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo!!.isConnected
         if (!isConnected) {
@@ -78,6 +88,24 @@ class SplashActivity : AppCompatActivity(), Results {
                 moveToWithoutHistory(HomeActivity::class.java)
             else
                 moveToWithoutHistory(LanguageSelectionActivity::class.java)
+        }
+    }
+
+    private fun checkLatestVersion() {
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+        val defaultMap: HashMap<String, Any> = HashMap()
+        val versionCodeKey = "latest_app_version"
+        defaultMap[versionCodeKey] = BuildConfig.VERSION_CODE
+        remoteConfig.setDefaultsAsync(defaultMap as Map<String, Any>)
+        remoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(1).build())
+        remoteConfig.fetch().addOnCompleteListener {
+            if (it.isSuccessful) {
+                remoteConfig.activate()
+                remoteConfig.getDouble(versionCodeKey).toInt()
+                moveForward()
+            } else {
+                moveForward()
+            }
         }
     }
 }

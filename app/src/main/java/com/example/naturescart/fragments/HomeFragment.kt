@@ -310,6 +310,11 @@ class HomeFragment : Fragment(), Results {
         animationShown = true
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun updateProducts(updateItemCount: updateItemCount) {
+        notifyAdapters()
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
         EventBus.getDefault().register(this)

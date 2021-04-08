@@ -1,5 +1,6 @@
 package com.example.naturescart.ui
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -9,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.preference.PreferenceManager
+import com.example.naturescart.BuildConfig
 import com.example.naturescart.R
 import com.example.naturescart.adapters.HomeFragmentsVpAdapter
 import com.example.naturescart.databinding.ActivityHomeBinding
@@ -22,11 +24,14 @@ import com.example.naturescart.services.auth.AuthService
 import com.example.naturescart.services.cart.CartService
 import com.example.naturescart.services.product.ProductService
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.HashMap
 
 
 class HomeActivity : AppCompatActivity(), Results {
@@ -44,6 +49,7 @@ class HomeActivity : AppCompatActivity(), Results {
         setLanguage()
         EventBus.getDefault().register(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        checkLatestVersion()
         AuthService(deviceAddRequest, this).addDevice(Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey, "").toString(), true)
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         fragmentsPagerAdapter = HomeFragmentsVpAdapter(supportFragmentManager)
@@ -247,4 +253,32 @@ class HomeActivity : AppCompatActivity(), Results {
         fragmentTransition.addToBackStack(null)
         fragmentTransition.commit()
     }
+
+    private fun checkLatestVersion() {
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+        val defaultMap: HashMap<String, Any> = HashMap()
+        val versionCodeKey = "latest_app_version"
+        defaultMap[versionCodeKey] = BuildConfig.VERSION_CODE
+        remoteConfig.setDefaultsAsync(defaultMap as Map<String, Any>)
+        remoteConfig.setConfigSettingsAsync(
+            FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(1).build()
+        )
+        remoteConfig.fetch().addOnCompleteListener {
+            if (it.isSuccessful) {
+                remoteConfig.activate()
+                val latestAppVersion = remoteConfig.getDouble(versionCodeKey).toInt()
+                if (latestAppVersion > BuildConfig.VERSION_CODE) {
+                    AlertDialog.Builder(this)
+                        .setTitle(Constants.getTranslate(this, "new_update_title"))
+                        .setMessage(Constants.getTranslate(this, "update_app_message"))
+                        .setCancelable(false)
+                        .setPositiveButton(Constants.getTranslate(this, "ok")) { dialog, _ ->
+                            moveToPlayStore()
+                            dialog.dismiss()
+                        }.show()
+                }
+            }
+        }
+    }
+
 }

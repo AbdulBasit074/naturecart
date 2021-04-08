@@ -108,13 +108,12 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             binding.addressNickEt.text = addressSave.addressNick
             binding.addressEt.setText(addressSave.address)
             binding.phoneNo.setText(addressSave.phone?.replace("+971", ""))
-            binding.cityEt.setText(addressSave.city)
+            binding.cityEt.text = addressSave.city
             binding.addressAddBtn.text = Constants.getTranslate(this, "update")
             positionNickKey = addressSave.addressNick.toString().toLowerCase()
 
         } else {
-
-
+            binding.phoneNo.setText(loggedUser!!.phone)
         }
     }
 
@@ -141,6 +140,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
+
         binding.addressAddBtn.setOnClickListener {
 
             if (isInputOk()) {

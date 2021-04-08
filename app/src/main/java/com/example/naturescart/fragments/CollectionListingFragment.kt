@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.naturescart.BuildConfig
 import com.example.naturescart.R
 import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.databinding.FragmentCollectionListingBinding
@@ -18,6 +19,8 @@ import com.example.naturescart.model.CollectionModel
 import com.example.naturescart.model.Product
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.data.DataService
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.gson.Gson
 import org.greenrobot.eventbus.EventBus
 
@@ -30,6 +33,7 @@ class CollectionListingFragment(private val categoryName: String, private val co
     private var isLastPage: Boolean = false
     private var isLoading: Boolean = true
     private var pageNo: Int = 1
+
     private lateinit var paginationListener: PaginationListeners
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapterProduct: ItemAdapterRv
@@ -61,7 +65,7 @@ class CollectionListingFragment(private val categoryName: String, private val co
                 adapterProduct.stopLoading()
                 val collection: CollectionModel = Gson().fromJson(data, CollectionModel::class.java)
                 collection.products.forEach {
-                    if (it.categoryName == categoryName || categoryName == getString(R.string.all))
+                    if (it.parentCategoryName == categoryName || categoryName == getString(R.string.all))
                         productList.add(it)
                 }
                 if (productList.size < PaginationListeners.pageSize)
@@ -110,4 +114,7 @@ class CollectionListingFragment(private val categoryName: String, private val co
         showToast(data)
     }
 
+
 }
+
+

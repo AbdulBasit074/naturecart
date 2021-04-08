@@ -3,11 +3,13 @@ package com.example.naturescart.helper
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -17,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.naturescart.BuildConfig
 import com.example.naturescart.R
 import com.example.naturescart.model.Category
 import com.google.android.gms.common.api.ResolvableApiException
@@ -39,6 +42,23 @@ fun AppCompatActivity.moveToWithoutHistory(clazz: Class<*>) {
     startActivity(Intent(this, clazz))
     finishAffinity()
 }
+
+fun AppCompatActivity.moveToPlayStore() {
+    val uri = Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+    try {
+        startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("http://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")
+            )
+        )
+    }
+}
+
 fun AppCompatActivity.setLanguage() {
     val displayMetrics = resources.displayMetrics
     val configuration = resources.configuration
@@ -180,6 +200,7 @@ fun AppCompatActivity.getCurrentLocation(fields: ArrayList<Place.Field>, onLocat
         }
     }
 }
+
 fun Array<String?>.convertToString(): String {
     val sb = StringBuilder()
     for (string in this) {
@@ -196,6 +217,7 @@ fun Context.showKeyboard() {
         e.printStackTrace()
     }
 }
+
 fun AppCompatActivity.hideKeyboard() {
     val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     var view = currentFocus
@@ -223,4 +245,6 @@ fun AppCompatActivity.checkAndFetchFcmToken() {
     } else {
         Log.d("TAGEE", Persister.with(this).getPersisted(Constants.fcmTokenPersistenceKey)!!)
     }
+
+
 }

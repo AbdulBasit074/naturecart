@@ -81,6 +81,9 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             onBackPressed()
         }
+        mBinding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     override fun onMapReady(p0: GoogleMap?) {
@@ -134,6 +137,7 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
+
     private fun onLocationAvailable(place: Place) {
         latLng = LatLng(place.latLng!!.latitude, place.latLng!!.longitude)
         mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))

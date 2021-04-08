@@ -54,16 +54,13 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
         mBinding.backBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
-
         if (product.factor!! > 0.5)
             factorIncrement = 1f
-
 
         if (Persister.with(requireContext()).getCartQuantity(product.id) > 0)
             updateTotalAmount()
 
         showItemCountText(mBinding.itemCountTv, Persister.with(requireContext()).getCartQuantity(product.id), factorIncrement)
-
         mBinding.descriptionTv.visibility = if (product.description.isNullOrEmpty()) View.GONE else View.VISIBLE
         mBinding.labelSold.visibility = if (product.quantity == 0f) View.VISIBLE else View.GONE
         mBinding.incrementBtn.visibility = if (product.quantity == 0f) View.GONE else View.VISIBLE
@@ -94,6 +91,7 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
                             mBinding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart_fav))
                         }
                         EventBus.getDefault().postSticky(FavoritesUpdatedEvent())
+                        EventBus.getDefault().postSticky(updateItemCount())
                         val dialog = DialogCustom(requireContext(), R.drawable.ic_add_fav, data)
                         dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
                         dialog.showDialog()
@@ -111,13 +109,14 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
                 val dialogMsg: String = if (NatureDb.getInstance(requireContext()).favouriteDao().getProduct(product.id!!) == null) {
                     NatureDb.getInstance(requireContext()).favouriteDao().insertProduct(product)
                     mBinding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart_fav_add))
-                    "Add to favourite"
+                    Constants.getTranslate(requireContext(), "add_to_fav")
                 } else {
                     NatureDb.getInstance(requireContext()).favouriteDao().removeProduct(product.id!!)
                     mBinding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart_fav))
-                    "Remove from favourite"
+                    Constants.getTranslate(requireContext(), "remove_from_fav")
                 }
                 EventBus.getDefault().postSticky(FavoritesUpdatedEvent())
+                EventBus.getDefault().postSticky(updateItemCount())
                 val dialog = DialogCustom(requireContext(), R.drawable.ic_add_fav, dialogMsg)
                 dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
                 dialog.showDialog()
@@ -148,6 +147,7 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
             override fun onSuccess(requestCode: Int, data: String) {
                 val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
                 EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
+                EventBus.getDefault().postSticky(updateItemCount())
                 val count = mBinding.itemCountTv.text.toString().toFloat()
                 showItemCountText(mBinding.itemCountTv, (count - factorIncrement), factorIncrement)
                 mBinding.totalPriceLabel.visibility = View.GONE
@@ -169,6 +169,7 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
                 Persister.with(requireContext()).persist(Constants.cartPersistenceKey, data)
                 showItemCountText(mBinding.itemCountTv, quantity, factorIncrement)
                 updateTotalAmount()
+                EventBus.getDefault().postSticky(updateItemCount())
                 EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
                 EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
             }
@@ -196,5 +197,12 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
         textView.text = (String.format("%.$afterDigit" + "f", value))
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+    }
 
 }

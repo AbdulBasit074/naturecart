@@ -64,9 +64,11 @@ class CategoryListingFragment(private val position: Int, private val categoryID:
         binding.productRvDetail.addItemDecoration(HorizantalDoubleDivider())
         binding.productRvDetail.adapter = adapterProduct
     }
+
     private fun onProductDetail(item: Product) {
         EventBus.getDefault().postSticky(MoveFragmentEvent(ProductDetailsFragment(item)))
     }
+
     override fun onSuccess(requestCode: Int, data: String) {
 
         when (requestCode) {

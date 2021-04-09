@@ -57,7 +57,7 @@
                         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="@dimen/_30sdp">
 
                             <ImageView
@@ -89,11 +89,12 @@
 
             </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.viewpager.widget.ViewPager
+            <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/background_silver"
+                android:orientation="horizontal"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

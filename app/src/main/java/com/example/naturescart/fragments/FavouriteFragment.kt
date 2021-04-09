@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.naturescart.R
 import com.example.naturescart.adapters.FavouriteViewPagerAdapter
 import com.example.naturescart.databinding.FragmentFavouriteBinding
@@ -24,7 +25,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class FavouriteFragment : Fragment(), ViewPager.OnPageChangeListener {
+class FavouriteFragment : Fragment() {
 
     private lateinit var binding: FragmentFavouriteBinding
     private var list: ArrayList<String> = ArrayList()
@@ -100,16 +101,15 @@ class FavouriteFragment : Fragment(), ViewPager.OnPageChangeListener {
                 binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it.name).setTag(it.id))
         }
 
-        binding.viewPager.adapter = FavouriteViewPagerAdapter(
-            requireActivity(),
-            childFragmentManager,
-            allCategoryList.size,
-            allCategoryList
-        )
+        binding.viewPager.adapter = FavouriteViewPagerAdapter(requireActivity(), childFragmentManager, lifecycle, allCategoryList.size, allCategoryList)
 
-        binding.viewPager.addOnPageChangeListener(this)
-        onPageSelected(0)
-        binding.viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout))
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                binding.tabLayout.getTabAt(position)!!.select()
+            }
+        })
+        binding.viewPager.currentItem = 0
+
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
@@ -123,17 +123,6 @@ class FavouriteFragment : Fragment(), ViewPager.OnPageChangeListener {
         })
 
 
-    }
-
-    override fun onPageScrollStateChanged(state: Int) {
-    }
-
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-    }
-
-    override fun onPageSelected(position: Int) {
-        binding.tabLayout.getTabAt(position)!!.select()
     }
 
     override fun onAttach(context: Context) {

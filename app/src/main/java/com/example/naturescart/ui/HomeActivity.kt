@@ -1,5 +1,4 @@
 package com.example.naturescart.ui
-
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -87,8 +86,6 @@ class HomeActivity : AppCompatActivity(), Results {
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         ProductService(getFavoritesRc, this).getFavorites(loggedUser!!.accessToken)
     }
-
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onConnectivityEvent(event: ConnectivityEvent) {
         if (!event.connected)
@@ -129,7 +126,6 @@ class HomeActivity : AppCompatActivity(), Results {
             binding.bottomNavigation.selectedItemId = R.id.cart
         }
     }
-
     private fun bottomNavigationFragments() {
         val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener {
             setPreviousUiUpdate()
@@ -160,6 +156,7 @@ class HomeActivity : AppCompatActivity(), Results {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
+                    removeAndHide()
                     binding.homeFragmentsVp.currentItem = 4
                     it.setIcon(R.drawable.ic_about_checked)
                     return@OnNavigationItemSelectedListener true
@@ -221,10 +218,8 @@ class HomeActivity : AppCompatActivity(), Results {
             }
         }
     }
-
     override fun onFailure(requestCode: Int, data: String) {
     }
-
     override fun onBackPressed() {
         when {
             supportFragmentManager.backStackEntryCount == 1 -> {

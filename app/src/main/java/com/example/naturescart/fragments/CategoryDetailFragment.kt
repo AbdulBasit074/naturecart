@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
 import com.example.naturescart.adapters.CategoryViewPagerAdapter
@@ -17,20 +18,22 @@ import com.example.naturescart.services.Results
 import com.example.naturescart.services.category.CategoryService
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
+import com.google.gson.annotations.Until
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.StringBuilder
 
-class CategoryDetailFragment(private val id: Long? = 0, private val name: String = "") : Fragment(), TabLayout.OnTabSelectedListener,
-    ViewPager.OnPageChangeListener, Results {
+class CategoryDetailFragment(private val id: Long? = 0, private val name: String = "") : Fragment(), TabLayout.OnTabSelectedListener, Results {
 
     private lateinit var binding: ActivityCategoryDetailBinding
     private var list: ArrayList<CategoryDetail.Child> = ArrayList()
+    private var listItems: ArrayList<CategoryDetail.Child> = ArrayList()
     private var categoryId: Long = 0
     private var categoryName: String = ""
     private var categoryDetail = CategoryDetail()
     private var categoryDetailRequest: Int = 1122
+
     private var loadingView: LoadingDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -63,22 +66,24 @@ class CategoryDetailFragment(private val id: Long? = 0, private val name: String
 
     private fun tabLayoutSetting() {
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+        listItems.clear()
+
         list.forEach {
             if (it.name == getString(R.string.all))
-                binding.tabLayout.addTab(
-                    binding.tabLayout.newTab().setText(getString(R.string.all)).setTag(it.name)
-                )
+                binding.tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.all)).setTag(it.id))
             else
-                binding.tabLayout.addTab(
-                    binding.tabLayout.newTab().setText(it.name).setTag(it.name)
-                )
+                binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it.name).setTag(it.id))
         }
         binding.tabLayout.addOnTabSelectedListener(this)
-        binding.viewPager.adapter = CategoryViewPagerAdapter(requireActivity(), requireActivity().supportFragmentManager, list.size, list, categoryId, categoryName)
-        binding.viewPager.addOnPageChangeListener(this)
-        onPageSelected(0)
+        binding.viewPager.adapter = CategoryViewPagerAdapter(requireActivity(), requireActivity().supportFragmentManager, lifecycle, list.size, list, categoryId, categoryName)
 
-        binding.viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout))
+        binding.viewPager.currentItem = 0
+
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                binding.tabLayout.getTabAt(position)!!.select()
+            }
+        })
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
@@ -91,7 +96,6 @@ class CategoryDetailFragment(private val id: Long? = 0, private val name: String
             }
         })
 
-
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -103,21 +107,10 @@ class CategoryDetailFragment(private val id: Long? = 0, private val name: String
     override fun onTabSelected(tab: TabLayout.Tab?) {
         var selectedIndex = 0
         for (i in 0 until list.size) {
-            if (list[i].name == tab!!.tag)
+            if (list[i].id == tab!!.tag)
                 selectedIndex = i
         }
         binding.viewPager.currentItem = selectedIndex
-    }
-
-    override fun onPageScrollStateChanged(state: Int) {
-    }
-
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-    }
-
-    override fun onPageSelected(position: Int) {
-        binding.tabLayout.getTabAt(position)!!.select()
     }
 
     override fun onSuccess(requestCode: Int, data: String) {

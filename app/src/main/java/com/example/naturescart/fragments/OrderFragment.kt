@@ -95,7 +95,7 @@ class OrderFragment : Fragment(), Results {
 
     private fun setListeners() {
 
-        orderBinding.toolBar.appLogo.setOnClickListener{
+        orderBinding.toolBar.appLogo.setOnClickListener {
             EventBus.getDefault().postSticky(LogoClickEvent())
         }
         orderBinding.toolBar.profileBtn.setOnClickListener {
@@ -199,6 +199,7 @@ class OrderFragment : Fragment(), Results {
         orderBinding.orderRv.adapter?.notifyDataSetChanged()
         orderBinding.noOrdersContainer.visibility = View.VISIBLE
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUserLoggedIn(event: LogInEvent) {
         loggedUser = NatureDb.getInstance(requireContext()).userDao().getLoggedUser()

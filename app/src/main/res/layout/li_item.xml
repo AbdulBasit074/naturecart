@@ -40,14 +40,14 @@
                 android:id="@+id/saveLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:background="@color/button_color_orange"
                 android:fontFamily="@font/roboto_slab_regular"
                 android:padding="@dimen/_5sdp"
-                android:text="Save 1.00"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_9ssp"
+                setSave="@{product.offer_discount}"
                 android:visibility="gone"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_8ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -108,6 +108,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/countryTv" />
 
+
+            <TextView
+                android:id="@+id/discountOfferTv"
+                textPrice="@{product.discounted_price}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_slab_semi_bold"
+                android:singleLine="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9ssp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
+
             <TextView
                 android:id="@+id/priceTv"
                 textPrice="@{product.sellPrice}"
@@ -119,7 +134,7 @@
                 android:singleLine="false"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9ssp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/discountOfferTv"
                 app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
 
             <TextView

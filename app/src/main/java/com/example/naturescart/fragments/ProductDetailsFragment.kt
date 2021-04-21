@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.example.naturescart.R
+import com.example.naturescart.adapters.setTextSlashPrice
 import com.example.naturescart.databinding.FragmentProductDetailsBinding
 import com.example.naturescart.helper.*
 import com.example.naturescart.model.CartDetail
@@ -66,6 +67,20 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
         mBinding.incrementBtn.visibility = if (product.quantity == 0f) View.GONE else View.VISIBLE
         mBinding.decrementBtn.visibility = if (product.quantity == 0f) View.GONE else View.VISIBLE
         mBinding.itemCountTv.visibility = if (product.quantity == 0f) View.GONE else View.VISIBLE
+        mBinding.discountOfferTv.visibility =
+            if (product.is_offer_valid == true) {
+                setTextSlashPrice(mBinding.priceTv, mBinding.priceTv.text.toString())
+                mBinding.saveLabel.visibility = View.VISIBLE
+                View.VISIBLE
+            } else {
+                mBinding.saveLabel.visibility = View.GONE
+                View.GONE
+            }
+
+
+
+
+
         if (NatureDb.getInstance(requireContext()).favouriteDao().getProduct(product.id!!) != null) {
             mBinding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart_fav_add))
         }

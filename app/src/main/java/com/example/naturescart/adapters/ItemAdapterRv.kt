@@ -87,7 +87,7 @@ class ItemAdapterRv(
 
         fun bindView(item: Product) {
             if (binding is LiItemBinding) {
-                 var factorIncrement: Float = 0.5f
+                var factorIncrement: Float = 0.5f
 
                 binding.itemContainer.setOnClickListener {
                     onItemClick(item)
@@ -105,11 +105,19 @@ class ItemAdapterRv(
                 binding.incrementBtn.visibility = if (item.quantity == 0f) View.GONE else View.VISIBLE
                 binding.decrementBtn.visibility = if (item.quantity == 0f) View.GONE else View.VISIBLE
                 binding.itemCountTv.visibility = if (item.quantity == 0f) View.GONE else View.VISIBLE
+                binding.discountOfferTv.visibility =
+                    if (item.is_offer_valid == true) {
+                        setTextSlashPrice(binding.priceTv, binding.priceTv.text.toString())
+                        binding.saveLabel.visibility = View.VISIBLE
+                        View.VISIBLE
+                    } else {
+                        binding.saveLabel.visibility = View.GONE
+                        View.GONE
+                    }
 
                 if (NatureDb.getInstance(context).favouriteDao().getProduct(item.id!!) != null) {
                     binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav_add))
-                }
-                else {
+                } else {
                     binding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_heart_fav))
                 }
                 binding.favouriteImage.setOnClickListener {

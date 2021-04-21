@@ -107,7 +107,8 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             addressSave = intent.getParcelableExtra(Constants.updateAddress)!!
             binding.addressNickEt.text = addressSave.addressNick
             binding.addressEt.setText(addressSave.address)
-            binding.phoneNo.setText(addressSave.phone?.replace("+971", ""))
+            var phoneNo = addressSave.phone!!.removePrefix("+971")
+            binding.phoneNo.setText(phoneNo)
             binding.cityEt.text = addressSave.city
             binding.addressAddBtn.text = Constants.getTranslate(this, "update")
             positionNickKey = addressSave.addressNick.toString().toLowerCase()

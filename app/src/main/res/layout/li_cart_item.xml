@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
                     android:ellipsize="end"
                     android:fontFamily="@font/roboto_slab_regular"
                     android:singleLine="true"
@@ -71,14 +71,36 @@
                     app:layout_constraintTop_toTopOf="@id/iconIv" />
 
                 <TextView
+                    android:id="@+id/descriptionTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_slab_light"
+                    android:singleLine="true"
+                    android:textColor="@color/transparent_black2"
+                    android:textSize="@dimen/_8ssp"
+                    app:layout_constraintStart_toEndOf="@id/iconIv"
+                    app:layout_constraintTop_toBottomOf="@id/nameTv" />
+
+                <TextView
                     android:id="@+id/priceTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/roboto_slab_regular"
                     android:textSize="@dimen/_11ssp"
-                    app:layout_constraintStart_toStartOf="@id/nameTv"
-                    app:layout_constraintTop_toBottomOf="@id/nameTv" />
+                    app:layout_constraintStart_toEndOf="@id/discountOfferTv"
+                    app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
+
+                <TextView
+                    android:id="@+id/discountOfferTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_slab_regular"
+                    android:textSize="@dimen/_11ssp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/descriptionTv"
+                    app:layout_constraintTop_toBottomOf="@id/descriptionTv" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/decrementBtn"
@@ -144,10 +166,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:maxWidth="@dimen/_80sdp"
-                    android:maxLines="2"
                     android:layout_marginBottom="@dimen/_12sdp"
                     android:fontFamily="@font/roboto_slab_semi_bold"
+                    android:maxWidth="@dimen/_80sdp"
+                    android:maxLines="2"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="parent"

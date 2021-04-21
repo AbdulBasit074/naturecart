@@ -121,6 +121,7 @@ class CategoryDetailFragment(private val id: Long? = 0, private val name: String
                 Glide.with(this).load(categoryDetail.image).into(binding.tabHeader)
                 val categoryForAll = CategoryDetail.Child()
                 categoryForAll.name = getString(R.string.all)
+                binding.title.text = categoryDetail.name
                 list.add(categoryForAll)
                 list.addAll(categoryDetail.childs!!)
                 tabLayoutSetting()

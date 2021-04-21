@@ -9,11 +9,7 @@ import com.example.naturescart.model.Category
 import com.example.naturescart.model.Product
 import com.example.naturescart.model.User
 
-@Database(
-    entities = [User::class, Product::class, Category::class],
-    version = 1,
-    exportSchema = false
-)
+@Database(entities = [User::class, Product::class, Category::class], version = 2, exportSchema = false)
 abstract class NatureDb : RoomDatabase() {
 
     abstract fun userDao(): UserDao

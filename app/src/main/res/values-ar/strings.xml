@@ -20,6 +20,8 @@
     <string name="not_connected">جهازك غير متصل بالإنترنت!</string>
     <string name="connection_error">خطأ في الإتصال</string>
     <string name="aed_total_price">%1$s السعر الإجمالي درهم</string>
+    <string name="save">%1$s يحفظ</string>
+    <string name="strike"><strike>%1$s</strike></string>
 
     <string-array name="gender">
         <item>ذكر</item>

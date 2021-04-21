@@ -18,6 +18,9 @@ class AboutFragment : Fragment() {
     private lateinit var mBinding: FragmentAboutBinding
     private lateinit var phone: String
     private lateinit var email: String
+    private lateinit var insta: String
+    private lateinit var fbPageId: String
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)
@@ -30,6 +33,11 @@ class AboutFragment : Fragment() {
 
         phone = Constants.getTranslate(requireContext(), "about_phone")
         email = Constants.getTranslate(requireContext(), "email_about")
+        insta = Constants.getTranslate(requireContext(), "instagram_about")
+        fbPageId = Constants.getTranslate(requireContext(), "fb_page_id")
+
+
+
         mBinding.emailContainer.emailBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:$email")
@@ -46,20 +54,16 @@ class AboutFragment : Fragment() {
             startActivity(intent)
         }
         mBinding.facebookBtn.setOnClickListener {
-
-
-            openLink("fb://page/105451777942295")
+            openLink("fb://page/$fbPageId")
         }
         mBinding.instagramBtn.setOnClickListener {
-            openLink("https://www.instagram.com/naturescartuae/")
+            openLink(insta)
         }
     }
-
     private fun setTranslationForMissionSection() {
         mBinding.ourMissionContainer.aboutTitleMission.text = Constants.getTranslate(requireContext(), "our_mission")
         mBinding.ourMissionContainer.aboutLabelMission.text = Constants.getTranslate(requireContext(), "our_mission_detail")
     }
-
     private fun openLink(link: String) {
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(link)

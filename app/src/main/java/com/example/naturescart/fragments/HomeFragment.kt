@@ -47,7 +47,7 @@ class HomeFragment : Fragment(), Results {
     private val layoutManager = LinearLayoutManager(activity)
     private var categoryProductData: ArrayList<CategoryProducts> = ArrayList()
     private var bannerDataLoad: ArrayList<Banner> = ArrayList()
-
+    private lateinit var runnable: Runnable
     private var loggedUser: User? = null
     private var isLoading: Boolean = true
     private var isLast: Boolean = false
@@ -64,9 +64,6 @@ class HomeFragment : Fragment(), Results {
     private val newArrivalDataPersistenceKey = "newArrivalDataPersistenceKey"
     private val frequentlyPurchasedDataPersistenceKey = "frequentlyPurchasedDataPersistenceKey"
     private val bannerDataPersistenceKey = "bannerDataPersistenceKey"
-
-
-    private var runnable: Runnable? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -114,7 +111,6 @@ class HomeFragment : Fragment(), Results {
             DataService(frequentlyProductRequest, this).getFrequentlyPurchasedProducts(loggedUser!!.accessToken)
 
 
-
         DataService(bannerRequest, this).getBanner()
         DataService(collectionRequest, this).getCollections(pageNo, limit)
         DataService(categoriesRequest, this).getCategories(limit, false)
@@ -147,7 +143,6 @@ class HomeFragment : Fragment(), Results {
         homeBinding.topSliderVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         homeBinding.topSliderIndicator.setViewPager2(homeBinding.topSliderVp)
         setTopSliderAnimator()
-
         homeBinding.categoryRv.adapter = CategoryAdapterRv(categoriesData) { categoryId, categoryName -> seeAll(categoryId, categoryName) }
         homeBinding.categoryRv.addItemDecoration(HorizantalDivider())
 
@@ -167,14 +162,16 @@ class HomeFragment : Fragment(), Results {
     private fun setTopSliderAnimator() {
         handler = Handler(Looper.getMainLooper())
         runnable = Runnable {
-            homeBinding.topSliderVp.setCurrentItem((homeBinding.topSliderVp.currentItem + 1) % (homeBinding.topSliderVp.adapter?.itemCount ?: 0), true)
+            if (bannerDataLoad.size > 0) {
+                homeBinding.topSliderVp.setCurrentItem((homeBinding.topSliderVp.currentItem + 1) % (homeBinding.topSliderVp.adapter?.itemCount ?: 0), true)
+            }
+            handler.postDelayed(runnable, 3000)
         }
-        handler.postDelayed({ runnable }, 3000)
+        handler.postDelayed(runnable, 3000)
     }
 
     private fun seeAll(categoryId: Long, categoryName: String) {
         EventBus.getDefault().postSticky(MoveFragmentEvent(CategoryDetailFragment(categoryId, categoryName)))
-//        activity?.startActivityForResult(CategoryDetailActivity.newInstance(requireActivity(), categoryId, categoryName), Constants.categoryDetailsActivityRc)
     }
 
     private fun onCollectionClicked(collection: CollectionModel) {
@@ -283,6 +280,9 @@ class HomeFragment : Fragment(), Results {
                 }
                 homeBinding.frequentlyPurchasedRv.adapter?.notifyDataSetChanged()
             }
+            if (loggedUser != null) {
+                showDataLoggedUser()
+            }
             if (loggedUser == null) {
                 showDataLoggedUser()
             }
@@ -315,14 +315,14 @@ class HomeFragment : Fragment(), Results {
     fun updateProducts(updateItemCount: updateItemCount) {
         notifyAdapters()
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         EventBus.getDefault().register(this)
     }
 
     override fun onDetach() {
-        if (runnable != null)
-            handler.removeCallbacks(runnable!!)
+        handler.removeCallbacks(runnable)
         EventBus.getDefault().unregister(this)
         super.onDetach()
     }

@@ -74,6 +74,20 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.appcompat.widget.Toolbar>
 
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_60sdp"
+                        android:breakStrategy="balanced"
+                        android:fontFamily="@font/roboto_slab_semi_bold"
+                        android:singleLine="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14ssp"
+                        tools:ignore="HardcodedText" />
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLayout"
                         style="@style/CustomTabText"

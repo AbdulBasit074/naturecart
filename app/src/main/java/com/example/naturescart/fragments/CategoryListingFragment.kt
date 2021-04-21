@@ -34,6 +34,7 @@ class CategoryListingFragment(private val position: Int, private val categoryID:
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapterProduct: ItemAdapterRv
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_category_listing, container, false)
         return binding.root
@@ -60,6 +61,7 @@ class CategoryListingFragment(private val position: Int, private val categoryID:
         }
         layoutManager = GridLayoutManager(activity, 2)
         binding.productRvDetail.layoutManager = layoutManager
+
         adapterProduct = ItemAdapterRv(requireActivity(), productList, categoryName) { item -> onProductDetail(item) }
         binding.productRvDetail.addItemDecoration(HorizantalDoubleDivider())
         binding.productRvDetail.adapter = adapterProduct

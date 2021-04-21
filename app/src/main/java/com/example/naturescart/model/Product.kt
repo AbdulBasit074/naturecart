@@ -24,7 +24,11 @@ class Product(
     @SerializedName("country_code") var country_code: String? = null,
     @SerializedName("country_name") var country_name: String? = null,
     @SerializedName("parent_category") var parentCategoryName: String? = null,
-    @SerializedName("factor") var factor: Float? = null ) : Parcelable {
+    @SerializedName("offer_discount") var offer_discount: String? = null,
+    @SerializedName("discounted_price") var discounted_price: Float? = null,
+    @SerializedName("is_offer_valid") var is_offer_valid: Boolean? = null,
+    @SerializedName("factor") var factor: Float? = null
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Long::class.java.classLoader) as? Long,
         parcel.readValue(Long::class.java.classLoader) as? Long,
@@ -42,6 +46,9 @@ class Product(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
+        parcel.readValue(Float::class.java.classLoader) as? Float,
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
         parcel.readValue(Float::class.java.classLoader) as? Float
     ) {
     }
@@ -63,6 +70,9 @@ class Product(
         parcel.writeString(country_code)
         parcel.writeString(country_name)
         parcel.writeString(parentCategoryName)
+        parcel.writeString(offer_discount)
+        parcel.writeValue(discounted_price)
+        parcel.writeValue(is_offer_valid)
         parcel.writeValue(factor)
     }
 

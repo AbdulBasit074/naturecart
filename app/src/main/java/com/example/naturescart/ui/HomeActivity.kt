@@ -101,7 +101,7 @@ class HomeActivity : AppCompatActivity(), Results {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onChangeHomeFragment(event: MoveFragmentEvent) {
         loadFragment(event.fragment)
-        binding.homeFragmentsVp.visibility = View.GONE
+        binding.homeFragmentsVp.visibility = View.INVISIBLE
         binding.homePageFragment.visibility = View.VISIBLE
     }
 
@@ -169,7 +169,7 @@ class HomeActivity : AppCompatActivity(), Results {
 
     private fun removeAndHide() {
         binding.homeFragmentsVp.visibility = View.VISIBLE
-        binding.homePageFragment.visibility = View.GONE
+        binding.homePageFragment.visibility = View.INVISIBLE
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 

@@ -80,6 +80,18 @@ fun setTextPrice(textView: TextView, price: Float) {
     textView.text = textView.context.getString(R.string.aed_price, String.format("%.2f", price))
 }
 
+@BindingAdapter("textPriceAdapter")
+fun setTextPriceSlashAdapter(textView: TextView, price: Float) {
+    textView.text = textView.context.getString(R.string.aed_price, String.format("%.2f", price))
+    textView.setTextColor(ContextCompat.getColor(textView.context, R.color.black))
+    textView.paintFlags = 0
+    textView.textSize = textView.context.resources.getDimension(R.dimen._3ssp).toFloat()
+    (textView.layoutParams as ConstraintLayout.LayoutParams).apply {
+        marginStart = textView.context.resources.getDimension(R.dimen._10sdp).toInt()
+    }
+
+}
+
 @BindingAdapter("setUnit")
 fun setUnit(textView: TextView, unit: String) {
     textView.text = textView.context.getString(R.string.unit_text, unit)
@@ -95,26 +107,37 @@ fun setTextNoItems(textView: TextView, src: Int) {
 fun setTextSlashPrice(textView: TextView, src: String) {
     textView.text = src
     textView.setTextColor(ContextCompat.getColor(textView.context, R.color.transparent_black))
-    textView.textSize = 10f
+    textView.textSize = textView.context.resources.getDimension(R.dimen._3ssp).toFloat()
     textView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
     (textView.layoutParams as ConstraintLayout.LayoutParams).apply {
-        marginStart = 5
+        marginStart = textView.context.resources.getDimension(R.dimen._3sdp).toInt()
     }
-
-
-
 }
 
 @BindingAdapter("textSlashCartPrice")
-fun setTextSlashCartPrice(textView: TextView, src: String) {
-    textView.text = src
+fun setTextSlashCartPrice(textView: TextView, src: Float) {
+    textView.text = textView.context.getString(R.string.aed_price, String.format("%.2f", src))
     textView.setTextColor(ContextCompat.getColor(textView.context, R.color.transparent_black))
     textView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-    textView.textSize = 13f
+    textView.textSize = textView.context.resources.getDimension(R.dimen._3ssp).toFloat()
     (textView.layoutParams as ConstraintLayout.LayoutParams).apply {
-        marginStart = 5
+        marginStart = textView.context.resources.getDimension(R.dimen._3sdp).toInt()
     }
 }
+
+@BindingAdapter("textSlashCartPriceAdapter")
+fun setTextSlashCartPriceAdapter(textView: TextView, src: Float) {
+    textView.text = textView.context.getString(R.string.aed_price, String.format("%.2f", src))
+    textView.setTextColor(ContextCompat.getColor(textView.context, R.color.black))
+    textView.paintFlags = 0
+    textView.textSize = textView.context.resources.getDimension(R.dimen._3ssp).toFloat()
+    (textView.layoutParams as ConstraintLayout.LayoutParams).apply {
+        marginStart = textView.context.resources.getDimension(R.dimen._1sdp).toInt()
+    }
+
+}
+
+
 
 
 

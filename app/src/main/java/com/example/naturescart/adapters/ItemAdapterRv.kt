@@ -101,16 +101,14 @@ class ItemAdapterRv(
 
                 showItemCountText(binding.itemCountTv, Persister.with(context).getCartQuantity(item.id), factorIncrement)
                 binding.descriptionTv.visibility = if (item.description.isNullOrEmpty()) View.GONE else View.VISIBLE
-                binding.labelSold.visibility = if (item.quantity == 0f) View.VISIBLE else View.GONE
-                binding.incrementBtn.visibility = if (item.quantity == 0f) View.GONE else View.VISIBLE
-                binding.decrementBtn.visibility = if (item.quantity == 0f) View.GONE else View.VISIBLE
-                binding.itemCountTv.visibility = if (item.quantity == 0f) View.GONE else View.VISIBLE
                 binding.discountOfferTv.visibility =
-                    if (item.is_offer_valid == true) {
+                    if (item.is_offer_valid!!) {
                         setTextSlashPrice(binding.priceTv, binding.priceTv.text.toString())
+                        setTextPriceSlashAdapter(binding.discountOfferTv, item.discounted_price!!.toFloat())
                         binding.saveLabel.visibility = View.VISIBLE
                         View.VISIBLE
                     } else {
+                        setTextPriceSlashAdapter(binding.priceTv, item.sellPrice!!.toFloat())
                         binding.saveLabel.visibility = View.GONE
                         View.GONE
                     }

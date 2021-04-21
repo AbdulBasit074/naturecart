@@ -63,10 +63,6 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
 
         showItemCountText(mBinding.itemCountTv, Persister.with(requireContext()).getCartQuantity(product.id), factorIncrement)
         mBinding.descriptionTv.visibility = if (product.description.isNullOrEmpty()) View.GONE else View.VISIBLE
-        mBinding.labelSold.visibility = if (product.quantity == 0f) View.VISIBLE else View.GONE
-        mBinding.incrementBtn.visibility = if (product.quantity == 0f) View.GONE else View.VISIBLE
-        mBinding.decrementBtn.visibility = if (product.quantity == 0f) View.GONE else View.VISIBLE
-        mBinding.itemCountTv.visibility = if (product.quantity == 0f) View.GONE else View.VISIBLE
         mBinding.discountOfferTv.visibility =
             if (product.is_offer_valid == true) {
                 setTextSlashPrice(mBinding.priceTv, mBinding.priceTv.text.toString())

@@ -74,15 +74,14 @@ class CartItemRvAdapter(
             binding.totalPriceTv.text = context.getString(R.string.aed_price, String.format("%.2f", item.amount))
             Glide.with(context).load(item.product?.image).into(binding.iconIv)
             binding.discountOfferTv.visibility =
-                if (item.product!!.is_offer_valid == true) {
-                    setTextSlashCartPrice(binding.priceTv, binding.priceTv.text.toString())
+                if (item.product!!.is_offer_valid!!) {
+                    setTextSlashCartPrice(binding.priceTv, item.product!!.sellPrice!!)
+                    setTextSlashCartPriceAdapter(binding.discountOfferTv, item.product!!.discounted_price!!)
                     View.VISIBLE
                 } else {
+                    setTextSlashCartPriceAdapter(binding.priceTv, item.product!!.sellPrice!!)
                     View.GONE
                 }
-
-
-
 
 
             binding.iconIv.setOnClickListener {

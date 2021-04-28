@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_170sdp"
         android:background="@color/white"
+        android:clickable="true"
         android:elevation="20dp"
+        android:focusable="true"
         app:behavior_peekHeight="@dimen/_170sdp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         tools:ignore="HardcodedText">
@@ -25,6 +27,7 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/itemCharges"
             android:layout_width="wrap_content"
@@ -35,6 +38,7 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/discountAmountTitle"
             translationText='@{"discount"}'
@@ -45,8 +49,8 @@
             android:fontFamily="@font/roboto_slab_regular"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemCharges"
-            />
+            app:layout_constraintTop_toBottomOf="@id/itemCharges" />
+
         <TextView
             android:id="@+id/discountAmount"
             android:layout_width="wrap_content"
@@ -56,8 +60,7 @@
             android:fontFamily="@font/roboto_slab_regular"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemCharges"
-            />
+            app:layout_constraintTop_toBottomOf="@id/itemCharges" />
 
 
         <TextView
@@ -101,6 +104,7 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/deliveryCharges" />
+
         <TextView
             android:id="@+id/totalChargesTitle"
             translationText='@{"total_charges"}'

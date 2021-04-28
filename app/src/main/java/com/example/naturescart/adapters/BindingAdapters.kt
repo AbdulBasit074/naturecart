@@ -1,24 +1,33 @@
 package com.example.naturescart.adapters
 
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
+import android.view.View
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.naturescart.R
 import com.example.naturescart.helper.TranslationsHelper
+import com.facebook.shimmer.Shimmer
+import com.facebook.shimmer.ShimmerDrawable
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.mikhaellopez.circularimageview.CircularImageView
 import com.skydoves.powerspinner.PowerSpinnerView
 
 
-@BindingAdapter("setCircularImage")
-fun setCircularImage(imageView: CircularImageView, src: String?) {
-    Glide.with(imageView.context).load(src).into(imageView)
-}
-
 @BindingAdapter("translationText")
 fun translationText(textView: TextView, key: String) {
+    textView.text = TranslationsHelper.getInstance(textView.context).getTranslation(key)
+}
+
+@BindingAdapter("translationTextCheckBox")
+fun translationTextCheckBox(textView: CheckBox, key: String) {
     textView.text = TranslationsHelper.getInstance(textView.context).getTranslation(key)
 }
 
@@ -50,14 +59,26 @@ fun translationEditTextHint(spinner: PowerSpinnerView, key: String) {
 
 @BindingAdapter("setImage")
 fun setImage(imageView: ImageView, src: String) {
-    Glide.with(imageView.context).load(src).into(imageView)
+
+    val shimmer = Shimmer.ColorHighlightBuilder()
+        .setDuration(1500)
+        .setBaseAlpha(0.95f)
+        .setHighlightAlpha(1f)
+        .setHighlightColor(ContextCompat.getColor(imageView.context, R.color.white))
+        // the shimmer alpha amount
+        .setAutoStart(true)
+        .build()
+
+    val shimmerDrawable = ShimmerDrawable().apply { setShimmer(shimmer) }
+    Glide.with(imageView.context).load(src)
+        .placeholder(shimmerDrawable)
+        .into(imageView)
 }
 
 @BindingAdapter("setSave")
 fun setSave(textView: TextView, src: String) {
     textView.text = textView.context.getString(R.string.save, src)
 }
-
 
 @BindingAdapter("setTextOrder")
 fun setTextOrder(textView: TextView, text: String) {
@@ -89,7 +110,6 @@ fun setTextPriceSlashAdapter(textView: TextView, price: Float) {
     (textView.layoutParams as ConstraintLayout.LayoutParams).apply {
         marginStart = textView.context.resources.getDimension(R.dimen._10sdp).toInt()
     }
-
 }
 
 @BindingAdapter("setUnit")

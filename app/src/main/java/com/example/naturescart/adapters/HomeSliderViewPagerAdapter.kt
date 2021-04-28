@@ -25,12 +25,14 @@ class HomeSliderViewPagerAdapter(private val imageSliderList: ArrayList<Banner>)
     override fun getItemCount(): Int {
         return imageSliderList.size
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindView(imageSliderList[position])
     }
+
     inner class ViewHolder(val binding: LiSliderBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindView(s: Banner) {
-            Glide.with(binding.sliderImage.context).load(s.image).into(binding.sliderImage)
+            setImage(binding.sliderImage, s.image)
         }
     }
 

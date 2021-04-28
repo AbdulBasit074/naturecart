@@ -157,35 +157,26 @@ class ItemAdapterFNRv(
                 }
                 binding.incrementBtn.setOnClickListener {
                     val count = binding.itemCountTv.text.toString().toFloat()
-                    if (count == item.quantity) {
-                        AlertDialog.Builder(context).setTitle(Constants.getTranslate(context, "no_add_more")).setMessage(Constants.getTranslate(context, "out_of_stock"))
-                            .setPositiveButton(Constants.getTranslate(context, "ok")) { dialog, _ ->
-                                dialog.dismiss()
-                            }.show()
-                    } else {
-                        showItemCountText(binding.itemCountTv, (count + factorIncrement), factorIncrement)
-
-                        addToCart(binding.incrementBtn.context, item.id!!, count + factorIncrement)
-                    }
+                    addToCart(binding.incrementBtn.context, item.id!!, count + factorIncrement, binding.itemCountTv, factorIncrement)
                 }
                 binding.decrementBtn.setOnClickListener {
                     val count = binding.itemCountTv.text.toString().toFloat()
                     if (count > factorIncrement) {
-                        showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
-                        addToCart(binding.incrementBtn.context, item.id!!, count - factorIncrement)
+                        addToCart(binding.incrementBtn.context, item.id!!, count - factorIncrement, binding.itemCountTv, factorIncrement)
                     } else if (count == factorIncrement) {
                         showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
                         deleteFromCart(Persister.with(context).getCartItemId(item.id))
                     }
                 }
             }
+
         }
 
-        private fun addToCart(context: Context, itemId: Long, quantity: Float) {
+        private fun addToCart(context: Context, itemId: Long, quantity: Float, textView: TextView, factorIncrement: Float) {
             cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
             CartService(addToCartRequest, object : Results {
                 override fun onSuccess(requestCode: Int, data: String) {
-
+                    showItemCountText(textView, quantity, factorIncrement)
                     val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
                     PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
                     EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
@@ -193,9 +184,7 @@ class ItemAdapterFNRv(
                 }
 
                 override fun onFailure(requestCode: Int, data: String) {
-                    val dialog = DialogCustom(context, R.drawable.ic_cart, data)
-                    dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
-                    dialog.showDialog()
+                    context.showToast(data)
                 }
             }).addToCart(itemId, quantity, cartID)
         }

@@ -135,13 +135,7 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
         }
         mBinding.incrementBtn.setOnClickListener {
             val count = mBinding.itemCountTv.text.toString().toFloat()
-            if (count == product.quantity) {
-                AlertDialog.Builder(requireContext()).setTitle("Couldn't add more").setMessage("Out of stock").setPositiveButton("OK") { dialog, _ ->
-                    dialog.dismiss()
-                }.show()
-            } else {
                 addToCart(mBinding.incrementBtn.context, product.id!!, count + factorIncrement)
-            }
         }
         mBinding.decrementBtn.setOnClickListener {
             val count = mBinding.itemCountTv.text.toString().toFloat()
@@ -186,9 +180,7 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
             }
 
             override fun onFailure(requestCode: Int, data: String) {
-                val dialog = DialogCustom(context, R.drawable.ic_cart, data)
-                dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
-                dialog.showDialog()
+                showToast(data)
             }
         }).addToCart(itemId, quantity, cartID)
     }

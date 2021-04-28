@@ -9,6 +9,10 @@
     <color name="red">#D80404</color>
     <color name="new_light_green">#81CDEDCB</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_dark">#23A5A1A1</color>
+
+    <color name="white_full">#8BB3B2B2</color>
+
     <color name="fresh_warm">#EDF9E4</color>
     <color name="fresh_warm_text">#347B15</color>
 

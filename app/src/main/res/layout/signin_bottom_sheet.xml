@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
         tools:ignore="HardcodedText">
 
 
@@ -101,6 +103,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/passwordTitle"
                 tools:ignore="LabelFor" />
+
             <ImageView
                 android:id="@+id/hideSHowPassword"
                 android:layout_width="@dimen/_40sdp"

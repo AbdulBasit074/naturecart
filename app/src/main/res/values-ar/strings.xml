@@ -27,4 +27,8 @@
         <item>ذكر</item>
         <item>أنثى</item>
     </string-array>
+    <string-array name="country">
+        <item>دبي</item>
+    </string-array>
+
 </resources>

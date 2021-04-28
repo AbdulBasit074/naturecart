@@ -7,6 +7,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.naturescart.R
 import com.example.naturescart.databinding.LiCollectionBinding
+import com.example.naturescart.helper.Constants
 import com.example.naturescart.model.CollectionModel
 
 class CollectionAdapterRv(
@@ -62,6 +63,7 @@ class CollectionAdapterRv(
         fun bindView(item: CollectionModel) {
             if (binding is LiCollectionBinding) {
                 binding.collectionItem = item
+                Constants.setCircularImage(binding.imageBatch, item.image, binding.shimmerEffect)
                 binding.root.setOnClickListener {
                     onCollectionClicked(item)
                 }

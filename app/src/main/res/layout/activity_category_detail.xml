@@ -76,7 +76,7 @@
 
                     <TextView
                         android:id="@+id/title"
-                        android:layout_width="@dimen/_100sdp"
+                        android:layout_width="@dimen/_110sdp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginStart="@dimen/_10sdp"
@@ -86,8 +86,9 @@
                         android:fontFamily="@font/roboto_slab_semi_bold"
                         android:singleLine="false"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_18ssp"
                         tools:ignore="HardcodedText" />
+
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLayout"
                         style="@style/CustomTabText"

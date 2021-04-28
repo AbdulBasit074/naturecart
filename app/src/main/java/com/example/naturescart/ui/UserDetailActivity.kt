@@ -13,7 +13,6 @@ import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
-import com.bumptech.glide.Glide
 import com.example.naturescart.BuildConfig
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityUserDetailBinding
@@ -35,7 +34,6 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.jvm.Throws
 
 
 class UserDetailActivity : AppCompatActivity(), Results {
@@ -56,8 +54,11 @@ class UserDetailActivity : AppCompatActivity(), Results {
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         binding.user = loggedUser
         setListeners()
+        setUserDetail()
     }
-
+    private fun setUserDetail() {
+        Constants.setCircularImage(binding.profileBtn, loggedUser!!.avatar, binding.shimmerEffect)
+    }
     private fun setListeners() {
         binding.editProfileBtn.setOnClickListener {
             moveTo(EditProfileActivity::class.java)
@@ -136,8 +137,7 @@ class UserDetailActivity : AppCompatActivity(), Results {
         /*** check permission and get current location**/
         Dexter.withContext(this)
             .withPermissions(
-                Manifest.permission.ACCESS_FINE_LOCATION
-                , Manifest.permission.CAMERA
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA
             )
             .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(p0: MultiplePermissionsReport?) {
@@ -166,7 +166,7 @@ class UserDetailActivity : AppCompatActivity(), Results {
                 NatureDb.getInstance(this).userDao().logOut()
                 NatureDb.getInstance(this).userDao().login(user)
                 loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
-                Glide.with(this).load(loggedUser?.avatar).into(binding.profileBtn)
+                Constants.setCircularImage(binding.profileBtn, loggedUser!!.avatar, binding.shimmerEffect)
             }
         }
     }

@@ -13,6 +13,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
@@ -38,9 +39,10 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat
+import ir.mirrajabi.searchdialog.core.SearchResultListener
+import ir.mirrajabi.searchdialog.core.Searchable
+
 
 class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
@@ -52,7 +54,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
     private var latLng: LatLng? = null
     private var fields = arrayListOf(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)
     private var mMap: GoogleMap? = null
-    private val citiesRequest: Int = 1222
+    private val areaRequest: Int = 1222
     private val nickRequestGet: Int = 1112
     private val addressAddRequest: Int = 1412
     private val addressUpdateRequest: Int = 4412
@@ -61,7 +63,11 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
     private var positionNickKey: String = ""
 
     private var addressSave: Address = Address()
+    private var areaList: ArrayList<String> = ArrayList()
     private var citiesList: ArrayList<String> = ArrayList()
+
+    private var areaSearchList: ArrayList<AreaSearchAble> = ArrayList()
+
     private var nickList: ArrayList<String> = ArrayList()
     private var nickListObject: ArrayList<NickAddress> = ArrayList()
     private var isUpdate: Boolean = false
@@ -82,7 +88,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         isUpdate = intent.getBooleanExtra(Constants.isUpdate, false)
         showToast(Constants.getTranslate(this, "loading_map"))
         AddressService(nickRequestGet, this).getNickAddress(loggedUser?.accessToken ?: "")
-        AddressService(citiesRequest, this).getCities(loggedUser?.accessToken ?: "")
+        AddressService(areaRequest, this).getCities(loggedUser?.accessToken ?: "")
         updateUI()
         setListeners()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -112,9 +118,18 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             binding.cityEt.text = addressSave.city
             binding.addressAddBtn.text = Constants.getTranslate(this, "update")
             positionNickKey = addressSave.addressNick.toString().toLowerCase()
+            binding.areaEt.text = addressSave.area
+            binding.nearEt.setText(addressSave.nearestLandmark.toString())
+            binding.buildingNameEt.setText(addressSave.buildingName.toString())
+            binding.vilaApartmentEt.setText(addressSave.villaNo)
+            binding.streetNameEt.setText(addressSave.villaNo)
+            binding.streetNumberEt.setText(addressSave.area)
+            if (addressSave.defaultAddress)
+                binding.defaultAddress.isChecked = true
 
         } else {
             binding.phoneNo.setText(loggedUser!!.phone)
+            binding.addressAddBtn.text = Constants.getTranslate(this, "add_new_address")
         }
     }
 
@@ -135,6 +150,14 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             }
 
         })
+        binding.areaEt.setOnClickListener {
+
+            var custom = com.example.naturescart.helper.SimpleSearchDialogCompat(this, Constants.getTranslate(this, "select_area"), Constants.getTranslate(this, "search"), null, areaSearchList) { dialog, item, position ->
+                binding.areaEt.text = item.title
+                dialog.dismiss()
+            }
+            custom.show()
+        }
         binding.markLocationOnMapBtn.setOnClickListener {
             startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
         }
@@ -146,29 +169,32 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
             if (isInputOk()) {
                 addressSave.city = binding.cityEt.text.toString()
+                addressSave.area = binding.areaEt.text.toString()
+                addressSave.streetName = binding.streetNameEt.text.toString()
+                addressSave.streetNo = binding.streetNumberEt.text.toString()
+                addressSave.villaNo = binding.vilaApartmentEt.text.toString()
+                if (!binding.buildingNameEt.text.isNullOrEmpty())
+                    addressSave.buildingName = binding.buildingNameEt.text.toString()
+
                 addressSave.phone = getString(R.string.country_phone_code) + binding.phoneNo.text
                 addressSave.address = binding.addressEt.text.toString()
+                addressSave.nearestLandmark = binding.nearEt.text.toString()
+                addressSave.defaultAddress = binding.defaultAddress.isChecked
+
                 if (positionNickKey == "other")
                     addressSave.addressNick = binding.addressNickOther.text.toString()
                 else
                     addressSave.addressNick = binding.addressNickEt.text.toString()
 
-                addressSave.city = binding.cityEt.text.toString()
                 if (latLng == null) {
                     showToast(Constants.getTranslate(this, "map_location_not_updated"))
                 } else {
                     addressSave.latitude = latLng!!.latitude
                     addressSave.longitude = latLng!!.longitude
                     if (isUpdate)
-                        AddressService(addressUpdateRequest, this).updateAddress(
-                            loggedUser?.accessToken ?: "", addressSave,
-                            addressSave.id!!
-                        )
+                        AddressService(addressUpdateRequest, this).updateAddress(loggedUser?.accessToken ?: "", addressSave, addressSave.id!!)
                     else
-                        AddressService(addressAddRequest, this).addAddress(
-                            loggedUser?.accessToken ?: "",
-                            addressSave
-                        )
+                        AddressService(addressAddRequest, this).addAddress(loggedUser?.accessToken ?: "", addressSave)
                 }
             }
         }
@@ -177,7 +203,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             binding.addressNickOther.visibility = View.GONE
         }
         binding.cityEt.setOnClickListener {
-            setDataList(Constants.getTranslate(this, "select_city"), citiesList, binding.cityEt)
+            binding.cityEt.showOrDismiss()
         }
     }
 
@@ -187,6 +213,19 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
             binding.addressNickEt.text.isEmpty() -> {
                 showToast(Constants.getTranslate(this, "nick_address_req"))
+                return false
+            }
+            binding.areaEt.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "area_field_required"))
+                return false
+            }
+            binding.streetNameEt.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "street_name_required"))
+                return false
+            }
+
+            binding.streetNumberEt.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "street_no_required"))
                 return false
             }
             binding.addressEt.text.isEmpty() -> {
@@ -199,6 +238,10 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             }
             binding.cityEt.text.isEmpty() -> {
                 showToast(Constants.getTranslate(this, "city_field_req"))
+                return false
+            }
+            binding.nearEt.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "near_place_required"))
                 return false
             }
             positionNickKey == "other" -> {
@@ -275,13 +318,16 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             }
 
         }
-
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
-            citiesRequest -> {
-                citiesList = Gson().fromJson(data, object : TypeToken<ArrayList<String>>() {}.type)
+            areaRequest -> {
+                areaList = Gson().fromJson(data, object : TypeToken<ArrayList<String>>() {}.type)
+                areaList.forEach {
+                    areaSearchList.add(AreaSearchAble(it))
+                }
+                binding.cityEt.setItems(R.array.country)
             }
             nickRequestGet -> {
                 nickListObject =

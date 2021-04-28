@@ -49,11 +49,7 @@ class AddressesRvAdapter(
 
         fun bindView(item: Address) {
             binding.addressTitle.text = item.addressNick
-            binding.addressDetail.text = Constants.geoCoding(
-                item.latitude!!,
-                item.longitude!!,
-                binding.root.context
-            )
+            binding.addressDetail.text = Constants.geoCoding(item.latitude!!, item.longitude!!, binding.root.context)
             if (selection) {
                 Glide.with(binding.icon.context).load(R.drawable.ic_icon_check_circle)
                     .into(binding.icon)
@@ -73,7 +69,6 @@ class AddressesRvAdapter(
                 } else {
                     addressClick(item)
                 }
-
             }
             binding.deleteBtn.setOnClickListener {
                 deletedSelect = adapterPosition

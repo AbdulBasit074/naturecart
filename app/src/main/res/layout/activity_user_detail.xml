@@ -77,14 +77,38 @@
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/profileBtn"
-                setCircularImage="@{user.avatar}"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 app:civ_border_width="@dimen/_1sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/backBtn" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerEffect"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/backBtn"
+                app:shimmer_auto_start="true"
+                app:shimmer_base_alpha="1"
+                app:shimmer_duration="1500"
+                app:shimmer_highlight_alpha="0.4">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:backgroundTint="@color/white_dark"
+                    android:contentDescription="@string/icon"
+                    app:cardCornerRadius="@dimen/_260sdp"
+                    app:cardElevation="0dp"
+                    app:civ_border_width="@dimen/_1sdp" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
 
             <TextView
                 android:id="@+id/changeBtn"
@@ -123,6 +147,7 @@
                     android:textSize="@dimen/_13ssp"
                     app:drawableEndCompat="@drawable/ic_next_black"
                     app:layout_constraintTop_toTopOf="parent" />
+
 
                 <View
                     android:id="@+id/dividerEditProfile"

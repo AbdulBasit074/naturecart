@@ -8,37 +8,24 @@ import com.google.gson.annotations.SerializedName
 
 
 class Address(
-    @SerializedName("id")
-    @Expose
-    var id: Int? = null,
+    @SerializedName("id") @Expose var id: Int? = null,
+    @SerializedName("user_id") @Expose var userId: Int? = null,
+    @SerializedName("address_nick") @Expose var addressNick: String? = null,
+    @SerializedName("address") @Expose var address: String? = null,
+    @SerializedName("phone") @Expose var phone: String? = null,
+    @SerializedName("city") @Expose var city: String? = null,
+    @SerializedName("latitude") @Expose var latitude: Double? = null,
+    @SerializedName("longitude") @Expose var longitude: Double? = null,
+    @SerializedName("area") @Expose var area: String? = "",
+    @SerializedName("villa_no") @Expose var villaNo: String? = "",
+    @SerializedName("nearest_landmark") @Expose var nearestLandmark: String? = "",
+    @SerializedName("building_name") @Expose var buildingName: String? = "",
+    @SerializedName("street_name") @Expose var streetName: String? = "",
+    @SerializedName("street_no") @Expose var streetNo: String? = "",
+    @SerializedName("default_address") @Expose var defaultAddress: Boolean = false,
 
-    @SerializedName("user_id")
-    @Expose
-    var userId: Int? = null,
 
-    @SerializedName("address_nick")
-    @Expose
-    var addressNick: String? = null,
-
-    @SerializedName("address")
-    @Expose
-    var address: String? = null,
-
-    @SerializedName("phone")
-    @Expose
-    var phone: String? = null,
-
-    @SerializedName("city")
-    @Expose
-    var city: String? = null,
-
-    @SerializedName("latitude")
-    @Expose
-    var latitude: Double? = null,
-    @SerializedName("longitude")
-    @Expose
-    var longitude: Double? = null
-) :Parcelable{
+    ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
@@ -47,7 +34,14 @@ class Address(
         parcel.readString(),
         parcel.readString(),
         parcel.readValue(Double::class.java.classLoader) as? Double,
-        parcel.readValue(Double::class.java.classLoader) as? Double
+        parcel.readValue(Double::class.java.classLoader) as? Double,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readValue(Boolean::class.java.classLoader) as Boolean
     ) {
     }
 
@@ -60,6 +54,13 @@ class Address(
         parcel.writeString(city)
         parcel.writeValue(latitude)
         parcel.writeValue(longitude)
+        parcel.writeString(area)
+        parcel.writeString(villaNo)
+        parcel.writeString(nearestLandmark)
+        parcel.writeString(buildingName)
+        parcel.writeString(streetName)
+        parcel.writeString(streetNo)
+        parcel.writeValue(defaultAddress)
     }
 
     override fun describeContents(): Int {

@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
 import com.example.naturescart.adapters.CategoryViewPagerAdapter
+import com.example.naturescart.adapters.setImage
 import com.example.naturescart.databinding.ActivityCategoryDetailBinding
 import com.example.naturescart.helper.*
 import com.example.naturescart.model.CategoryDetail
@@ -118,7 +119,7 @@ class CategoryDetailFragment(private val id: Long? = 0, private val name: String
             categoryDetailRequest -> {
                 loadingView?.dismiss()
                 categoryDetail = Gson().fromJson(data, CategoryDetail::class.java)
-                Glide.with(this).load(categoryDetail.image).into(binding.tabHeader)
+                setImage(binding.tabHeader, categoryDetail.image!!)
                 val categoryForAll = CategoryDetail.Child()
                 categoryForAll.name = getString(R.string.all)
                 binding.title.text = categoryDetail.name

@@ -21,6 +21,10 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
+    <string-array name="country">
+        <item>Dubai</item>
+    </string-array>
+
 
     <string name="no_items">%1$s Items</string>
     <string name="intro_third_title">Fast &amp; Reliable Delivery</string>

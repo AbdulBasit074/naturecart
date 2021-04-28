@@ -95,6 +95,7 @@ class MenuActivity : AppCompatActivity(), Results {
                 binding.signInBottomSheet.passwordEt.transformationMethod = PasswordTransformationMethod.getInstance()
                 binding.signInBottomSheet.passwordEt.setSelection(binding.signInBottomSheet.passwordEt.text.length)
             }
+
         }
         binding.registerBottomSheet.hideSHowPassword.setOnClickListener {
 
@@ -341,6 +342,7 @@ class MenuActivity : AppCompatActivity(), Results {
         BottomSheetBehavior.from(binding.signInBottomSheet.parent).state =
             BottomSheetBehavior.STATE_COLLAPSED
         binding.registerBottomSheet.countrySelectionSpinner.setItems(countries)
+
     }
 
 
@@ -424,6 +426,7 @@ class MenuActivity : AppCompatActivity(), Results {
         }
         countries.sort()
     }
+
     override fun onFailure(requestCode: Int, data: String) {
         loadingView?.dismiss()
         showToast(data)

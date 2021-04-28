@@ -114,8 +114,7 @@ class AddressActivity : AppCompatActivity(), Results {
         when (requestCode) {
             addressList -> {
                 listAddress.clear()
-                listAddress =
-                    Gson().fromJson(data, object : TypeToken<ArrayList<Address>>() {}.type)
+                listAddress = Gson().fromJson(data, object : TypeToken<ArrayList<Address>>() {}.type)
                 setAdapters()
             }
         }

@@ -72,7 +72,7 @@ class CartItemRvAdapter(
             binding.descriptionTv.text = item.product!!.description.toString()
             binding.discountOfferTv.text = context.getString(R.string.aed_price, item.product!!.discounted_price.toString())
             binding.totalPriceTv.text = context.getString(R.string.aed_price, String.format("%.2f", item.amount))
-            Glide.with(context).load(item.product?.image).into(binding.iconIv)
+            setImage(binding.iconIv, item.product?.image!!)
             binding.discountOfferTv.visibility =
                 if (item.product!!.is_offer_valid!!) {
                     setTextSlashCartPrice(binding.priceTv, item.product!!.sellPrice!!)
@@ -82,7 +82,6 @@ class CartItemRvAdapter(
                     setTextSlashCartPriceAdapter(binding.priceTv, item.product!!.sellPrice!!)
                     View.GONE
                 }
-
 
             binding.iconIv.setOnClickListener {
                 val pair: Pair<View, String> = Pair.create(binding.iconIv as View?, "ProductIcon")
@@ -112,24 +111,18 @@ class CartItemRvAdapter(
             cartID = PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.cartID, 0)
             CartService(requestCode, object : Results {
                 override fun onSuccess(requestCode: Int, data: String) {
-
                     val count = binding.itemCountTv.text.toString().toFloat()
                     if (requestCode == incrementRc)
                         showItemCountText(binding.itemCountTv, (count + factorIncrement), factorIncrement)
                     else
                         showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
-
                     val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
                     PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
                     EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
-
-
                 }
 
                 override fun onFailure(requestCode: Int, data: String) {
-                    val dialog = DialogCustom(context, R.drawable.ic_cart, data)
-                    dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
-                    dialog.showDialog()
+                    context.showToast(data)
                 }
             }).addToCart(itemId, quantity, cartID)
         }

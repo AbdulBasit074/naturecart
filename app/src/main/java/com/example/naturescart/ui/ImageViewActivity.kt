@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
+import com.example.naturescart.adapters.setImage
 import com.example.naturescart.databinding.ActivityImageViewBinding
 import com.example.naturescart.helper.Constants
 
@@ -26,7 +27,7 @@ class ImageViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_image_view)
         val iconUrl = intent.getStringExtra(Constants.dataPassKey)!!
-        Glide.with(this).load(iconUrl).into(mBinding.iconIv)
+        setImage(mBinding.iconIv, iconUrl)
         mBinding.backBtn.setOnClickListener {
             onBackPressed()
         }

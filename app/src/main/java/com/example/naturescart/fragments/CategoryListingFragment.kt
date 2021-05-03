@@ -17,6 +17,8 @@ import com.example.naturescart.services.Results
 import com.example.naturescart.services.category.CategoryService
 import com.google.gson.Gson
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class CategoryListingFragment(private val position: Int, private val categoryID: Long, private val categoryName: String) : Fragment(), Results {
 
@@ -42,7 +44,7 @@ class CategoryListingFragment(private val position: Int, private val categoryID:
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        EventBus.getDefault().register(this)
         if (position == 0) {
             CategoryService(categoryWithRequest, this).getCategory(
                 categoryID,
@@ -96,6 +98,20 @@ class CategoryListingFragment(private val position: Int, private val categoryID:
                 binding.productRvDetail.adapter?.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onAdapterNotifyEvent(adapter: AdapterNotifyEvent) {
+        binding.productRvDetail.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
     }
 
     private fun initPageListener() {

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
@@ -36,8 +38,11 @@ class AddressActivity : AppCompatActivity(), Results {
     private val addressList: Int = 2223
     private val positionNick: Int = 0
     private val addRequest: Int = 32
+    private lateinit var handler: Handler
+    private lateinit var runnable: Runnable
     private val updateRequest: Int = 22
     private var addressSelect: Address? = null
+    private lateinit var dialogShow: DialogCustom
     private var loggedUser: User? = null
     private lateinit var binding: ActivityAddressBinding
 
@@ -50,6 +55,16 @@ class AddressActivity : AppCompatActivity(), Results {
         setListener()
         AddressService(addressList, this).getAddress(loggedUser?.accessToken ?: "")
         setData()
+        handlerSet()
+
+    }
+
+    private fun handlerSet() {
+        handler = Handler(Looper.getMainLooper())
+        runnable = Runnable {
+            dialogShow.dismiss()
+        }
+
     }
 
     private fun setData() {
@@ -91,19 +106,15 @@ class AddressActivity : AppCompatActivity(), Results {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 updateRequest -> {
-                    DialogCustom(
-                        this,
-                        R.drawable.ic_thumb,
-                        Constants.getTranslate(this, "address_update")
-                    ).show()
+                    dialogShow = DialogCustom(this, R.drawable.ic_thumb, Constants.getTranslate(this, "address_update"))
+                    dialogShow.show()
+                    handler.postDelayed(runnable, 1000)
                     AddressService(addressList, this).getAddress(loggedUser?.accessToken ?: "")
                 }
                 addRequest -> {
-                    DialogCustom(
-                        this,
-                        R.drawable.ic_thumb,
-                        Constants.getTranslate(this, "address_added")
-                    ).show()
+                    dialogShow = DialogCustom(this, R.drawable.ic_thumb, Constants.getTranslate(this, "address_added"))
+                    dialogShow.show()
+                    handler.postDelayed(runnable, 1000)
                     AddressService(addressList, this).getAddress(loggedUser?.accessToken ?: "")
                 }
             }
@@ -135,5 +146,9 @@ class AddressActivity : AppCompatActivity(), Results {
         }
     }
 
+    override fun onDestroy() {
+        handler.removeCallbacks(runnable)
+        super.onDestroy()
+    }
 
 }

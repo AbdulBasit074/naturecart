@@ -14,6 +14,7 @@ import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityPaymentWebViewBinding
 import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.LoadingDialog
+import com.example.naturescart.helper.Persister
 import com.example.naturescart.helper.setLanguage
 import java.text.DateFormat
 import java.util.*
@@ -51,7 +52,7 @@ class PaymentWebView : AppCompatActivity() {
         val loadingView = LoadingDialog(this)
         val currentDateTimeString: String = DateFormat.getDateInstance().format(Date())
         loadingView.show()
-        binding.webView.loadUrl(Constants.paymentMethodUrl + "$cartID" + "/$userID" + "/$addressID/"+"$currentDateTimeString/")
+        binding.webView.loadUrl(Constants.paymentMethodUrl + "$cartID" + "/$userID" + "/$addressID/")
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -69,12 +70,12 @@ class PaymentWebView : AppCompatActivity() {
         override fun onReceiveValue(value: String?) {
             if (value != "null" && value != null) {
                 if (value.contains("200")) {
+                    Persister.with(this@PaymentWebView).persist(Constants.cartPersistenceKey,null)
                     setResult(Activity.RESULT_OK)
                     finish()
                 }
             }
         }
-
     }
 
     override fun onBackPressed() {

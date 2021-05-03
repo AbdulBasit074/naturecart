@@ -44,6 +44,7 @@ class MenuActivity : AppCompatActivity(), Results {
     private val otpArray = arrayOfNulls<String>(4)
     private lateinit var binding: ActivityMenuBinding
     private val countries = ArrayList<String>()
+    private var areaSearchList: ArrayList<AreaSearchAble> = ArrayList()
     private var loggedUser: User? = null
     private var genderSelectForRegister: String? = null
     private var countrySelectForRegister: String? = null
@@ -125,7 +126,6 @@ class MenuActivity : AppCompatActivity(), Results {
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                        binding.registerBottomSheet.countrySelectionSpinner.showOrDismiss()
                     }
                 }
             })
@@ -196,11 +196,18 @@ class MenuActivity : AppCompatActivity(), Results {
                 )
             }
         }
-        binding.registerBottomSheet.countrySelectionSpinner.setOnSpinnerItemSelectedListener(object : OnSpinnerItemSelectedListener<String> {
-            override fun onItemSelected(oldIndex: Int, oldItem: String?, newIndex: Int, newItem: String) {
-                countrySelectForRegister = newItem
+
+        binding.registerBottomSheet.countrySelectionSpinner.setOnClickListener {
+
+            var custom = SimpleSearchDialogCompat(this, Constants.getTranslate(this, "select_country"), Constants.getTranslate(this, "search"), null, areaSearchList) { dialog, item, position ->
+                binding.registerBottomSheet.countrySelectionSpinner.text = item.title
+                countrySelectForRegister = item.title
+                dialog.dismiss()
             }
-        })
+            custom.show()
+
+        }
+
 
         binding.signInBottomSheet.loginBtn.setOnClickListener {
             if (isLoginInputOk()) {
@@ -341,7 +348,9 @@ class MenuActivity : AppCompatActivity(), Results {
     private fun setViews() {
         BottomSheetBehavior.from(binding.signInBottomSheet.parent).state =
             BottomSheetBehavior.STATE_COLLAPSED
-        binding.registerBottomSheet.countrySelectionSpinner.setItems(countries)
+        countries.forEach {
+            areaSearchList.add(AreaSearchAble(it))
+        }
 
     }
 

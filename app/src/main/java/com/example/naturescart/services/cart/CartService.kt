@@ -12,15 +12,15 @@ class CartService(requestCode: Int, callBack: Results) : BaseService(requestCode
             .enqueue(this)
     }
 
-    fun applyCoupon(authToken:String,couponCode:String,cartId: Long) {
+    fun applyCoupon(authToken: String, couponCode: String, cartId: Long) {
         RetrofitClient.getInstance().create(CartClient::class.java)
-            .applyCoupon("Bearer $authToken",couponCode,cartId)
+            .applyCoupon("Bearer $authToken", couponCode, cartId)
             .enqueue(this)
     }
 
-    fun removeCoupon(authToken:String,couponCode:String,cartId: Long){
+    fun removeCoupon(authToken: String, couponCode: String, cartId: Long) {
         RetrofitClient.getInstance().create(CartClient::class.java)
-            .removeCoupon("Bearer $authToken",couponCode,cartId)
+            .removeCoupon("Bearer $authToken", couponCode, cartId)
             .enqueue(this)
     }
 
@@ -29,6 +29,19 @@ class CartService(requestCode: Int, callBack: Results) : BaseService(requestCode
             .getCartDetail(cartId)
             .enqueue(this)
     }
+
+    fun getDeliveryDateTime(keyDate: String?) {
+        RetrofitClient.getInstance().create(CartClient::class.java)
+            .getDeliveryDateTime(keyDate)
+            .enqueue(this)
+    }
+    fun addDeliveryDateTime(date: String,time:String,cartId: Long) {
+        RetrofitClient.getInstance().create(CartClient::class.java)
+            .addDeliveryDateTime(date,time,cartId)
+            .enqueue(this)
+    }
+
+
 
     fun removeFromCart(itemId: Long) {
         RetrofitClient.getInstance().create(CartClient::class.java)

@@ -151,10 +151,13 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
         CartService(removeFromCartRc, object : Results {
             override fun onSuccess(requestCode: Int, data: String) {
                 val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                Persister.with(requireContext()).persist(Constants.cartPersistenceKey, data)
                 EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
                 EventBus.getDefault().postSticky(updateItemCount())
                 val count = mBinding.itemCountTv.text.toString().toFloat()
                 showItemCountText(mBinding.itemCountTv, (count - factorIncrement), factorIncrement)
+                EventBus.getDefault().postSticky(AdapterNotifyEvent())
+
                 mBinding.totalPriceLabel.visibility = View.GONE
             }
 
@@ -177,6 +180,8 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
                 EventBus.getDefault().postSticky(updateItemCount())
                 EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
                 EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
+                EventBus.getDefault().postSticky(AdapterNotifyEvent())
+
             }
 
             override fun onFailure(requestCode: Int, data: String) {

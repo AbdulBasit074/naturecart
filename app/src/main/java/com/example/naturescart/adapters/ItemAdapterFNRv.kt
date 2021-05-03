@@ -93,6 +93,7 @@ class ItemAdapterFNRv(
                     0.5f
 
                 showItemCountText(binding.itemCountTv, Persister.with(context).getCartQuantity(item.id), factorIncrement)
+
                 binding.descriptionTv.visibility = if (item.description.isNullOrEmpty()) View.GONE else View.VISIBLE
                 binding.discountOfferTv.visibility =
                     if (item.is_offer_valid!!) {

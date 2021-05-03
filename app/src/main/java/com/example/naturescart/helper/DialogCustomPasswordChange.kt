@@ -53,15 +53,15 @@ class DialogCustomPasswordChange(
     private fun isInputOk(): Boolean {
         when {
             binding.currentEt.text.isEmpty() -> {
-                binding.currentEt.context.showToast("Current password must Required")
+                binding.currentEt.context.showToast(Constants.getTranslate(context,"current_password_must_required"))
                 return false
             }
             binding.newEt.text.isEmpty() -> {
-                binding.newEt.context.showToast("New password must Required")
+                binding.newEt.context.showToast(Constants.getTranslate(context,"new_password_must_required"))
                 return false
             }
             binding.confirmEt.text.isEmpty() -> {
-                binding.confirmEt.context.showToast("Confirm password must Required")
+                binding.confirmEt.context.showToast(Constants.getTranslate(context,"confirm_password_required"))
                 return false
             }
             else -> return true

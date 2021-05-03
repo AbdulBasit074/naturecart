@@ -35,21 +35,16 @@ class OrderDetail
     @Expose
     var paymentType: String? = null,
 
-    @SerializedName("status")
-    @Expose
-    var status: String? = null,
+    @SerializedName("status") @Expose var status: String? = null,
 
-    @SerializedName("order_data")
-    @Expose
-    var orderData: String? = null,
+    @SerializedName("order_date") @Expose var orderData: String? = null,
+    @SerializedName("delivery_date") @Expose var deliveryDate: String? = null,
+    @SerializedName("delivery_time") @Expose var deliveryTime: String? = null,
 
-    @SerializedName("items")
-    @Expose
-    var items: List<CartDetail.Item>? = null,
 
-    @SerializedName("address")
-    @Expose
-    var address: List<Address>? = null,
+    @SerializedName("items") @Expose var items: List<CartDetail.Item>? = null,
+
+    @SerializedName("address") @Expose var address: List<Address>? = null,
 
     @SerializedName("summary")
     @Expose
@@ -61,6 +56,8 @@ class OrderDetail
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readValue(Float::class.java.classLoader) as? Float,
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -79,6 +76,8 @@ class OrderDetail
         parcel.writeString(paymentType)
         parcel.writeString(status)
         parcel.writeString(orderData)
+        parcel.writeString(deliveryDate)
+        parcel.writeString(deliveryTime)
         parcel.writeTypedList(items)
         parcel.writeTypedList(address)
         parcel.writeParcelable(summary, flags)

@@ -22,6 +22,7 @@ class EditProfileActivity : AppCompatActivity(), Results {
     private val updateProfile: Int = 2661
     private var selectCountry: String = ""
     private var selectGender: String = ""
+    private var areaSearchList: ArrayList<AreaSearchAble> = ArrayList()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +42,7 @@ class EditProfileActivity : AppCompatActivity(), Results {
         selectCountry = loggedUser!!.nationality
         selectGender = loggedUser!!.gender
         if (selectCountry.isNotEmpty()) {
-            binding.countrySelectionSpinner.selectItemByIndex(countries.indexOf(selectCountry))
+            binding.countrySelectionSpinner.text = selectCountry
         }
         if (selectGender.isNotEmpty()) {
             if (selectGender == "Male" || (selectGender == "ذكر"))
@@ -78,11 +79,17 @@ class EditProfileActivity : AppCompatActivity(), Results {
         binding.changePasswordBtn.setOnClickListener {
             DialogCustomPasswordChange(this, loggedUser!!.accessToken) { data -> onPasswordChange(data) }.show()
         }
-        binding.countrySelectionSpinner.setOnSpinnerItemSelectedListener(object : OnSpinnerItemSelectedListener<String> {
-            override fun onItemSelected(oldIndex: Int, oldItem: String?, newIndex: Int, newItem: String) {
-                selectCountry = newItem
+        binding.countrySelectionSpinner.setOnClickListener {
+
+            var custom = SimpleSearchDialogCompat(this, Constants.getTranslate(this, "select_country"), Constants.getTranslate(this, "search"), null, areaSearchList) { dialog, item, position ->
+                binding.countrySelectionSpinner.text = item.title
+                selectCountry = item.title
+                dialog.dismiss()
             }
-        })
+            custom.show()
+
+        }
+
 
         binding.saveBtn.setOnClickListener {
             if (isInputOk()) {
@@ -176,7 +183,11 @@ class EditProfileActivity : AppCompatActivity(), Results {
             }
         }
         countries.sort()
-        binding.countrySelectionSpinner.setItems(countries)
+
+        countries.forEach {
+            areaSearchList.add(AreaSearchAble(it))
+        }
+
     }
 
 }

@@ -16,6 +16,7 @@ class TranslationsHelper private constructor(context: Context) {
     private lateinit var arabicTranslations: JSONObject
     private lateinit var englishTranslations: JSONObject
 
+
     companion object {
         private var instance: TranslationsHelper? = null
 
@@ -45,6 +46,7 @@ class TranslationsHelper private constructor(context: Context) {
             arabicTranslations = JSONObject("{data:\"nill\"}")
             englishTranslations = JSONObject("{data:\"nill\"}")
         }
+
     }
 
     fun getTranslation(key: String): String {
@@ -60,6 +62,7 @@ class TranslationsHelper private constructor(context: Context) {
                 ""
         }
     }
+
     fun setLanguage(language: String) {
         prefs.edit().putString(selectedLanguageStoreKey, language).apply()
         prefs.edit().putString(Constants.localeKey, getLocale()).apply()
@@ -71,4 +74,6 @@ class TranslationsHelper private constructor(context: Context) {
     fun getLocale(): String {
         return if (getLanguage() == "en") "en" else "ar"
     }
+
+
 }

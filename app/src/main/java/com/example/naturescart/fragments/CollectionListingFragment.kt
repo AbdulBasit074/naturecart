@@ -11,10 +11,7 @@ import com.example.naturescart.BuildConfig
 import com.example.naturescart.R
 import com.example.naturescart.adapters.ItemAdapterRv
 import com.example.naturescart.databinding.FragmentCollectionListingBinding
-import com.example.naturescart.helper.HorizantalDoubleDivider
-import com.example.naturescart.helper.MoveFragmentEvent
-import com.example.naturescart.helper.PaginationListeners
-import com.example.naturescart.helper.showToast
+import com.example.naturescart.helper.*
 import com.example.naturescart.model.CollectionModel
 import com.example.naturescart.model.Product
 import com.example.naturescart.services.Results
@@ -23,6 +20,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.gson.Gson
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class CollectionListingFragment(private val categoryName: String, private val collectionId: Long, private val collectionName: String) : Fragment(), Results {
 
@@ -45,6 +44,7 @@ class CollectionListingFragment(private val categoryName: String, private val co
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventBus.getDefault().register(this)
         DataService(categoryWithRequest, this).getCollectionProducts(collectionId, pageNo, PaginationListeners.pageSize)
         layoutManager = GridLayoutManager(activity, 2)
         binding.productRvDetail.layoutManager = layoutManager
@@ -88,6 +88,17 @@ class CollectionListingFragment(private val categoryName: String, private val co
             }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onAdapterNotifyEvent(adapter: AdapterNotifyEvent) {
+        binding.productRvDetail.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
+    }
+
 
     private fun initPageListener() {
         paginationListener = object : PaginationListeners(layoutManager) {

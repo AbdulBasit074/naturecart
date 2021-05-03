@@ -131,8 +131,8 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/paymenttitle"
-                        translationText='@{"payment"}'
+                        android:id="@+id/deliverySetTitle"
+                        translationText='@{"select_delivery_time"}'
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
@@ -143,6 +143,44 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/selectedAddressContainer" />
 
+                    <TextView
+                        android:id="@+id/setDeliveryDateTime"
+                        translationText='@{"set"}'
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:background="@drawable/border_white_round"
+                        android:buttonTint="@color/saleem_green"
+                        android:checked="true"
+                        android:drawablePadding="@dimen/_7sdp"
+                        android:fontFamily="@font/roboto_slab_regular"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/deliverySetTitle"
+                        tools:ignore="RtlSymmetry"
+                        app:drawableEndCompat="@drawable/ic_drop_down" />
+
+
+                    <TextView
+                        android:id="@+id/paymenttitle"
+                        translationText='@{"payment"}'
+                        android:layout_width="0dp"
+                        android:layout_height="23dp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_slab_regular"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_15ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/setDeliveryDateTime" />
+
                     <RadioGroup
                         android:id="@+id/radioContainer"
                         android:layout_width="match_parent"
@@ -151,7 +189,8 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/paymenttitle">
+                        app:layout_constraintTop_toBottomOf="@id/paymenttitle"
+                        >
 
 
                         <RadioButton
@@ -263,6 +302,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/dicountContainer"
                         tools:ignore="LabelFor" />
+
                     <View
                         android:id="@+id/dividerView"
                         android:layout_width="match_parent"

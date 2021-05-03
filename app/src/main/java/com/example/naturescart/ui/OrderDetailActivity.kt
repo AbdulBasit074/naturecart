@@ -46,6 +46,8 @@ class OrderDetailActivity : AppCompatActivity() {
     private fun setOrderData() {
         binding.orderStatus.text = StringBuilder().append(Constants.getTranslate(this, "order_status")).append(orderDetail.status)
         binding.dateTxt.text = convertDate(orderDetail.orderData.toString())
+        binding.deliveryDate.text = orderDetail.deliveryDate.toString()
+        binding.deliveryTime.text = orderDetail.deliveryTime.toString()
         binding.itemCharges.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary?.subTotal))
         binding.deliveryCharges.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary?.deliveryChanges))
         binding.vatCharges.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary?.vat))

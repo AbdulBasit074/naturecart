@@ -5,12 +5,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parent"
-        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:ignore="HardcodedText"
-        android:focusable="true">
+        android:clickable="true"
+        android:focusable="true"
+        tools:ignore="HardcodedText">
 
         <TextView
             android:id="@+id/signIntitle"
@@ -153,16 +153,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/passwordLabel"
             tools:ignore="LabelFor" />
+
         <ImageView
             android:id="@+id/hideSHowPassword"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
+            android:contentDescription="@string/icon"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_password_hide"
             app:layout_constraintBottom_toBottomOf="@id/passwordEtRegister"
             app:layout_constraintEnd_toEndOf="@id/passwordEtRegister"
-            app:layout_constraintTop_toBottomOf="@id/emailEtRegister"
-            android:contentDescription="@string/icon" />
+            app:layout_constraintTop_toBottomOf="@id/emailEtRegister" />
+
         <TextView
             android:id="@+id/phoneLabel"
             translationText='@{"phone"}'
@@ -209,6 +211,7 @@
             android:autofillHints="Search"
             android:backgroundTint="@color/divider"
             android:fontFamily="@font/nunito_regular"
+
             android:inputType="phone"
             android:maxLength="11"
             android:paddingTop="@dimen/_5sdp"
@@ -231,8 +234,10 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phoneNo" />
+
         <TextView
             android:id="@+id/male"
+            translationText='@{"male"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -243,13 +248,13 @@
             android:paddingTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingBottom="@dimen/_5sdp"
-            translationText='@{"male"}'
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/genderLabel" />
 
         <TextView
             android:id="@+id/female"
+            translationText='@{"female"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -260,7 +265,6 @@
             android:paddingTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingBottom="@dimen/_5sdp"
-            translationText='@{"female"}'
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toEndOf="@id/male"
             app:layout_constraintTop_toBottomOf="@id/genderLabel" />
@@ -268,6 +272,7 @@
 
         <TextView
             android:id="@+id/ratherGender"
+            translationText='@{"rater_not_say"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -278,7 +283,6 @@
             android:paddingTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingBottom="@dimen/_5sdp"
-            translationText='@{"rater_not_say"}'
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toEndOf="@id/female"
             app:layout_constraintTop_toBottomOf="@id/genderLabel" />
@@ -297,34 +301,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/male" />
 
-        <com.skydoves.powerspinner.PowerSpinnerView
+
+        <TextView
             android:id="@+id/countrySelectionSpinner"
-            translationSpinnerTextHint='@{"select_country"}'
             android:layout_width="@dimen/_280sdp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:autofillHints="Search"
+            android:backgroundTint="@color/divider"
             android:fontFamily="@font/nunito_regular"
-            android:gravity="start"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingTop="@dimen/_5sdp"
+            android:paddingStart="@dimen/_4sdp"
+            android:paddingTop="@dimen/_8sdp"
             android:paddingEnd="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            android:shadowColor="@color/background_silver"
+            android:paddingBottom="@dimen/_8sdp"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/countryLabel"
-            app:spinner_arrow_animate_duration="200"
-            app:spinner_arrow_padding="@dimen/_10sdp"
-            app:spinner_arrow_show="true"
-            app:spinner_arrow_tint="@color/black"
-            app:spinner_divider_color="@color/divider"
-            app:spinner_divider_show="true"
-            app:spinner_divider_size="0.4dp"
-            app:spinner_item_array="@array/gender"
-            app:spinner_popup_animation="dropdown"
-            app:spinner_popup_background="@color/white"
-            app:spinner_popup_elevation="14dp" />
+            app:layout_constraintTop_toBottomOf="@id/countryLabel" />
 
         <View
             android:id="@+id/countryDivider"
@@ -344,11 +337,11 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:visibility="gone"
-
             android:fontFamily="@font/nunito_regular"
+
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/countryDivider" />
 
@@ -357,11 +350,11 @@
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:visibility="gone"
-
             android:layout_marginTop="@dimen/_5sdp"
+
             android:contentDescription="@string/icon"
             android:src="@drawable/ic_flag"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phoneWhatsappLabel" />
 
@@ -374,8 +367,8 @@
             android:fontFamily="@font/nunito_regular"
             android:text="+971"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@id/flagLabel"
             app:layout_constraintTop_toBottomOf="@id/phoneWhatsappLabel" />
 
@@ -387,13 +380,13 @@
             android:autofillHints="Search"
             android:backgroundTint="@color/divider"
             android:fontFamily="@font/nunito_regular"
-            android:visibility="gone"
-
             android:inputType="phone"
+
             android:maxLength="11"
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@id/countryCodeWhatsLabel"
             app:layout_constraintTop_toBottomOf="@id/phoneWhatsappLabel"
             tools:ignore="LabelFor" />

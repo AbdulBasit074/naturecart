@@ -13,7 +13,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
@@ -39,9 +38,6 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
-import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat
-import ir.mirrajabi.searchdialog.core.SearchResultListener
-import ir.mirrajabi.searchdialog.core.Searchable
 
 
 class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
@@ -122,8 +118,8 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             binding.nearEt.setText(addressSave.nearestLandmark.toString())
             binding.buildingNameEt.setText(addressSave.buildingName.toString())
             binding.vilaApartmentEt.setText(addressSave.villaNo)
-            binding.streetNameEt.setText(addressSave.villaNo)
-            binding.streetNumberEt.setText(addressSave.area)
+            binding.streetNameEt.setText(addressSave.streetName)
+            binding.streetNumberEt.setText(addressSave.streetNo)
             if (addressSave.defaultAddress)
                 binding.defaultAddress.isChecked = true
 
@@ -152,11 +148,18 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         })
         binding.areaEt.setOnClickListener {
 
-            var custom = com.example.naturescart.helper.SimpleSearchDialogCompat(this, Constants.getTranslate(this, "select_area"), Constants.getTranslate(this, "search"), null, areaSearchList) { dialog, item, position ->
+            var custom = com.example.naturescart.helper.SimpleSearchDialogCompat(
+                this,
+                Constants.getTranslate(this, "select_area"),
+                Constants.getTranslate(this, "search"),
+                null,
+                areaSearchList
+            ) { dialog, item, position ->
                 binding.areaEt.text = item.title
                 dialog.dismiss()
             }
             custom.show()
+
         }
         binding.markLocationOnMapBtn.setOnClickListener {
             startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
@@ -261,6 +264,14 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         mMap = p0
         if (latLng == null && isGpsEnable())
             checkPermissionAndGetLocation()
+
+        mMap?.setOnCameraMoveStartedListener {
+            binding.mapView.requestDisallowInterceptTouchEvent(true)
+
+        }
+        mMap?.setOnCameraIdleListener {
+            binding.mapView.requestDisallowInterceptTouchEvent(false)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -327,6 +338,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 areaList.forEach {
                     areaSearchList.add(AreaSearchAble(it))
                 }
+
                 binding.cityEt.setItems(R.array.country)
             }
             nickRequestGet -> {

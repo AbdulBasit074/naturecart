@@ -1,5 +1,6 @@
 package com.example.naturescart.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +12,7 @@ import com.example.naturescart.databinding.ActivityCartOrderDetailBinding
 import com.example.naturescart.helper.*
 import com.example.naturescart.model.Address
 import com.example.naturescart.model.CartDetail
+import com.example.naturescart.model.DeliveryDateTime
 import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
 import com.example.naturescart.services.Results
@@ -32,6 +34,8 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
     private var listAddress: ArrayList<Address> = ArrayList()
     private var addressSelect: Address? = null
     private var loading: LoadingDialog? = null
+    private var date: DeliveryDateTime.Date? = null
+    private var time: DeliveryDateTime.TimeSlot? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,9 +72,18 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setListener() {
         binding.backBtn.setOnClickListener {
             onBackPressed()
+        }
+        binding.setDeliveryDateTime.setOnClickListener {
+          var dialog =   DialogDeliveryDate(this, cartDetail?.id) { dateSelect, timeSlot, s ->
+                binding.setDeliveryDateTime.text = dateSelect.date + "\n" + timeSlot.time
+                date = dateSelect
+                time = timeSlot
+            }
+            dialog.show()
         }
         binding.selectedAddressContainer.setOnClickListener {
             startActivityForResult(AddressActivity.newInstance(this, true), 0)
@@ -88,17 +101,24 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
             }
         }
         binding.bottomSheetCO.Btn.setOnClickListener {
+            if (allIsOk()) {
+                moveForResult(PaymentWebView.newInstance(this, cartDetail?.id!!, loggedUser!!.id, addressSelect!!.id!!), paymentMethodRequest)
+            }
+        }
+    }
 
-            if (addressSelect != null) {
-                moveForResult(
-                    PaymentWebView.newInstance(
-                        this, cartDetail?.id!!, loggedUser!!.id,
-                        addressSelect!!.id!!
-                    ), paymentMethodRequest
-                )
-
-            } else {
+    private fun allIsOk(): Boolean {
+        return when {
+            addressSelect == null -> {
                 showToast(Constants.getTranslate(this, "select_address"))
+                false
+            }
+            date == null -> {
+                showToast(Constants.getTranslate(this, "select_delivery_time"))
+                false
+            }
+            else -> {
+                true
             }
         }
     }
@@ -111,7 +131,6 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
                     addressSelect = data.getParcelableExtra(Constants.selectionAddress)!!
                     binding.addressTitle.text = addressSelect!!.addressNick
                     binding.addressDetail.text = addressSelect!!.address
-
                 }
             }
             paymentMethodRequest -> {

@@ -131,7 +131,6 @@ class HomeFragment : Fragment(), Results {
             EventBus.getDefault().postSticky(MoveFragmentEvent(SearchFragment()))
         }
     }
-
     private fun setAllAdapters() {
         adapterCollection = CollectionAdapterRv(collectionData) { collection -> onCollectionClicked(collection) }
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -169,11 +168,9 @@ class HomeFragment : Fragment(), Results {
         }
         handler.postDelayed(runnable, 3000)
     }
-
     private fun seeAll(categoryId: Long, categoryName: String) {
         EventBus.getDefault().postSticky(MoveFragmentEvent(CategoryDetailFragment(categoryId, categoryName)))
     }
-
     private fun onCollectionClicked(collection: CollectionModel) {
         EventBus.getDefault().postSticky(MoveFragmentEvent(CollectionDetailFragment(collection.id, collection.name)))
 //        activity?.startActivityForResult(CollectionDetailActivity.newInstance(requireActivity(), collection.id, collection.name), Constants.collectionDetailsActivityRc)

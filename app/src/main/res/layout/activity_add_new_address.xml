@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,7 +25,6 @@
             translationText='@{"add_new_address"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:fontFamily="@font/roboto_slab_semi_bold"
             android:textColor="@color/black"
             android:textSize="@dimen/_15ssp"
@@ -58,9 +56,9 @@
 
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollParent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:id="@+id/scrollParent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/backBtn">
 
@@ -71,8 +69,7 @@
                 <FrameLayout
                     android:id="@+id/mapView"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_250sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_height="@dimen/_150sdp"
                     android:nestedScrollingEnabled="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -81,7 +78,7 @@
                         android:id="@+id/map"
                         android:name="com.google.android.gms.maps.SupportMapFragment"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_250sdp" />
+                        android:layout_height="@dimen/_150sdp" />
 
                     <ImageView
                         android:layout_width="@dimen/_20sdp"
@@ -93,20 +90,103 @@
 
                 </FrameLayout>
 
-                <View
-                    android:id="@+id/mapViewDivider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    app:layout_constraintBottom_toBottomOf="@id/mapView" />
-
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:background="@drawable/corner_top_round"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/mapViewDivider">
+                    app:layout_constraintTop_toBottomOf="@id/mapView">
+                    <TextView
+                        android:id="@+id/clickOnMapLabel"
+                        translationText='@{"click_on_map"}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="@dimen/_5sdp"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/nunito_regular"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_9ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+
+                    <TextView
+                        android:id="@+id/addressNickLabel"
+                        translationText='@{"address_nick"}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/nunito_regular"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toStartOf="@id/home"
+                        app:layout_constraintTop_toBottomOf="@id/clickOnMapLabel"
+                        />
+
+
+
+                    <TextView
+                        android:id="@+id/home"
+                        translationText='@{"home"}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@drawable/border_address_type"
+                        android:fontFamily="@font/nunito_regular"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:textColor="@color/black_full"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="@id/cityLabel"
+                        app:layout_constraintTop_toBottomOf="@id/addressNickLabel" />
+
+
+                    <TextView
+                        android:id="@+id/work"
+                        translationText='@{"work"}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@drawable/border_address_type"
+                        android:fontFamily="@font/nunito_regular"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:textColor="@color/black_full"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toEndOf="@id/home"
+                        app:layout_constraintTop_toBottomOf="@id/addressNickLabel"
+
+                        />
+
+
+                    <TextView
+                        android:id="@+id/other"
+                        translationText='@{"other"}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@drawable/border_address_type"
+                        android:fontFamily="@font/nunito_regular"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:textColor="@color/black_full"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toEndOf="@id/work"
+                        app:layout_constraintTop_toBottomOf="@id/addressNickLabel" />
 
 
                     <TextView
@@ -117,14 +197,16 @@
                         android:layout_marginTop="@dimen/_20sdp"
                         android:fontFamily="@font/nunito_regular"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
+                        android:textSize="@dimen/_11ssp"
                         app:layout_constraintStart_toStartOf="@id/cityEt"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@id/home"
+
+                        />
 
 
                     <com.skydoves.powerspinner.PowerSpinnerView
                         android:id="@+id/cityEt"
-                        android:layout_width="@dimen/_240sdp"
+                        android:layout_width="@dimen/_280sdp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_regular"
                         android:gravity="start"
@@ -137,6 +219,7 @@
                         app:layout_constraintStart_toStartOf="@id/areaLabel"
                         app:layout_constraintTop_toBottomOf="@id/cityLabel"
                         app:spinner_arrow_animate_duration="200"
+                        app:spinner_arrow_drawable="@drawable/ic_drop_down"
                         app:spinner_arrow_padding="@dimen/_10sdp"
                         app:spinner_arrow_show="true"
                         app:spinner_arrow_tint="@color/black"
@@ -150,7 +233,7 @@
 
                     <View
                         android:id="@+id/divider3"
-                        android:layout_width="@dimen/_240sdp"
+                        android:layout_width="@dimen/_280sdp"
                         android:layout_height="1dp"
                         android:background="@color/divider"
                         android:paddingStart="0dp"
@@ -158,19 +241,6 @@
                         app:layout_constraintEnd_toEndOf="@id/cityEt"
                         app:layout_constraintStart_toStartOf="@id/cityEt"
                         app:layout_constraintTop_toBottomOf="@id/cityEt" />
-
-
-                    <ImageView
-                        android:id="@+id/markLocationOnMapBtn"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:contentDescription="@string/icon"
-                        android:fontFamily="@font/nunito_regular"
-                        android:src="@drawable/ic_pin"
-                        android:textColor="@color/saleem_green"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/cityLabel" />
 
 
                     <TextView
@@ -182,7 +252,7 @@
 
                         android:fontFamily="@font/nunito_regular"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
+                        android:textSize="@dimen/_11ssp"
                         app:layout_constraintStart_toStartOf="@id/areaEt"
                         app:layout_constraintTop_toBottomOf="@id/divider3" />
 
@@ -199,6 +269,8 @@
                         android:paddingEnd="@dimen/_5sdp"
                         android:paddingBottom="@dimen/_12sdp"
                         android:textSize="@dimen/_13ssp"
+
+                        app:drawableEndCompat="@drawable/ic_drop_down"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/areaLabel" />
@@ -216,21 +288,19 @@
 
 
                     <TextView
-                        android:id="@+id/streetNameLabel"
-                        translationText='@{"street_name"}'
+                        android:id="@+id/firstNameLabel"
+                        translationText='@{"first_name"}'
                         android:layout_width="@dimen/_140sdp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:fontFamily="@font/nunito_regular"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
+                        android:textSize="@dimen/_11ssp"
                         app:layout_constraintStart_toStartOf="@id/areaEt"
                         app:layout_constraintTop_toBottomOf="@id/areaEt" />
 
-
                     <EditText
-                        android:id="@+id/streetNameEt"
-
+                        android:id="@+id/firstNameEt"
                         android:layout_width="@dimen/_140sdp"
                         android:layout_height="wrap_content"
                         android:autofillHints="Search"
@@ -239,24 +309,24 @@
                         android:inputType="text"
                         android:paddingStart="@dimen/_4sdp"
                         android:paddingEnd="@dimen/_5sdp"
-                        app:layout_constraintStart_toStartOf="@id/streetNameLabel"
-                        app:layout_constraintTop_toBottomOf="@id/streetNameLabel" />
+                        app:layout_constraintStart_toStartOf="@id/firstNameLabel"
+                        app:layout_constraintTop_toBottomOf="@id/firstNameLabel" />
 
                     <TextView
-                        android:id="@+id/streetNoLabel"
-                        translationText='@{"street_no"}'
+                        android:id="@+id/lastNameLabel"
+                        translationText='@{"last_name"}'
                         android:layout_width="@dimen/_140sdp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:fontFamily="@font/nunito_regular"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintStart_toEndOf="@id/streetNameLabel"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toEndOf="@id/firstNameLabel"
                         app:layout_constraintTop_toBottomOf="@id/areaEt" />
 
 
                     <EditText
-                        android:id="@+id/streetNumberEt"
+                        android:id="@+id/lastNameEt"
                         android:layout_width="@dimen/_140sdp"
                         android:layout_height="wrap_content"
                         android:autofillHints="Search"
@@ -265,94 +335,39 @@
                         android:inputType="text"
                         android:paddingStart="@dimen/_4sdp"
                         android:paddingEnd="@dimen/_5sdp"
-                        app:layout_constraintStart_toEndOf="@id/streetNameEt"
-                        app:layout_constraintTop_toBottomOf="@id/streetNoLabel"
+                        app:layout_constraintStart_toEndOf="@id/firstNameEt"
+                        app:layout_constraintTop_toBottomOf="@id/lastNameLabel"
                         tools:ignore="TextFields" />
 
 
-                    <TextView
-                        android:id="@+id/vilaApartmentLabel"
-                        translationText='@{"vila_apartment"}'
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/nunito_regular"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintStart_toStartOf="@id/streetNameEt"
-                        app:layout_constraintTop_toBottomOf="@id/streetNameEt" />
-
-                    <EditText
-                        android:id="@+id/vilaApartmentEt"
-                        android:layout_width="@dimen/_280sdp"
-                        android:layout_height="wrap_content"
-                        android:autofillHints="Search"
-                        android:backgroundTint="@color/divider"
-                        android:fontFamily="@font/nunito_regular"
-                        android:inputType="text"
-                        android:paddingStart="@dimen/_4sdp"
-                        android:paddingEnd="@dimen/_5sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-
-                        app:layout_constraintTop_toBottomOf="@id/vilaApartmentLabel"
-                        tools:ignore="TextFields" />
-
-                    <TextView
-                        android:id="@+id/buildingNameLabel"
-                        translationText='@{"building_name"}'
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/nunito_regular"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintStart_toStartOf="@id/buildingNameEt"
-                        app:layout_constraintTop_toBottomOf="@id/vilaApartmentEt" />
+                    <!--                    <TextView-->
+                    <!--                        android:id="@+id/buildingNameLabel"-->
+                    <!--                        translationText='@{"building_name"}'-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginTop="@dimen/_10sdp"-->
+                    <!--                        android:fontFamily="@font/nunito_regular"-->
+                    <!--                        android:textColor="@color/black"-->
+                    <!--                        android:textSize="@dimen/_13ssp"-->
+                    <!--                        app:layout_constraintStart_toStartOf="@id/buildingNameEt"-->
+                    <!--                        app:layout_constraintTop_toBottomOf="@id/vilaApartmentEt" />-->
 
 
-                    <EditText
-                        android:id="@+id/buildingNameEt"
-                        android:layout_width="@dimen/_280sdp"
-                        android:layout_height="wrap_content"
-                        android:autofillHints="Search"
-                        android:backgroundTint="@color/divider"
-                        android:fontFamily="@font/nunito_regular"
-                        android:inputType="text"
-                        android:paddingStart="@dimen/_4sdp"
-                        android:paddingEnd="@dimen/_5sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/buildingNameLabel"
-                        tools:ignore="TextFields" />
+                    <!--                    <EditText-->
+                    <!--                        android:id="@+id/buildingNameEt"-->
+                    <!--                        android:layout_width="@dimen/_280sdp"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:autofillHints="Search"-->
+                    <!--                        android:backgroundTint="@color/divider"-->
+                    <!--                        android:fontFamily="@font/nunito_regular"-->
+                    <!--                        android:inputType="text"-->
+                    <!--                        android:paddingStart="@dimen/_4sdp"-->
+                    <!--                        android:paddingEnd="@dimen/_5sdp"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                    <!--                        app:layout_constraintTop_toBottomOf="@id/buildingNameLabel"-->
+                    <!--                        tools:ignore="TextFields" />-->
 
-                    <TextView
-                        android:id="@+id/addressLabel"
-                        translationText='@{"address"}'
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/nunito_regular"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintStart_toStartOf="@id/addressEt"
-                        app:layout_constraintTop_toBottomOf="@id/buildingNameEt" />
-
-
-                    <EditText
-                        android:id="@+id/addressEt"
-                        android:layout_width="@dimen/_280sdp"
-                        android:layout_height="wrap_content"
-                        android:autofillHints="Search"
-                        android:backgroundTint="@color/divider"
-                        android:fontFamily="@font/nunito_regular"
-                        android:inputType="text"
-                        android:paddingStart="@dimen/_4sdp"
-                        android:paddingEnd="@dimen/_5sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/addressLabel"
-                        tools:ignore="LabelFor,MissingConstraints" />
 
                     <TextView
                         android:id="@+id/phoneLabel"
@@ -362,9 +377,9 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/nunito_regular"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintStart_toStartOf="@id/addressEt"
-                        app:layout_constraintTop_toBottomOf="@id/addressEt" />
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toStartOf="@id/firstNameEt"
+                        app:layout_constraintTop_toBottomOf="@id/firstNameEt" />
 
                     <ImageView
                         android:id="@+id/flagLabel"
@@ -405,63 +420,56 @@
 
 
                     <TextView
-                        android:id="@+id/addressNickLabel"
-                        translationText='@{"address_nick"}'
-                        android:layout_width="wrap_content"
+                        android:id="@+id/buildingNameLabel"
+                        translationText='@{"street_name"}'
+                        android:layout_width="@dimen/_140sdp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:fontFamily="@font/nunito_regular"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp"
-                        app:layout_constraintStart_toStartOf="@id/addressNickEt"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toStartOf="@id/phoneLabel"
                         app:layout_constraintTop_toBottomOf="@id/phoneNo" />
 
-                    <TextView
-                        android:id="@+id/addressNickEt"
-                        android:layout_width="@dimen/_280sdp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/divider"
-                        android:fontFamily="@font/nunito_regular"
-                        android:paddingStart="@dimen/_4sdp"
-                        android:paddingTop="@dimen/_7sdp"
-                        android:paddingBottom="@dimen/_7sdp"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/addressNickLabel"
-                        tools:ignore="RtlSymmetry" />
-
-                    <View
-                        android:id="@+id/divider2"
-                        android:layout_width="@dimen/_280sdp"
-                        android:layout_height="1dp"
-                        android:background="@color/divider"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/addressNickEt" />
-
                     <EditText
-                        android:id="@+id/addressNickOther"
-                        translationEditTextHint='@{"other_are"}'
-                        android:layout_width="@dimen/_280sdp"
+                        android:id="@+id/buildingNameEt"
+                        android:layout_width="@dimen/_140sdp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:autofillHints="Search"
                         android:backgroundTint="@color/divider"
                         android:fontFamily="@font/nunito_regular"
                         android:inputType="text"
                         android:paddingStart="@dimen/_4sdp"
-                        android:paddingTop="@dimen/_7sdp"
                         android:paddingEnd="@dimen/_5sdp"
-                        android:paddingBottom="@dimen/_7sdp"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/divider2"
-                        tools:ignore="MissingConstraints" />
+                        app:layout_constraintStart_toStartOf="@id/buildingNameLabel"
+                        app:layout_constraintTop_toBottomOf="@id/buildingNameLabel" />
+
+                    <TextView
+                        android:id="@+id/apartmentLabel"
+                        translationText='@{"street_no"}'
+                        android:layout_width="@dimen/_140sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:fontFamily="@font/nunito_regular"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toEndOf="@id/buildingNameLabel"
+                        app:layout_constraintTop_toBottomOf="@id/phoneNo" />
+
+
+                    <EditText
+                        android:id="@+id/villaApartment"
+                        android:layout_width="@dimen/_140sdp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="Search"
+                        android:backgroundTint="@color/divider"
+                        android:fontFamily="@font/nunito_regular"
+                        android:inputType="text"
+                        android:paddingStart="@dimen/_4sdp"
+                        android:paddingEnd="@dimen/_5sdp"
+                        app:layout_constraintStart_toEndOf="@id/buildingNameEt"
+                        app:layout_constraintTop_toBottomOf="@id/apartmentLabel"
+                        tools:ignore="TextFields" />
 
 
                     <TextView
@@ -472,9 +480,9 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/nunito_regular"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintStart_toStartOf="@id/addressNickEt"
-                        app:layout_constraintTop_toBottomOf="@id/addressNickOther" />
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toStartOf="@id/buildingNameEt"
+                        app:layout_constraintTop_toBottomOf="@id/buildingNameEt" />
 
 
                     <EditText
@@ -488,24 +496,24 @@
                         android:paddingStart="@dimen/_4sdp"
                         android:paddingEnd="@dimen/_5sdp"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.51"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/nearLabel"
                         tools:ignore="LabelFor,MissingConstraints" />
 
-
-                    <CheckBox
+                    <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/defaultAddress"
                         translationTextCheckBox='@{"default"}'
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_width="@dimen/_280sdp"
+                        android:layout_height="@dimen/_60sdp"
                         android:layout_marginTop="@dimen/_20sdp"
-                        android:buttonTint="@color/saleem_green"
                         android:fontFamily="@font/nunito_regular"
-                        android:textColor="@color/black"
+                        android:textColor="@color/black_full"
                         android:textSize="@dimen/_13ssp"
-                        app:layout_constraintStart_toStartOf="@id/addressEt"
-                        app:layout_constraintTop_toBottomOf="@id/nearEt" />
-
+                        app:layout_constraintStart_toStartOf="@id/nearEt"
+                        app:layout_constraintTop_toBottomOf="@id/nearEt"
+                        app:thumbTint="@color/white"
+                        app:trackTint="@color/switch_track_selector" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/addressAddBtn"

@@ -22,7 +22,6 @@ class AddressesRvAdapter(
     private var addressClick: (Address) -> Unit
 ) : RecyclerView.Adapter<AddressesRvAdapter.ViewHolder>() {
 
-    private var positionSelect = Constants.selectAddressId
     private var user: User? = null
 
 
@@ -54,16 +53,15 @@ class AddressesRvAdapter(
                 Glide.with(binding.icon.context).load(R.drawable.ic_icon_check_circle)
                     .into(binding.icon)
                 binding.icon.visibility =
-                    if (positionSelect == adapterPosition) View.VISIBLE else View.GONE
+                    if (Constants.selectAddressId == item.id) View.VISIBLE else View.GONE
 
             } else {
-                Glide.with(binding.icon.context).load(R.drawable.ic_next_black).into(binding.icon)
+                Glide.with(binding.icon.context).load(R.drawable.ic_edit).into(binding.icon)
                 binding.icon.visibility = View.VISIBLE
             }
             binding.parentView.setOnClickListener {
                 if (selection) {
-                    positionSelect = adapterPosition
-                    Constants.selectAddressId = adapterPosition
+                    Constants.selectAddressId = item.id!!
                     notifyDataSetChanged()
                     addressClick(item)
                 } else {
@@ -86,6 +84,7 @@ class AddressesRvAdapter(
         override fun onFailure(requestCode: Int, data: String) {
             binding.deleteBtn.context.showToast(data)
         }
+
 
     }
 

@@ -40,11 +40,8 @@ class OrderDetail
     @SerializedName("order_date") @Expose var orderData: String? = null,
     @SerializedName("delivery_date") @Expose var deliveryDate: String? = null,
     @SerializedName("delivery_time") @Expose var deliveryTime: String? = null,
-
-
     @SerializedName("items") @Expose var items: List<CartDetail.Item>? = null,
-
-    @SerializedName("address") @Expose var address: List<Address>? = null,
+    @SerializedName("address") @Expose var address: ArrayList<Address>? = ArrayList(),
 
     @SerializedName("summary")
     @Expose

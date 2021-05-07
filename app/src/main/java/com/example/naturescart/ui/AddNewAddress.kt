@@ -2,18 +2,15 @@ package com.example.naturescart.ui
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityAddNewAddressBinding
@@ -43,29 +40,18 @@ import com.karumi.dexter.listener.single.PermissionListener
 class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
     private lateinit var binding: ActivityAddNewAddressBinding
-    private val autocompleteRequestCode = 62839
-    private val addRequest: Int = 32
-    private val updateRequest: Int = 22
-
     private var latLng: LatLng? = null
     private var fields = arrayListOf(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)
     private var mMap: GoogleMap? = null
     private val areaRequest: Int = 1222
-    private val nickRequestGet: Int = 1112
     private val addressAddRequest: Int = 1412
     private val addressUpdateRequest: Int = 4412
     private val markAddressOnMapRc = 3894
-    private var positionNick: Int = 0
     private var positionNickKey: String = ""
-
+    private var addressTypeSelect: String? = null
     private var addressSave: Address = Address()
     private var areaList: ArrayList<String> = ArrayList()
-    private var citiesList: ArrayList<String> = ArrayList()
-
     private var areaSearchList: ArrayList<AreaSearchAble> = ArrayList()
-
-    private var nickList: ArrayList<String> = ArrayList()
-    private var nickListObject: ArrayList<NickAddress> = ArrayList()
     private var isUpdate: Boolean = false
     private var loggedUser: User? = null
 
@@ -83,21 +69,14 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         isUpdate = intent.getBooleanExtra(Constants.isUpdate, false)
         showToast(Constants.getTranslate(this, "loading_map"))
-        AddressService(nickRequestGet, this).getNickAddress(loggedUser?.accessToken ?: "")
+        resetAddressTypeView()
         AddressService(areaRequest, this).getCities(loggedUser?.accessToken ?: "")
-        updateUI()
         setListeners()
+        updateUI()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         if (!isGpsEnable()) {
-            askToEnableGPS { requestCode, resultCode, data ->
-                onActivityResult(
-                    requestCode,
-                    resultCode,
-                    data
-                )
-            }
-
+            askToEnableGPS { requestCode, resultCode, data -> onActivityResult(requestCode, resultCode, data) }
         } else {
             checkPermissionAndGetLocation()
         }
@@ -107,45 +86,41 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
     private fun updateUI() {
         if (isUpdate) {
             addressSave = intent.getParcelableExtra(Constants.updateAddress)!!
-            binding.addressNickEt.text = addressSave.addressNick
-            binding.addressEt.setText(addressSave.address)
+            if (addressSave.addressNick.equals("Home") || addressSave.addressNick.equals("الرئيسية"))
+                binding.home.performClick()
+            if (addressSave.addressNick.equals("Work") || addressSave.addressNick.equals("عمل"))
+                binding.work.performClick()
+            if (addressSave.addressNick.equals("Other") || addressSave.addressNick.equals("آخر"))
+                binding.work.performClick()
+
+            addressTypeSelect = addressSave.addressNick
             var phoneNo = addressSave.phone!!.removePrefix("+971")
             binding.phoneNo.setText(phoneNo)
             binding.cityEt.text = addressSave.city
+            binding.firstNameEt.setText(addressSave.firstName.toString())
+            binding.lastNameEt.setText(addressSave.lastName.toString())
             binding.addressAddBtn.text = Constants.getTranslate(this, "update")
             positionNickKey = addressSave.addressNick.toString().toLowerCase()
             binding.areaEt.text = addressSave.area
             binding.nearEt.setText(addressSave.nearestLandmark.toString())
-            binding.buildingNameEt.setText(addressSave.buildingName.toString())
-            binding.vilaApartmentEt.setText(addressSave.villaNo)
-            binding.streetNameEt.setText(addressSave.streetName)
-            binding.streetNumberEt.setText(addressSave.streetNo)
+            binding.buildingNameEt.setText(addressSave.buildingName)
+            binding.villaApartment.setText(addressSave.apartment)
             if (addressSave.defaultAddress)
                 binding.defaultAddress.isChecked = true
 
         } else {
-            binding.phoneNo.setText(loggedUser!!.phone)
+            binding.home.performClick()
+            addressTypeSelect = Constants.getTranslate(this, "home")
+            binding.phoneNo.setText(loggedUser!!.phone.removePrefix("+971"))
+            binding.firstNameEt.setText(loggedUser!!.firstName)
+            binding.lastNameEt.setText(loggedUser!!.lastName)
             binding.addressAddBtn.text = Constants.getTranslate(this, "add_new_address")
         }
     }
 
     private fun setListeners() {
 
-        binding.addressNickEt.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
 
-                positionNickKey = nickListObject[positionNick].key!!
-                if (nickListObject[positionNick].key == "other")
-                    binding.addressNickOther.visibility = View.VISIBLE
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-        })
         binding.areaEt.setOnClickListener {
 
             var custom = com.example.naturescart.helper.SimpleSearchDialogCompat(
@@ -159,36 +134,51 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 dialog.dismiss()
             }
             custom.show()
-
         }
-        binding.markLocationOnMapBtn.setOnClickListener {
+        binding.work.setOnClickListener {
+            setAddressTypeSelector(binding.work)
+        }
+        binding.home.setOnClickListener {
+            setAddressTypeSelector(binding.home)
+        }
+        binding.other.setOnClickListener {
+            setAddressTypeSelector(binding.other)
+        }
+        binding.clickOnMapLabel.setOnClickListener {
             startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
+        }
+        binding.mapView.setOnClickListener {
+            startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
+        }
+
+
+//        binding.mapView.setOnLongClickListener(object : View.OnLongClickListener {
+//            override fun onLongClick(v: View?): Boolean {
+//                startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
+//                return true
+//            }
+//        })
+//
+        binding.mapView.setOnLongClickListener {
+            startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
+            return@setOnLongClickListener true
         }
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
 
         binding.addressAddBtn.setOnClickListener {
-
             if (isInputOk()) {
+                addressSave.addressNick = addressTypeSelect
                 addressSave.city = binding.cityEt.text.toString()
+                addressSave.firstName = binding.firstNameEt.text.toString()
+                addressSave.lastName = binding.lastNameEt.text.toString()
                 addressSave.area = binding.areaEt.text.toString()
-                addressSave.streetName = binding.streetNameEt.text.toString()
-                addressSave.streetNo = binding.streetNumberEt.text.toString()
-                addressSave.villaNo = binding.vilaApartmentEt.text.toString()
-                if (!binding.buildingNameEt.text.isNullOrEmpty())
-                    addressSave.buildingName = binding.buildingNameEt.text.toString()
-
+                addressSave.buildingName = binding.buildingNameEt.text.toString()
+                addressSave.apartment = binding.villaApartment.text.toString()
                 addressSave.phone = getString(R.string.country_phone_code) + binding.phoneNo.text
-                addressSave.address = binding.addressEt.text.toString()
                 addressSave.nearestLandmark = binding.nearEt.text.toString()
                 addressSave.defaultAddress = binding.defaultAddress.isChecked
-
-                if (positionNickKey == "other")
-                    addressSave.addressNick = binding.addressNickOther.text.toString()
-                else
-                    addressSave.addressNick = binding.addressNickEt.text.toString()
-
                 if (latLng == null) {
                     showToast(Constants.getTranslate(this, "map_location_not_updated"))
                 } else {
@@ -201,20 +191,21 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 }
             }
         }
-        binding.addressNickEt.setOnClickListener {
-            setDataList(Constants.getTranslate(this, "select_nick"), nickList, binding.addressNickEt)
-            binding.addressNickOther.visibility = View.GONE
-        }
         binding.cityEt.setOnClickListener {
             binding.cityEt.showOrDismiss()
         }
     }
 
+    private fun setAddressTypeSelector(textView: TextView) {
+        resetAddressTypeView()
+        addressTypeSelect = textView.text.toString()
+        textView.setBackgroundColor(ContextCompat.getColor(this, R.color.saleem_green))
+    }
+
     private fun isInputOk(): Boolean {
 
         when {
-
-            binding.addressNickEt.text.isEmpty() -> {
+            addressTypeSelect.isNullOrEmpty() -> {
                 showToast(Constants.getTranslate(this, "nick_address_req"))
                 return false
             }
@@ -222,17 +213,20 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 showToast(Constants.getTranslate(this, "area_field_required"))
                 return false
             }
-            binding.streetNameEt.text.isEmpty() -> {
-                showToast(Constants.getTranslate(this, "street_name_required"))
+            binding.buildingNameEt.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "building_name_required"))
                 return false
             }
-
-            binding.streetNumberEt.text.isEmpty() -> {
-                showToast(Constants.getTranslate(this, "street_no_required"))
+            binding.firstNameEt.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "first_name_req"))
                 return false
             }
-            binding.addressEt.text.isEmpty() -> {
-                showToast(Constants.getTranslate(this, "address_field_req"))
+            binding.lastNameEt.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "last_name_req"))
+                return false
+            }
+            binding.villaApartment.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "villa_aparment_required"))
                 return false
             }
             binding.phoneNo.text.isEmpty() -> {
@@ -242,17 +236,6 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             binding.cityEt.text.isEmpty() -> {
                 showToast(Constants.getTranslate(this, "city_field_req"))
                 return false
-            }
-            binding.nearEt.text.isEmpty() -> {
-                showToast(Constants.getTranslate(this, "near_place_required"))
-                return false
-            }
-            positionNickKey == "other" -> {
-                if (binding.addressNickOther.text.isEmpty()) {
-                    showToast(Constants.getTranslate(this, "nick_other_req"))
-                    return false
-                }
-                return true
             }
             else -> {
                 return true
@@ -340,14 +323,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 }
 
                 binding.cityEt.setItems(R.array.country)
-            }
-            nickRequestGet -> {
-                nickListObject =
-                    Gson().fromJson(data, object : TypeToken<ArrayList<NickAddress>>() {}.type)
-                for (i in 0 until nickListObject.size) {
-                    nickList.add(nickListObject[i].type!!)
-                }
-
+                binding.cityEt.selectItemByIndex(0)
             }
             addressAddRequest -> {
                 // DialogCustom(this, R.drawable.ic_thumb, data).show()
@@ -364,19 +340,17 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         }
     }
 
-    private fun setDataList(title: String, list: ArrayList<String>, textView: TextView) {
-        val builder = AlertDialog.Builder(this)
-        val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list)
-        builder.setAdapter(adapter) { _, which ->
-            positionNick = which
-            textView.text = list[which]
-        }
-        val dialog = builder.create()
-        dialog.setCustomTitle(binding.root.context.customTextView(title))
-        dialog.show()
-    }
-
     override fun onFailure(requestCode: Int, data: String) {
         showToast(data)
     }
+
+    private fun resetAddressTypeView() {
+        binding.home.background = ContextCompat.getDrawable(this, R.drawable.border_address_type)
+        binding.work.background = ContextCompat.getDrawable(this, R.drawable.border_address_type)
+        binding.other.background = ContextCompat.getDrawable(this, R.drawable.border_address_type)
+        binding.home.setTextColor(ContextCompat.getColor(this, R.color.black))
+        binding.work.setTextColor(ContextCompat.getColor(this, R.color.black))
+        binding.other.setTextColor(ContextCompat.getColor(this, R.color.black))
+    }
+
 }

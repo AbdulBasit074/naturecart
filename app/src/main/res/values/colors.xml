@@ -6,10 +6,15 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#252424</color>
+    <color name="black_full">#000000</color>
+
     <color name="red">#D80404</color>
     <color name="new_light_green">#81CDEDCB</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_dark">#23A5A1A1</color>
+    <color name="switchTrackDisable">#FFFFFF</color>
+    <color name="switchTrackActive">#1A804D</color>
+    <color name="switchTrackNormal">#FFFFFF</color>
 
     <color name="white_full">#8BB3B2B2</color>
 
@@ -49,4 +54,8 @@
     <color name="cart_green">#74a471</color>
 
     <color name="cart_green_light">#cdedcb</color>
+
+
+
+
 </resources>

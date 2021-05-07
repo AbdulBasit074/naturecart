@@ -63,6 +63,7 @@ class OrderRvAdapter(
         notifyDataSetChanged()
     }
 
+
     override fun getItemViewType(position: Int): Int {
         return if (isLoaderVisible && position == items.size) loadingView else itemView
     }
@@ -70,6 +71,7 @@ class OrderRvAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (getItemViewType(position) == itemView)
             holder.bindView(items[position])
+
     }
 
     inner class ViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -77,6 +79,7 @@ class OrderRvAdapter(
         fun bindView(order: OrderDetail) {
             if (binding is LiOrderBinding) {
                 binding.model = order
+                setAddressOrder(binding.deliverDetail, order.address!![0])
                 binding.containerOrder.setOnClickListener {
                     onOrderClick(order)
                 }

@@ -70,12 +70,7 @@
         <activity
             android:name=".ui.MenuActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.CategoryDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.CollectionDetailActivity"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.LanguageSelectionActivity"
             android:screenOrientation="portrait" />

@@ -1,23 +1,17 @@
 package com.example.naturescart.adapters
 
+import android.annotation.SuppressLint
 import android.graphics.Paint
-import android.graphics.drawable.Drawable
-import android.view.View
 import android.widget.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.example.naturescart.R
 import com.example.naturescart.helper.TranslationsHelper
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
-import com.facebook.shimmer.ShimmerFrameLayout
-import com.mikhaellopez.circularimageview.CircularImageView
 import com.skydoves.powerspinner.PowerSpinnerView
 
 
@@ -27,7 +21,7 @@ fun translationText(textView: TextView, key: String) {
 }
 
 @BindingAdapter("translationTextCheckBox")
-fun translationTextCheckBox(textView: CheckBox, key: String) {
+fun translationTextCheckBox(textView: SwitchCompat, key: String) {
     textView.text = TranslationsHelper.getInstance(textView.context).getTranslation(key)
 }
 
@@ -90,9 +84,10 @@ fun setText(textView: TextView, text: String) {
     textView.text = text
 }
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("setAddressOrder")
 fun setAddressOrder(textView: TextView, address: com.example.naturescart.model.Address) {
-    textView.text = address.address
+    textView.text = address.buildingName + ", " + address.apartment
 }
 
 

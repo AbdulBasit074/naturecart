@@ -129,6 +129,7 @@ class MenuActivity : AppCompatActivity(), Results {
                     }
                 }
             })
+
         }
         binding.backBtn.setOnClickListener {
             onBackPressed()
@@ -299,6 +300,7 @@ class MenuActivity : AppCompatActivity(), Results {
         binding.registerBottomSheet.female.setTextColor(ContextCompat.getColor(this, R.color.divider))
         binding.registerBottomSheet.ratherGender.setTextColor(ContextCompat.getColor(this, R.color.divider))
     }
+
 
     private fun isRegisterInputOk(): Boolean {
         when {

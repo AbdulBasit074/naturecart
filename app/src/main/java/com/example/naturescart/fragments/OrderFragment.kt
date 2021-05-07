@@ -47,6 +47,7 @@ class OrderFragment : Fragment(), Results {
     private var pageNo: Int = 1
     private lateinit var adapter: OrderRvAdapter
     private var layoutManger = LinearLayoutManager(activity)
+
     private lateinit var paginationListeners: PaginationListeners
     private var loadingView: LoadingDialog? = null
 
@@ -83,6 +84,7 @@ class OrderFragment : Fragment(), Results {
         orderBinding.orderRv.layoutManager = layoutManger
         orderBinding.orderRv.adapter = adapter
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -187,22 +189,26 @@ class OrderFragment : Fragment(), Results {
         super.onAttach(context)
         EventBus.getDefault().register(this)
     }
-
     override fun onDetach() {
         super.onDetach()
         EventBus.getDefault().unregister(this)
     }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLogoutEvent(event: LogoutEvent) {
         orderList.clear()
         orderBinding.orderRv.adapter?.notifyDataSetChanged()
         orderBinding.noOrdersContainer.visibility = View.VISIBLE
     }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUserLoggedIn(event: LogInEvent) {
         loggedUser = NatureDb.getInstance(requireContext()).userDao().getLoggedUser()
         callOrderDetail()
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUpdateOrderList(event: OrderPlaceEvent) {
+        loggedUser = NatureDb.getInstance(requireContext()).userDao().getLoggedUser()
+        callOrderDetail()
+    }
+
+
 }

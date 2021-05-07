@@ -78,7 +78,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
             onBackPressed()
         }
         binding.setDeliveryDateTime.setOnClickListener {
-          var dialog =   DialogDeliveryDate(this, cartDetail?.id) { dateSelect, timeSlot, s ->
+            var dialog = DialogDeliveryDate(this, cartDetail?.id) { dateSelect, timeSlot, s ->
                 binding.setDeliveryDateTime.text = dateSelect.date + "\n" + timeSlot.time
                 date = dateSelect
                 time = timeSlot
@@ -123,6 +123,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -130,7 +131,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
                 if (data != null) {
                     addressSelect = data.getParcelableExtra(Constants.selectionAddress)!!
                     binding.addressTitle.text = addressSelect!!.addressNick
-                    binding.addressDetail.text = addressSelect!!.address
+                    binding.addressDetail.text = addressSelect!!.buildingName + ", " + addressSelect!!.apartment
                 }
             }
             paymentMethodRequest -> {
@@ -143,15 +144,19 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onSuccess(requestCode: Int, data: String) {
         when (requestCode) {
             addressList -> {
                 listAddress.clear()
-                listAddress =
-                    Gson().fromJson(data, object : TypeToken<ArrayList<Address>>() {}.type)
-                addressSelect = listAddress[0]
+                listAddress = Gson().fromJson(data, object : TypeToken<ArrayList<Address>>() {}.type)
+                listAddress.forEach {
+                    if (it.defaultAddress)
+                        addressSelect = it
+                }
+                Constants.selectAddressId = addressSelect!!.id!!
                 binding.addressTitle.text = addressSelect!!.addressNick
-                binding.addressDetail.text = addressSelect!!.address
+                binding.addressDetail.text = addressSelect!!.buildingName + ", " + addressSelect!!.apartment
             }
             couponApplyRequest -> {
                 loading?.dismiss()
@@ -174,4 +179,9 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
         showToast(data)
     }
 
+
+    override fun finish() {
+        Constants.selectAddressId = 0
+        super.finish()
+    }
 }

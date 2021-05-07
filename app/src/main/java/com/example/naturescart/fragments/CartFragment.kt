@@ -108,8 +108,8 @@ class CartFragment : Fragment(), Results {
 
     private fun refreshData() {
         cartID = PreferenceManager.getDefaultSharedPreferences(activity).getLong(Constants.cartID, 0)
-        if(cartID!! > 0)
-        CartService(cartDetailRequest, this).getCartDetail(cartID)
+        if (cartID!! > 0)
+            CartService(cartDetailRequest, this).getCartDetail(cartID)
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
@@ -126,6 +126,7 @@ class CartFragment : Fragment(), Results {
                 }
                 loadingView?.dismiss()
                 Persister.with(requireContext()).persist(cartDataPersistenceKey, data)
+
             }
         }
     }

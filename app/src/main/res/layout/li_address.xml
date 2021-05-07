@@ -33,17 +33,17 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/parentView"
                 android:layout_width="match_parent"
-                android:layout_height="115dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/border_white_round"
-                android:paddingBottom="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_10sdp"
                 tools:ignore="HardcodedText">
 
                 <TextView
                     android:id="@+id/addressTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:fontFamily="@font/roboto_slab_semi_bold"
@@ -58,7 +58,7 @@
                     android:id="@+id/addressDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_25sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_25sdp"
                     android:fontFamily="@font/roboto_slab_regular"

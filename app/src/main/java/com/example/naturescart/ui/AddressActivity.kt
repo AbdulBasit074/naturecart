@@ -80,8 +80,6 @@ class AddressActivity : AppCompatActivity(), Results {
         binding.addNew.setOnClickListener {
             moveForResult(AddNewAddress::class.java, addRequest)
         }
-
-
     }
 
     private fun setAdapters() {

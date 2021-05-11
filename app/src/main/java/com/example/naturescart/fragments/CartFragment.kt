@@ -110,6 +110,8 @@ class CartFragment : Fragment(), Results {
         cartID = PreferenceManager.getDefaultSharedPreferences(activity).getLong(Constants.cartID, 0)
         if (cartID!! > 0)
             CartService(cartDetailRequest, this).getCartDetail(cartID)
+
+
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
@@ -177,7 +179,10 @@ class CartFragment : Fragment(), Results {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCartUpdated(event: CartUpdateEvent) {
-        refreshData()
+        cartID = PreferenceManager.getDefaultSharedPreferences(activity).getLong(Constants.cartID, 0)
+        if (cartID!! > 0)
+            onSuccess(cartDetailRequest, Persister.with(requireContext()).getPersisted(Constants.cartPersistenceKey)!!)
+
     }
 
 }

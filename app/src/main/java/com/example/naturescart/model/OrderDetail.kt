@@ -40,7 +40,8 @@ class OrderDetail
     @SerializedName("order_date") @Expose var orderData: String? = null,
     @SerializedName("delivery_date") @Expose var deliveryDate: String? = null,
     @SerializedName("delivery_time") @Expose var deliveryTime: String? = null,
-    @SerializedName("items") @Expose var items: List<CartDetail.Item>? = null,
+    @SerializedName("contactless_delivery") @Expose var contactLessDelivery: Boolean = false,
+    @SerializedName("items") @Expose var items: ArrayList<CartDetail.Item>? = null,
     @SerializedName("address") @Expose var address: ArrayList<Address>? = ArrayList(),
 
     @SerializedName("summary")
@@ -58,6 +59,7 @@ class OrderDetail
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readValue(Boolean::class.java.classLoader) as Boolean,
         parcel.createTypedArrayList(CartDetail.Item),
         parcel.createTypedArrayList(Address),
         parcel.readParcelable(Summary::class.java.classLoader)
@@ -75,6 +77,7 @@ class OrderDetail
         parcel.writeString(orderData)
         parcel.writeString(deliveryDate)
         parcel.writeString(deliveryTime)
+        parcel.writeValue(contactLessDelivery)
         parcel.writeTypedList(items)
         parcel.writeTypedList(address)
         parcel.writeParcelable(summary, flags)

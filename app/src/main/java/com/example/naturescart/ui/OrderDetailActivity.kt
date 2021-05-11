@@ -62,6 +62,8 @@ class OrderDetailActivity : AppCompatActivity() {
         binding.addressDetail.text = orderDetail.address!![0].buildingName + ", " + orderDetail.address!![0].apartment
         binding.orderNo.text = getString(R.string.order_no, orderDetail.orderId.toString())
         binding.bottomSheetTotal.total.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary!!.total))
+        binding.contactLess.isChecked = orderDetail.contactLessDelivery
+        binding.contactLess.isClickable = false
     }
 
     private fun setListeners() {

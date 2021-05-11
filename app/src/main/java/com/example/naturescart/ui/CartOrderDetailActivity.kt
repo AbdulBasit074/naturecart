@@ -102,7 +102,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
         }
         binding.bottomSheetCO.Btn.setOnClickListener {
             if (allIsOk()) {
-                moveForResult(PaymentWebView.newInstance(this, cartDetail?.id!!, loggedUser!!.id, addressSelect!!.id!!), paymentMethodRequest)
+                moveForResult(PaymentWebView.newInstance(this, cartDetail?.id!!, loggedUser!!.id, addressSelect!!.id!!, binding.bottomSheetCO.contactLess.isChecked), paymentMethodRequest)
             }
         }
     }

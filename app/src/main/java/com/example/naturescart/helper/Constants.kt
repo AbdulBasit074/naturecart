@@ -22,6 +22,8 @@ class Constants {
         const val dataPassKey = "dataPassKey"
         const val titlePassKey = "titlePassKey"
         const val addressID: String = "addressID"
+        const val contactLess: String = "contactLess"
+
         const val orderDetail: String = "orderDetail"
         const val onBoardingShow: String = "onBoardingShow"
         const val localeKey = "localeKey"

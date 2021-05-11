@@ -3,6 +3,8 @@ package com.example.naturescart.adapters
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -157,17 +159,22 @@ class ItemAdapterFNRv(
                     }
                 }
                 binding.incrementBtn.setOnClickListener {
-                    val count = binding.itemCountTv.text.toString().toFloat()
-                    addToCart(binding.incrementBtn.context, item.id!!, count + factorIncrement, binding.itemCountTv, factorIncrement)
+                    Handler(Looper.getMainLooper()).postDelayed({
+
+                        val count = binding.itemCountTv.text.toString().toFloat()
+                        addToCart(binding.incrementBtn.context, item.id!!, count + factorIncrement, binding.itemCountTv, factorIncrement)
+                    }, 1000)
                 }
                 binding.decrementBtn.setOnClickListener {
-                    val count = binding.itemCountTv.text.toString().toFloat()
-                    if (count > factorIncrement) {
-                        addToCart(binding.incrementBtn.context, item.id!!, count - factorIncrement, binding.itemCountTv, factorIncrement)
-                    } else if (count == factorIncrement) {
-                        showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
-                        deleteFromCart(Persister.with(context).getCartItemId(item.id))
-                    }
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        val count = binding.itemCountTv.text.toString().toFloat()
+                        if (count > factorIncrement) {
+                            addToCart(binding.incrementBtn.context, item.id!!, count - factorIncrement, binding.itemCountTv, factorIncrement)
+                        } else if (count == factorIncrement) {
+                            showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
+                            deleteFromCart(Persister.with(context).getCartItemId(item.id))
+                        }
+                    }, 1000)
                 }
             }
 
@@ -180,6 +187,7 @@ class ItemAdapterFNRv(
                     showItemCountText(textView, quantity, factorIncrement)
                     val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
                     PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                    Persister.with(context).persist(Constants.cartPersistenceKey, data)
                     EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
                     EventBus.getDefault().postSticky(CartItemAddedEvent(cartDetail.items?.size ?: 0, cartDetail.subTotal))
                 }
@@ -195,6 +203,7 @@ class ItemAdapterFNRv(
                 override fun onSuccess(requestCode: Int, data: String) {
                     val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
                     PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                    Persister.with(context).persist(Constants.cartPersistenceKey, data)
                     EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
                 }
 

@@ -3,6 +3,8 @@ package com.example.naturescart.fragments
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -134,16 +136,21 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
             }
         }
         mBinding.incrementBtn.setOnClickListener {
-            val count = mBinding.itemCountTv.text.toString().toFloat()
+            Handler(Looper.getMainLooper()).postDelayed({
+                val count = mBinding.itemCountTv.text.toString().toFloat()
                 addToCart(mBinding.incrementBtn.context, product.id!!, count + factorIncrement)
+            }, 1000)
+
         }
         mBinding.decrementBtn.setOnClickListener {
-            val count = mBinding.itemCountTv.text.toString().toFloat()
-            if (count > factorIncrement) {
-                addToCart(mBinding.incrementBtn.context, product.id!!, count - factorIncrement)
-            } else if (count == factorIncrement) {
-                deleteFromCart(Persister.with(requireContext()).getCartItemId(product.id))
-            }
+            Handler(Looper.getMainLooper()).postDelayed({
+                val count = mBinding.itemCountTv.text.toString().toFloat()
+                if (count > factorIncrement) {
+                    addToCart(mBinding.incrementBtn.context, product.id!!, count - factorIncrement)
+                } else if (count == factorIncrement) {
+                    deleteFromCart(Persister.with(requireContext()).getCartItemId(product.id))
+                }
+            }, 1000)
         }
     }
 

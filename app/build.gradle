@@ -73,9 +73,6 @@ dependencies {
 
 
 
-    //Sticky Views
-    implementation 'com.github.henkhenken:StickyScrollView:1.1.2'
-
 
     //Google Mapssssss
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
@@ -133,8 +130,6 @@ dependencies {
 
     //
     implementation 'com.github.mirrajabi:search-dialog:1.2.4'
-
-
 
 
 }

@@ -515,6 +515,7 @@
                         app:thumbTint="@color/white"
                         app:trackTint="@color/switch_track_selector" />
 
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/addressAddBtn"
                         android:layout_width="wrap_content"

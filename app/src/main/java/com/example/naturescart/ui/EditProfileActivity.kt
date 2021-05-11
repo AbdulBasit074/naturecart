@@ -1,6 +1,8 @@
 package com.example.naturescart.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -23,6 +25,9 @@ class EditProfileActivity : AppCompatActivity(), Results {
     private var selectCountry: String = ""
     private var selectGender: String = ""
     private var areaSearchList: ArrayList<AreaSearchAble> = ArrayList()
+    private lateinit var handler: Handler
+    private lateinit var runnable: Runnable
+    private lateinit var dialog: DialogCustom
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,7 +122,16 @@ class EditProfileActivity : AppCompatActivity(), Results {
     }
 
     private fun onPasswordChange(data: String) {
-        DialogCustom(this, R.drawable.ic_thumb, data).show()
+        changePassword()
+        dialog = DialogCustom(this, R.drawable.ic_thumb, data)
+        dialog.show()
+        handler.postDelayed(runnable, 1500)
+    }
+    private fun changePassword() {
+        handler = Handler(Looper.getMainLooper())
+        runnable = Runnable {
+            dialog.dismiss()
+        }
     }
 
     private fun isInputOk(): Boolean {

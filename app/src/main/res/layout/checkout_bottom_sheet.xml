@@ -7,12 +7,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/viewParent"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_170sdp"
+        android:layout_height="@dimen/_230sdp"
         android:background="@color/white"
         android:clickable="true"
         android:elevation="20dp"
         android:focusable="true"
-        app:behavior_peekHeight="@dimen/_170sdp"
+        app:behavior_peekHeight="@dimen/_240sdp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         tools:ignore="HardcodedText">
 
@@ -128,15 +128,57 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/vatCharges" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/contactLess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:textColor="@color/black_full"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/totalCharges"
+
+            app:thumbTint="@color/white"
+            app:trackTint="@color/switch_track_selector" />
+
+        <TextView
+            android:id="@+id/contactLessLabel"
+            translationText='@{"contactless_delivery"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:fontFamily="@font/roboto_slab_semi_bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintBottom_toBottomOf="@id/contactLess"
+            app:layout_constraintStart_toEndOf="@id/contactLess"
+            app:layout_constraintTop_toTopOf="@id/contactLess"
+
+            />
+
+        <TextView
+            android:id="@+id/contacctLessDescription"
+            translationText='@{"contactless_delivery_description"}'
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:fontFamily="@font/roboto_slab_regular"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintStart_toEndOf="@id/contactLess"
+            app:layout_constraintTop_toBottomOf="@id/contactLessLabel" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/Btn"
             translationTextButton='@{"confirm_order"}'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_25sdp"
-            android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_25sdp"
             android:background="@drawable/button_orange"
+
             android:padding="@dimen/_10sdp"
             android:paddingStart="@dimen/_30sdp"
             android:paddingEnd="@dimen/_30sdp"
@@ -145,7 +187,8 @@
             android:textSize="@dimen/_14ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/totalCharges" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contacctLessDescription" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

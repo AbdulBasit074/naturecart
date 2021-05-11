@@ -41,6 +41,7 @@ class OrderFragment : Fragment(), Results {
     private var loggedUser: User? = null
     private var isLastPage: Boolean = false
     private var isLoading: Boolean = true
+
     private val ordersRequest: Int = 1203
     private val loadMoreRequest: Int = 5203
     private val loginRequest: Int = 5103
@@ -189,21 +190,25 @@ class OrderFragment : Fragment(), Results {
         super.onAttach(context)
         EventBus.getDefault().register(this)
     }
+
     override fun onDetach() {
         super.onDetach()
         EventBus.getDefault().unregister(this)
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLogoutEvent(event: LogoutEvent) {
         orderList.clear()
         orderBinding.orderRv.adapter?.notifyDataSetChanged()
         orderBinding.noOrdersContainer.visibility = View.VISIBLE
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUserLoggedIn(event: LogInEvent) {
         loggedUser = NatureDb.getInstance(requireContext()).userDao().getLoggedUser()
         callOrderDetail()
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateOrderList(event: OrderPlaceEvent) {
         loggedUser = NatureDb.getInstance(requireContext()).userDao().getLoggedUser()

@@ -24,7 +24,6 @@ class AddressesRvAdapter(
 
     private var user: User? = null
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         user = NatureDb.getInstance(parent.context).userDao().getLoggedUser()
         return ViewHolder(
@@ -86,8 +85,11 @@ class AddressesRvAdapter(
         }
 
 
+
     }
 
 
 }
+    
+
 

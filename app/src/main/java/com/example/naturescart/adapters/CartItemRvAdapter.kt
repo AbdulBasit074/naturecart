@@ -89,16 +89,21 @@ class CartItemRvAdapter(
                 context.startActivity(ImageViewActivity.newInstance(context, item.product?.image ?: ""), options.toBundle())
             }
             binding.incrementBtn.setOnClickListener {
-                val count = binding.itemCountTv.text.toString().toFloat()
-                updateCart(binding.incrementBtn.context, item.product?.id!!, count + factorIncrement, incrementRc, factorIncrement)
+                Handler(Looper.getMainLooper()).postDelayed({
+
+                    val count = binding.itemCountTv.text.toString().toFloat()
+                    updateCart(binding.incrementBtn.context, item.product?.id!!, count + factorIncrement, incrementRc, factorIncrement)
+                }, 1000)
             }
             binding.decrementBtn.setOnClickListener {
-                val count = binding.itemCountTv.text.toString().toFloat()
-                if (count > factorIncrement) {
-                    updateCart(binding.incrementBtn.context, item.product?.id!!, count - factorIncrement, decrementRc, factorIncrement)
-                } else {
-                    deleteFromCart(item.id)
-                }
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val count = binding.itemCountTv.text.toString().toFloat()
+                    if (count > factorIncrement) {
+                        updateCart(binding.incrementBtn.context, item.product?.id!!, count - factorIncrement, decrementRc, factorIncrement)
+                    } else {
+                        deleteFromCart(item.id)
+                    }
+                }, 1000)
             }
             binding.deleteBtn.setOnClickListener {
                 deleteFromCart(item.id)
@@ -118,6 +123,7 @@ class CartItemRvAdapter(
                         showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
                     val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
                     PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.cartID, cartDetail.id!!).apply()
+                    Persister.with(context).persist(Constants.cartPersistenceKey, data)
                     EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
                 }
 
@@ -135,6 +141,7 @@ class CartItemRvAdapter(
                     loadingDialog.dismiss()
                     refreshCallBack()
                     val cartDetail: CartDetail = Gson().fromJson(data, CartDetail::class.java)
+                    Persister.with(context).persist(Constants.cartPersistenceKey, data)
                     EventBus.getDefault().postSticky(CartUpdateEvent(cartDetail.items?.size ?: 0))
                 }
 

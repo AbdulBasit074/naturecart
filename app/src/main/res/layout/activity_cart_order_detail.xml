@@ -162,10 +162,10 @@
                         android:paddingBottom="@dimen/_10sdp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
+                        app:drawableEndCompat="@drawable/ic_drop_down"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/deliverySetTitle"
-                        tools:ignore="RtlSymmetry"
-                        app:drawableEndCompat="@drawable/ic_drop_down" />
+                        tools:ignore="RtlSymmetry" />
 
 
                     <TextView
@@ -189,8 +189,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/paymenttitle"
-                        >
+                        app:layout_constraintTop_toBottomOf="@id/paymenttitle">
 
 
                         <RadioButton
@@ -306,7 +305,7 @@
                     <View
                         android:id="@+id/dividerView"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_250sdp"
+                        android:layout_height="@dimen/_290sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/specialInstruction" />
 
@@ -317,7 +316,7 @@
         <include
             android:id="@+id/bottomSheetCO"
             layout="@layout/checkout_bottom_sheet"
-            app:behavior_peekHeight="@dimen/_160sdp"
+            app:behavior_peekHeight="@dimen/_230sdp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

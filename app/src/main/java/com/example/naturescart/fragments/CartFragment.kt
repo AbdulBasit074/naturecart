@@ -3,6 +3,8 @@ package com.example.naturescart.fragments
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -90,6 +92,15 @@ class CartFragment : Fragment(), Results {
             } else
                 moveForResultFragment(requireActivity(), MenuActivity::class.java, loginRequest)
         }
+        cartBinding.toolBar.whatsAppBtn.setOnClickListener {
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.getWhatsAppUrl(requireContext()))))
+            } catch (e: PackageManager.NameNotFoundException)
+            {
+                showToast(Constants.getTranslate(requireContext(),"application_not_found"))
+            }
+        }
+
     }
 
     private fun setAdapter() {

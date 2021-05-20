@@ -7,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -16,7 +15,6 @@ import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityAddNewAddressBinding
 import com.example.naturescart.helper.*
 import com.example.naturescart.model.Address
-import com.example.naturescart.model.NickAddress
 import com.example.naturescart.model.User
 import com.example.naturescart.model.room.NatureDb
 import com.example.naturescart.services.Results
@@ -73,12 +71,15 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         AddressService(areaRequest, this).getCities(loggedUser?.accessToken ?: "")
         setListeners()
         updateUI()
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        if (!isGpsEnable()) {
-            askToEnableGPS { requestCode, resultCode, data -> onActivityResult(requestCode, resultCode, data) }
-        } else {
-            checkPermissionAndGetLocation()
+        if (!isUpdate) {
+            if (!isGpsEnable()) {
+                askToEnableGPS { requestCode, resultCode, data -> onActivityResult(requestCode, resultCode, data) }
+            } else {
+                checkPermissionAndGetLocation()
+            }
         }
 
     }
@@ -93,12 +94,14 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             if (addressSave.addressNick.equals("Other") || addressSave.addressNick.equals("آخر"))
                 binding.work.performClick()
 
+            latLng = LatLng(addressSave.latitude!!, addressSave.longitude!!)
             addressTypeSelect = addressSave.addressNick
             var phoneNo = addressSave.phone!!.removePrefix("+971")
             binding.phoneNo.setText(phoneNo)
             binding.cityEt.text = addressSave.city
             binding.firstNameEt.setText(addressSave.firstName.toString())
             binding.lastNameEt.setText(addressSave.lastName.toString())
+            binding.streetEt.text = addressSave.street
             binding.addressAddBtn.text = Constants.getTranslate(this, "update")
             positionNickKey = addressSave.addressNick.toString().toLowerCase()
             binding.areaEt.text = addressSave.area
@@ -114,7 +117,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             binding.phoneNo.setText(loggedUser!!.phone.removePrefix("+971"))
             binding.firstNameEt.setText(loggedUser!!.firstName)
             binding.lastNameEt.setText(loggedUser!!.lastName)
-            binding.addressAddBtn.text = Constants.getTranslate(this, "add_new_address")
+            binding.addressAddBtn.text = Constants.getTranslate(this, "save_address_button")
         }
     }
 
@@ -122,18 +125,19 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
 
         binding.areaEt.setOnClickListener {
-
-            var custom = com.example.naturescart.helper.SimpleSearchDialogCompat(
-                this,
-                Constants.getTranslate(this, "select_area"),
-                Constants.getTranslate(this, "search"),
-                null,
-                areaSearchList
-            ) { dialog, item, position ->
-                binding.areaEt.text = item.title
-                dialog.dismiss()
-            }
-            custom.show()
+//
+//            var custom = com.example.naturescart.helper.SimpleSearchDialogCompat(
+//                this,
+//                Constants.getTranslate(this, "select_area"),
+//                Constants.getTranslate(this, "search"),
+//                null,
+//                areaSearchList
+//            ) { dialog, item, position ->
+//                binding.areaEt.text = item.title
+//                dialog.dismiss()
+//            }
+//            custom.show()
+//
         }
         binding.work.setOnClickListener {
             setAddressTypeSelector(binding.work)
@@ -146,22 +150,6 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
         }
         binding.clickOnMapLabel.setOnClickListener {
             startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
-        }
-        binding.mapView.setOnClickListener {
-            startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
-        }
-
-
-//        binding.mapView.setOnLongClickListener(object : View.OnLongClickListener {
-//            override fun onLongClick(v: View?): Boolean {
-//                startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
-//                return true
-//            }
-//        })
-//
-        binding.mapView.setOnLongClickListener {
-            startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
-            return@setOnLongClickListener true
         }
         binding.backBtn.setOnClickListener {
             onBackPressed()
@@ -178,6 +166,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 addressSave.apartment = binding.villaApartment.text.toString()
                 addressSave.phone = getString(R.string.country_phone_code) + binding.phoneNo.text
                 addressSave.nearestLandmark = binding.nearEt.text.toString()
+                addressSave.street = binding.streetEt.text.toString()
                 addressSave.defaultAddress = binding.defaultAddress.isChecked
                 if (latLng == null) {
                     showToast(Constants.getTranslate(this, "map_location_not_updated"))
@@ -213,8 +202,8 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 showToast(Constants.getTranslate(this, "area_field_required"))
                 return false
             }
-            binding.buildingNameEt.text.isEmpty() -> {
-                showToast(Constants.getTranslate(this, "building_name_required"))
+            binding.streetEt.text.isEmpty() -> {
+                showToast(Constants.getTranslate(this, "street_no_required"))
                 return false
             }
             binding.firstNameEt.text.isEmpty() -> {
@@ -245,12 +234,17 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0
-        if (latLng == null && isGpsEnable())
-            checkPermissionAndGetLocation()
-
+        mMap?.setOnMapClickListener {
+            startActivityForResult(AddressOnMapActivity.newInstance(this, latLng), markAddressOnMapRc)
+        }
+        if (isUpdate) {
+            mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
+        } else {
+            if (latLng == null && isGpsEnable())
+                checkPermissionAndGetLocation()
+        }
         mMap?.setOnCameraMoveStartedListener {
             binding.mapView.requestDisallowInterceptTouchEvent(true)
-
         }
         mMap?.setOnCameraIdleListener {
             binding.mapView.requestDisallowInterceptTouchEvent(false)
@@ -263,7 +257,11 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             checkPermissionAndGetLocation()
         } else if (requestCode == markAddressOnMapRc && resultCode == RESULT_OK) {
             latLng = data?.getParcelableExtra(Constants.dataPassKey)
-            mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
+            if (latLng != null) {
+                mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
+                binding.areaEt.text = Constants.geoSubLocale(latLng!!.latitude, latLng!!.longitude, this)
+                binding.streetEt.text = Constants.geoCoding(latLng!!.latitude, latLng!!.longitude, this)
+            }
         }
     }
 
@@ -310,8 +308,9 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             if (currentZoom < 13.5f) {
                 mMap?.clear()
             }
-
         }
+        binding.areaEt.text = Constants.geoSubLocale(latLng!!.latitude, latLng!!.longitude, this)
+        binding.streetEt.text = Constants.geoCoding(latLng!!.latitude, latLng!!.longitude, this)
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
@@ -321,7 +320,6 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 areaList.forEach {
                     areaSearchList.add(AreaSearchAble(it))
                 }
-
                 binding.cityEt.setItems(R.array.country)
                 binding.cityEt.selectItemByIndex(0)
             }

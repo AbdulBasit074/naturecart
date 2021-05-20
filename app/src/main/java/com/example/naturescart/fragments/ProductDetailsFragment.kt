@@ -77,8 +77,6 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
 
 
 
-
-
         if (NatureDb.getInstance(requireContext()).favouriteDao().getProduct(product.id!!) != null) {
             mBinding.favouriteImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart_fav_add))
         }
@@ -136,21 +134,16 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
             }
         }
         mBinding.incrementBtn.setOnClickListener {
-            Handler(Looper.getMainLooper()).postDelayed({
-                val count = mBinding.itemCountTv.text.toString().toFloat()
-                addToCart(mBinding.incrementBtn.context, product.id!!, count + factorIncrement)
-            }, 1000)
-
+            val count = mBinding.itemCountTv.text.toString().toFloat()
+            addToCart(mBinding.incrementBtn.context, product.id!!, count + factorIncrement)
         }
         mBinding.decrementBtn.setOnClickListener {
-            Handler(Looper.getMainLooper()).postDelayed({
-                val count = mBinding.itemCountTv.text.toString().toFloat()
-                if (count > factorIncrement) {
-                    addToCart(mBinding.incrementBtn.context, product.id!!, count - factorIncrement)
-                } else if (count == factorIncrement) {
-                    deleteFromCart(Persister.with(requireContext()).getCartItemId(product.id))
-                }
-            }, 1000)
+            val count = mBinding.itemCountTv.text.toString().toFloat()
+            if (count > factorIncrement) {
+                addToCart(mBinding.incrementBtn.context, product.id!!, count - factorIncrement)
+            } else if (count == factorIncrement) {
+                deleteFromCart(Persister.with(requireContext()).getCartItemId(product.id))
+            }
         }
     }
 

@@ -89,21 +89,17 @@ class CartItemRvAdapter(
                 context.startActivity(ImageViewActivity.newInstance(context, item.product?.image ?: ""), options.toBundle())
             }
             binding.incrementBtn.setOnClickListener {
-                Handler(Looper.getMainLooper()).postDelayed({
 
                     val count = binding.itemCountTv.text.toString().toFloat()
                     updateCart(binding.incrementBtn.context, item.product?.id!!, count + factorIncrement, incrementRc, factorIncrement)
-                }, 1000)
             }
             binding.decrementBtn.setOnClickListener {
-                Handler(Looper.getMainLooper()).postDelayed({
                     val count = binding.itemCountTv.text.toString().toFloat()
                     if (count > factorIncrement) {
                         updateCart(binding.incrementBtn.context, item.product?.id!!, count - factorIncrement, decrementRc, factorIncrement)
                     } else {
                         deleteFromCart(item.id)
                     }
-                }, 1000)
             }
             binding.deleteBtn.setOnClickListener {
                 deleteFromCart(item.id)

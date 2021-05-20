@@ -30,11 +30,14 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
     private val couponRemoveRequest: Int = 1142
 
     private var cartDetail: CartDetail? = null
+    private var startSetRequest: Int = 2211
+
     private lateinit var binding: ActivityCartOrderDetailBinding
     private var listAddress: ArrayList<Address> = ArrayList()
     private var addressSelect: Address? = null
     private var loading: LoadingDialog? = null
     private var date: DeliveryDateTime.Date? = null
+    private var dateSelect: DeliveryDateTime.Date? = DeliveryDateTime.Date()
     private var time: DeliveryDateTime.TimeSlot? = null
 
 
@@ -46,6 +49,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         cartDetail = Persister.with(this).getCartDetail()
         setCartDetail()
+        loading!!.show()
         AddressService(addressList, this).getAddress(loggedUser!!.accessToken)
         setListener()
     }
@@ -56,7 +60,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
             binding.bottomSheetCO.itemCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary?.subTotal))
             binding.bottomSheetCO.deliveryCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary!!.deliveryChanges))
             binding.bottomSheetCO.totalCharges.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary!!.total!!))
-            if (cartDetail!!.summary!!.couponDiscount!! > 0) {
+            if ((cartDetail!!.summary!!.couponDiscount!!) != 0f) {
                 binding.bottomSheetCO.discountAmountTitle.visibility = View.VISIBLE
                 binding.bottomSheetCO.discountAmount.visibility = View.VISIBLE
                 binding.bottomSheetCO.discountAmount.text = getString(R.string.aed_price, String.format("%.2f", cartDetail!!.summary?.couponDiscount))
@@ -78,18 +82,14 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
             onBackPressed()
         }
         binding.setDeliveryDateTime.setOnClickListener {
-            var dialog = DialogDeliveryDate(this, cartDetail?.id) { dateSelect, timeSlot, s ->
-                binding.setDeliveryDateTime.text = dateSelect.date + "\n" + timeSlot.time
-                date = dateSelect
-                time = timeSlot
-            }
-            dialog.show()
+            loading!!.show()
+            CartService(startSetRequest, this).getDeliveryDateTime(dateSelect?.dateKey)
         }
         binding.selectedAddressContainer.setOnClickListener {
             startActivityForResult(AddressActivity.newInstance(this, true), 0)
         }
         binding.applyDiscountCode.setOnClickListener {
-            if (cartDetail?.summary?.couponCode!!.isNotEmpty() && cartDetail!!.summary!!.couponDiscount!! > 0) {
+            if (cartDetail?.summary?.couponCode!!.isNotEmpty() && cartDetail!!.summary!!.couponDiscount!! != 0f) {
                 loading?.show()
                 CartService(couponRemoveRequest, this).removeCoupon(loggedUser!!.accessToken, binding.couponCodeText.text.toString(), cartDetail!!.id!!)
             } else {
@@ -131,7 +131,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
                 if (data != null) {
                     addressSelect = data.getParcelableExtra(Constants.selectionAddress)!!
                     binding.addressTitle.text = addressSelect!!.addressNick
-                    binding.addressDetail.text = addressSelect!!.buildingName + ", " + addressSelect!!.apartment
+                    binding.addressDetail.text = addressSelect!!.area + ", " +addressSelect!!.street+", "+ addressSelect!!.apartment
                 }
             }
             paymentMethodRequest -> {
@@ -146,6 +146,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
 
     @SuppressLint("SetTextI18n")
     override fun onSuccess(requestCode: Int, data: String) {
+        loading!!.dismiss()
         when (requestCode) {
             addressList -> {
                 listAddress.clear()
@@ -156,7 +157,16 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
                 }
                 Constants.selectAddressId = addressSelect!!.id!!
                 binding.addressTitle.text = addressSelect!!.addressNick
-                binding.addressDetail.text = addressSelect!!.buildingName + ", " + addressSelect!!.apartment
+                binding.addressDetail.text = addressSelect!!.area + ", " +addressSelect!!.street+", "+ addressSelect!!.apartment
+            }
+            startSetRequest -> {
+                var dialog = DialogDeliveryDate(this, cartDetail?.id, data) { dateSelect, timeSlot, s ->
+                    binding.setDeliveryDateTime.text = dateSelect.date + "\n" + timeSlot.time
+                    date = dateSelect
+                    time = timeSlot
+                }
+                dialog.show()
+
             }
             couponApplyRequest -> {
                 loading?.dismiss()

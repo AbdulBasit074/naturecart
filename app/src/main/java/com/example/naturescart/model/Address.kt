@@ -21,6 +21,7 @@ class Address(
     @SerializedName("building_name") @Expose var buildingName: String? = "",
     @SerializedName("first_name") @Expose var firstName: String? = "",
     @SerializedName("last_name") @Expose var lastName: String? = "",
+    @SerializedName("street") @Expose var street: String? = "",
     @SerializedName("default_address") @Expose var defaultAddress: Boolean = false,
 
 
@@ -33,6 +34,7 @@ class Address(
         parcel.readString(),
         parcel.readValue(Double::class.java.classLoader) as? Double,
         parcel.readValue(Double::class.java.classLoader) as? Double,
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -57,6 +59,7 @@ class Address(
         parcel.writeString(buildingName)
         parcel.writeString(firstName)
         parcel.writeString(lastName)
+        parcel.writeString(street)
         parcel.writeValue(defaultAddress)
     }
 

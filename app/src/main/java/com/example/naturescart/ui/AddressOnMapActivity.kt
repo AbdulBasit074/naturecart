@@ -14,10 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.example.naturescart.R
 import com.example.naturescart.databinding.ActivityAddressOnMapBinding
-import com.example.naturescart.helper.Constants
-import com.example.naturescart.helper.askToEnableGPS
-import com.example.naturescart.helper.getCurrentLocation
-import com.example.naturescart.helper.setLanguage
+import com.example.naturescart.helper.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -78,8 +75,11 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             if (latLng != null) {
                 intent.putExtra(Constants.dataPassKey, latLng)
                 setResult(RESULT_OK, intent)
+                onBackPressed()
+            } else {
+                showToast(Constants.getTranslate(this, "loading_map"))
             }
-            onBackPressed()
+
         }
         mBinding.backBtn.setOnClickListener {
             onBackPressed()

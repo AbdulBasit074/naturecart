@@ -46,7 +46,7 @@ class OrderDetailActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setOrderData() {
-        binding.orderStatus.text = StringBuilder().append(Constants.getTranslate(this, "order_status")).append(orderDetail.status)
+        binding.orderStatus.text = StringBuilder().append(Constants.getTranslate(this, "order_status")).append(" ${orderDetail.status}")
         binding.dateTxt.text = convertDate(orderDetail.orderData.toString())
         binding.deliveryDate.text = orderDetail.deliveryDate.toString()
         binding.deliveryTime.text = orderDetail.deliveryTime.toString()
@@ -59,7 +59,7 @@ class OrderDetailActivity : AppCompatActivity() {
             binding.discountAmount.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary?.couponDiscount))
         }
         binding.addressTitleSelect.text = orderDetail.address!![0].addressNick.toString()
-        binding.addressDetail.text = orderDetail.address!![0].buildingName + ", " + orderDetail.address!![0].apartment
+        binding.addressDetail.text = orderDetail.address!![0].area + ", " + orderDetail.address!![0].street + ", " + orderDetail.address!![0].apartment
         binding.orderNo.text = getString(R.string.order_no, orderDetail.orderId.toString())
         binding.bottomSheetTotal.total.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary!!.total))
         binding.contactLess.isChecked = orderDetail.contactLessDelivery

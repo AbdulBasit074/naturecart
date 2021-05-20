@@ -1,6 +1,10 @@
 package com.example.naturescart.fragments
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -27,6 +31,7 @@ import com.google.gson.reflect.TypeToken
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+
 
 class HomeFragment : Fragment(), Results {
 
@@ -127,10 +132,17 @@ class HomeFragment : Fragment(), Results {
             else
                 moveFromFragment(requireActivity(), UserDetailActivity::class.java)
         }
+        homeBinding.toolBar.whatsAppBtn.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(Constants.getWhatsAppUrl(requireContext()))
+            startActivity(intent)
+        }
+
         homeBinding.searchEt.setOnClickListener {
             EventBus.getDefault().postSticky(MoveFragmentEvent(SearchFragment()))
         }
     }
+
     private fun setAllAdapters() {
         adapterCollection = CollectionAdapterRv(collectionData) { collection -> onCollectionClicked(collection) }
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -168,9 +180,11 @@ class HomeFragment : Fragment(), Results {
         }
         handler.postDelayed(runnable, 3000)
     }
+
     private fun seeAll(categoryId: Long, categoryName: String) {
         EventBus.getDefault().postSticky(MoveFragmentEvent(CategoryDetailFragment(categoryId, categoryName)))
     }
+
     private fun onCollectionClicked(collection: CollectionModel) {
         EventBus.getDefault().postSticky(MoveFragmentEvent(CollectionDetailFragment(collection.id, collection.name)))
 //        activity?.startActivityForResult(CollectionDetailActivity.newInstance(requireActivity(), collection.id, collection.name), Constants.collectionDetailsActivityRc)
@@ -242,6 +256,7 @@ class HomeFragment : Fragment(), Results {
     }
 
     override fun onFailure(requestCode: Int, data: String) {
+        loadingView?.dismiss()
         showToast(data)
     }
 

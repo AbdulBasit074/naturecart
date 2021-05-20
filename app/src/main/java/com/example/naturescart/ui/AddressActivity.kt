@@ -44,15 +44,19 @@ class AddressActivity : AppCompatActivity(), Results {
     private var addressSelect: Address? = null
     private lateinit var dialogShow: DialogCustom
     private var loggedUser: User? = null
+    private lateinit var loading: LoadingDialog
+
     private lateinit var binding: ActivityAddressBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLanguage()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_address)
+        loading = LoadingDialog(this)
         loggedUser = NatureDb.getInstance(this).userDao().getLoggedUser()
         isSelection = intent.getBooleanExtra(Constants.isAddressSelection, false)
         setListener()
+        loading.show()
         AddressService(addressList, this).getAddress(loggedUser?.accessToken ?: "")
         setData()
         handlerSet()
@@ -64,7 +68,6 @@ class AddressActivity : AppCompatActivity(), Results {
         runnable = Runnable {
             dialogShow.dismiss()
         }
-
     }
 
     private fun setData() {
@@ -87,13 +90,13 @@ class AddressActivity : AppCompatActivity(), Results {
         if (listAddress.isNotEmpty())
             addressSelect = listAddress[0]
 
-        binding.addressRv.adapter =
-            AddressesRvAdapter(listAddress, isSelection) { data -> addressIs(data) }
+        binding.addressRv.adapter = AddressesRvAdapter(listAddress, isSelection) { data -> addressIs(data) }
     }
 
     private fun addressIs(data: Address) {
         if (isSelection) {
             addressSelect = data
+            onBackPressed()
         } else
             moveForResult(AddNewAddress.newInstance(this, true, data), updateRequest)
     }
@@ -120,6 +123,7 @@ class AddressActivity : AppCompatActivity(), Results {
     }
 
     override fun onSuccess(requestCode: Int, data: String) {
+        loading.dismiss()
         when (requestCode) {
             addressList -> {
                 listAddress.clear()
@@ -130,6 +134,7 @@ class AddressActivity : AppCompatActivity(), Results {
     }
 
     override fun onFailure(requestCode: Int, data: String) {
+        loading.dismiss()
         showToast(data)
     }
 

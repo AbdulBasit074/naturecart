@@ -53,24 +53,37 @@ class Constants {
         fun getTranslate(context: Context, key: String): String {
             return TranslationsHelper.getInstance(context).getTranslation(key)
         }
-
+        fun getWhatsAppUrl(context: Context):String{
+            var phoneNumber = getTranslate(context,"about_phone")
+            var textMsg = getTranslate(context,"whatsapp_message")
+            return "https://api.whatsapp.com/send?phone=$phoneNumber&text=$textMsg"
+        }
 
 
         fun geoCoding(latitude: Double, longitude: Double, context: Context): String {
             val addresses: List<Address>
             val geoCoder = Geocoder(context, Locale.getDefault())
 
-            addresses = geoCoder.getFromLocation(
-                latitude,
-                longitude,
-                1
-            )
-            val address = addresses[0]
-                .getAddressLine(0)
-            if (address.isNotEmpty()) {
+            addresses = geoCoder.getFromLocation(latitude, longitude, 4)
+            var address: String = ""
+            if (addresses != null && addresses.isNotEmpty()) {
+                address = addresses[0].getAddressLine(0)
                 address.substring(0, address.length - 1)
+                address = address.removePrefix("Unnamed Road, ")
             }
-            return address.toString()
+            return address
+        }
+
+        fun geoSubLocale(latitude: Double, longitude: Double, context: Context): String {
+            val addresses: List<Address>
+            val geoCoder = Geocoder(context, Locale.getDefault())
+
+            addresses = geoCoder.getFromLocation(latitude, longitude, 4)
+            var address: String = ""
+            if (addresses != null && addresses.isNotEmpty() && addresses[0].subLocality != null) {
+                address = addresses[0].subLocality
+            }
+            return address
         }
 
 

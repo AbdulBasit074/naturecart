@@ -14,7 +14,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/itemContainer"
         android:layout_width="@dimen/_140sdp"
-        android:layout_height="@dimen/_190sdp"
+        android:layout_height="@dimen/_210sdp"
         app:cardCornerRadius="@dimen/_15sdp"
         app:cardElevation="0dp"
         tools:ignore="HardcodedText">
@@ -71,6 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_slab_regular"
@@ -78,6 +79,7 @@
                 android:text="@{product.name}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toTopOf="@id/countryTv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iconIv" />
 
@@ -86,6 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_slab_regular"
@@ -93,6 +96,7 @@
                 android:text="@{product.country_name}"
                 android:textColor="@color/text_color_green"
                 android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toTopOf="@id/descriptionTv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nameTv" />
 
@@ -101,12 +105,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_slab_light"
                 android:singleLine="true"
                 android:text="@{product.description}"
                 android:textColor="@color/transparent_black2"
                 android:textSize="@dimen/_8ssp"
+                app:layout_constraintBottom_toTopOf="@id/priceTv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/countryTv" />
 
@@ -117,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:fontFamily="@font/roboto_slab_semi_bold"
                 android:singleLine="false"
                 android:textColor="@color/black"
@@ -131,6 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_slab_semi_bold"
                 android:singleLine="false"
@@ -145,6 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:fontFamily="@font/roboto_slab_light"
                 android:singleLine="false"
                 android:textColor="@color/transparent_black2"
@@ -191,8 +200,7 @@
                 android:textSize="@dimen/_11ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/incrementBtn"
-                app:layout_constraintStart_toEndOf="@id/decrementBtn"
-                app:layout_constraintTop_toBottomOf="@id/priceTv" />
+                app:layout_constraintStart_toEndOf="@id/decrementBtn" />
 
 
             <androidx.cardview.widget.CardView

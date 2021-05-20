@@ -3,6 +3,8 @@ package com.example.naturescart.fragments
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -110,6 +112,13 @@ class OrderFragment : Fragment(), Results {
         orderBinding.toolBar.notificationBtn.setOnClickListener {
             moveFromFragment(requireActivity(), NotificationActivity::class.java)
         }
+        orderBinding.toolBar.whatsAppBtn.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(Constants.getWhatsAppUrl(requireContext()))
+            startActivity(intent)
+        }
+
+
     }
 
     private fun initPageListener() {

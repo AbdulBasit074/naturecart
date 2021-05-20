@@ -107,7 +107,6 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_marginEnd="@dimen/_30sdp"
                             android:fontFamily="@font/roboto_slab_regular"
-                            android:maxLines="2"
                             android:paddingEnd="@dimen/_10sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11ssp"
@@ -298,6 +297,7 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/divider"
                         android:textSize="@dimen/_12ssp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/dicountContainer"
                         tools:ignore="LabelFor" />

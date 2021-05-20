@@ -159,22 +159,18 @@ class ItemAdapterFNRv(
                     }
                 }
                 binding.incrementBtn.setOnClickListener {
-                    Handler(Looper.getMainLooper()).postDelayed({
-
-                        val count = binding.itemCountTv.text.toString().toFloat()
-                        addToCart(binding.incrementBtn.context, item.id!!, count + factorIncrement, binding.itemCountTv, factorIncrement)
-                    }, 1000)
+                    val count = binding.itemCountTv.text.toString().toFloat()
+                    addToCart(binding.incrementBtn.context, item.id!!, count + factorIncrement, binding.itemCountTv, factorIncrement)
                 }
                 binding.decrementBtn.setOnClickListener {
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        val count = binding.itemCountTv.text.toString().toFloat()
-                        if (count > factorIncrement) {
-                            addToCart(binding.incrementBtn.context, item.id!!, count - factorIncrement, binding.itemCountTv, factorIncrement)
-                        } else if (count == factorIncrement) {
-                            showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
-                            deleteFromCart(Persister.with(context).getCartItemId(item.id))
-                        }
-                    }, 1000)
+
+                    val count = binding.itemCountTv.text.toString().toFloat()
+                    if (count > factorIncrement) {
+                        addToCart(binding.incrementBtn.context, item.id!!, count - factorIncrement, binding.itemCountTv, factorIncrement)
+                    } else if (count == factorIncrement) {
+                        showItemCountText(binding.itemCountTv, (count - factorIncrement), factorIncrement)
+                        deleteFromCart(Persister.with(context).getCartItemId(item.id))
+                    }
                 }
             }
 

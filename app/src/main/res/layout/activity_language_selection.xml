@@ -67,11 +67,12 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/englishBtn"
-            android:layout_width="@dimen/_90sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/transparent_button_border"
             android:fontFamily="@font/roboto_slab_medium"
+            android:minWidth="@dimen/_100sdp"
             android:paddingStart="@dimen/_20sdp"
             android:paddingEnd="@dimen/_20sdp"
             android:text="English"
@@ -84,11 +85,12 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/arabicBtn"
-            android:layout_width="@dimen/_90sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/transparent_button_border"
             android:fontFamily="@font/roboto_slab_medium"
+            android:minWidth="@dimen/_100sdp"
             android:text="@string/arabic"
             android:textAllCaps="false"
             android:textSize="@dimen/_12ssp"

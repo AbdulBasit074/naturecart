@@ -1,6 +1,9 @@
 package com.example.naturescart.fragments
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +27,7 @@ import com.google.android.material.tabs.TabLayout
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.Exception
 
 class FavouriteFragment : Fragment() {
 
@@ -84,6 +88,12 @@ class FavouriteFragment : Fragment() {
             else
                 moveFromFragment(requireActivity(), UserDetailActivity::class.java)
         }
+        binding.toolBar.whatsAppBtn.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(Constants.getWhatsAppUrl(requireContext()))
+            startActivity(intent)
+        }
+
     }
 
     override fun onResume() {

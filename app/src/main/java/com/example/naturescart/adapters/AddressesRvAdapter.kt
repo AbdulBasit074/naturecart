@@ -1,5 +1,6 @@
 package com.example.naturescart.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,7 @@ class AddressesRvAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindView(items[position])
+
     }
 
     inner class ViewHolder(val binding: LiAddressBinding) : RecyclerView.ViewHolder(binding.root),
@@ -45,10 +47,12 @@ class AddressesRvAdapter(
         private val addressDelete: Int = 222
         private var deletedSelect: Int = -1
 
+        @SuppressLint("SetTextI18n")
         fun bindView(item: Address) {
             binding.addressTitle.text = item.addressNick
-            binding.addressDetail.text = Constants.geoCoding(item.latitude!!, item.longitude!!, binding.root.context)
+            binding.addressDetail.text = item.area + ", " + item.street + ", " + item.apartment
             if (selection) {
+                binding.revealLayout.setLockDrag(true)
                 Glide.with(binding.icon.context).load(R.drawable.ic_icon_check_circle)
                     .into(binding.icon)
                 binding.icon.visibility =
@@ -83,7 +87,6 @@ class AddressesRvAdapter(
         override fun onFailure(requestCode: Int, data: String) {
             binding.deleteBtn.context.showToast(data)
         }
-
 
 
     }

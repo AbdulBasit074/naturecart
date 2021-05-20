@@ -11,6 +11,8 @@
     <string name="country_phone_code">+971</string>
     <string name="aed_price">AED %1$s</string>
 
+
+
     <string name="aed_total_price">Total Price AED %1$s</string>
 
     <string name="unit_text">/ %1$s</string>

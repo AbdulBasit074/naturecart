@@ -33,9 +33,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="858585" />
-                            <entry key="outputName" value="ic_edit" />
-                            <entry key="sourceFile" value="C:\Users\TRS-LAPTOP-09\Downloads\eye_visible_hide_hidden_show_icon_145988.svg" />
+                            <entry key="outputName" value="ic_no_favourite" />
+                            <entry key="sourceFile" value="C:\Users\TRS-LAPTOP-09\Desktop\rough\No_Fav_Visual.svg" />
                           </map>
                         </option>
                       </PersistentState>

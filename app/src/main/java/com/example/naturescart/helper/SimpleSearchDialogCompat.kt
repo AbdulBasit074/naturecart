@@ -67,7 +67,7 @@ class SimpleSearchDialogCompat<T : Searchable?>(
                     dismiss()
                 }
             }
-        val adapter: SearchDialogAdapter<*> = SearchDialogAdapter(context, android.R.layout.simple_list_item_1, items)
+        val adapter: SearchDialogAdapter<*> = SearchDialogAdapter(context, R.layout.li_search_item, items)
         adapter.searchResultListener = mSearchResultListener
         adapter.setSearchDialog(this)
         filterResultListener = filterResultListener
@@ -115,6 +115,7 @@ class SimpleSearchDialogCompat<T : Searchable?>(
     override fun getLayoutResId(): Int {
         return R.layout.search_dialog
     }
+
     @IdRes
     override fun getSearchBoxId(): Int {
         return R.id.txt_search

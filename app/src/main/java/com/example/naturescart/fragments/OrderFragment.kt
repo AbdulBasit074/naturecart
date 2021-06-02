@@ -92,6 +92,10 @@ class OrderFragment : Fragment(), Results {
     override fun onResume() {
         super.onResume()
         loggedUser = NatureDb.getInstance(requireActivity()).userDao().getLoggedUser()
+        if (Constants.orderPlace) {
+            callOrderDetail()
+            Constants.orderPlace = false
+        }
     }
 
     private fun onOrderClick(order: OrderDetail) {

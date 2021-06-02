@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_60sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:background="@drawable/bg_search_et"
                 android:drawablePadding="@dimen/_16sdp"
@@ -46,7 +46,20 @@
                 app:drawableStartCompat="@drawable/ic_search"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+
                 tools:ignore="Autofill" />
+            <ImageView
+                android:id="@+id/currentBtn"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:contentDescription="@null"
+                android:padding="@dimen/_3sdp"
+                android:src="@drawable/ic_pin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/_10sdp"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

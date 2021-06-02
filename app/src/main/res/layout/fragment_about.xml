@@ -55,6 +55,7 @@
                         android:textSize="@dimen/_22ssp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/appLogo" />
+
                     <TextView
                         android:id="@+id/aboutNatureLabel"
                         translationText='@{"nature_cart"}'
@@ -66,7 +67,6 @@
                         android:textSize="@dimen/_22ssp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/aboutLabel" />
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -161,28 +161,75 @@
                             android:id="@+id/emailContainer"
                             layout="@layout/contact_help_email"
                             android:layout_width="@dimen/_250sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/contactTitle" />
 
                         <TextView
                             android:id="@+id/phoneBtn"
+                            translationText='@{"about_phone"}'
+                            android:layout_width="@dimen/_250sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="@drawable/contact_item_bg"
+                            android:fontFamily="@font/roboto_slab_semi_bold"
+                            android:paddingStart="@dimen/_30sdp"
+                            android:paddingTop="@dimen/_10sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:textAlignment="viewStart"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/_11ssp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/emailContainer" />
+                        <ImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:padding="@dimen/_5sdp"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:src="@drawable/ic_bx_support"
+                            app:layout_constraintBottom_toBottomOf="@id/phoneBtn"
+                            app:layout_constraintStart_toStartOf="@id/phoneBtn"
+                            app:layout_constraintTop_toTopOf="@id/phoneBtn"
+                            tools:ignore="RtlSymmetry" />
+
+
+
+
+                        <TextView
+                            android:id="@+id/whatsAppBtn"
+                            translationText='@{"about_phone"}'
                             android:layout_width="@dimen/_250sdp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:background="@drawable/contact_item_bg"
                             android:drawablePadding="@dimen/_10sdp"
                             android:fontFamily="@font/roboto_slab_semi_bold"
-                            android:padding="@dimen/_10sdp"
-                            translationText='@{"about_phone"}'
+                            android:paddingTop="@dimen/_10sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:textAlignment="viewStart"
+
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_30sdp"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/_11ssp"
-                            app:drawableStartCompat="@drawable/ic_bx_support"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/emailContainer" />
+                            app:layout_constraintTop_toBottomOf="@+id/phoneBtn" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:padding="@dimen/_3sdp"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:src="@drawable/ic_whatsapp"
+                            app:layout_constraintBottom_toBottomOf="@id/whatsAppBtn"
+                            app:layout_constraintStart_toStartOf="@id/whatsAppBtn"
+                            app:layout_constraintTop_toTopOf="@id/whatsAppBtn"
+                            tools:ignore="RtlSymmetry" />
 
                         <TextView
                             android:id="@+id/facebookBtn"
@@ -194,13 +241,15 @@
                             android:fontFamily="@font/roboto_slab_semi_bold"
                             android:gravity="center_vertical"
                             android:padding="@dimen/_10sdp"
+                            android:textAlignment="viewStart"
                             android:text="FaceBook"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/_11ssp"
                             app:drawableStartCompat="@drawable/ic_facebook"
                             app:layout_constraintEnd_toStartOf="@id/instagramBtn"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/phoneBtn" />
+                            app:layout_constraintTop_toBottomOf="@+id/whatsAppBtn"
+                            tools:ignore="RtlCompat" />
 
                         <TextView
                             android:id="@+id/instagramBtn"
@@ -212,13 +261,15 @@
                             android:fontFamily="@font/roboto_slab_semi_bold"
                             android:gravity="center_vertical"
                             android:padding="@dimen/_10sdp"
+                            android:textAlignment="viewStart"
                             android:text="Instagram"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/_11ssp"
                             app:drawableStartCompat="@drawable/ic_instagram"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/facebookBtn"
-                            app:layout_constraintTop_toBottomOf="@+id/phoneBtn" />
+                            app:layout_constraintTop_toBottomOf="@+id/whatsAppBtn"
+                            tools:ignore="RtlCompat" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

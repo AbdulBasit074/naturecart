@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.naturescart.R
+import com.example.naturescart.helper.Constants
 import com.example.naturescart.helper.TranslationsHelper
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
@@ -69,9 +70,10 @@ fun setImage(imageView: ImageView, src: String) {
         .into(imageView)
 }
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("setSave")
 fun setSave(textView: TextView, src: String) {
-    textView.text = textView.context.getString(R.string.save, src)
+    textView.text = src + " ${Constants.getTranslate(textView.context, "off")}"
 }
 
 @BindingAdapter("setTextOrder")

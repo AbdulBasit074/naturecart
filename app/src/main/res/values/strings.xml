@@ -43,7 +43,7 @@
     <string name="select_app_language">Select app Language</string>
     <string name="orders">Orders</string>
     <string name="about">About</string>
-    <string name="save">Save %1$s</string>
+    <string name="save">AED %1$s OFF</string>
 
     <string name="strike">%1$s</string>
 

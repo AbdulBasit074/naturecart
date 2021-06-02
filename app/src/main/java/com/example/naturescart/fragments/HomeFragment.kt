@@ -137,7 +137,6 @@ class HomeFragment : Fragment(), Results {
             intent.data = Uri.parse(Constants.getWhatsAppUrl(requireContext()))
             startActivity(intent)
         }
-
         homeBinding.searchEt.setOnClickListener {
             EventBus.getDefault().postSticky(MoveFragmentEvent(SearchFragment()))
         }

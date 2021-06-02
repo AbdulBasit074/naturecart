@@ -53,7 +53,7 @@ class OrderDetailActivity : AppCompatActivity() {
         binding.itemCharges.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary?.subTotal))
         binding.deliveryCharges.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary?.deliveryChanges))
         binding.vatCharges.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary?.vat))
-        if (orderDetail.summary?.couponDiscount!! > 0) {
+        if (orderDetail.summary?.couponDiscount != 0f) {
             binding.discountTitle.visibility = View.VISIBLE
             binding.discountAmount.visibility = View.VISIBLE
             binding.discountAmount.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary?.couponDiscount))

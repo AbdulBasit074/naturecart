@@ -63,6 +63,9 @@ class HomeActivity : AppCompatActivity(), Results {
         if (loggedUser != null)
             ProductService(getFavoritesRc, this).getFavorites(loggedUser!!.accessToken)
         checkAndFetchFcmToken()
+        if (Constants.orderPlace) {
+            binding.bottomNavigation.selectedItemId = R.id.order
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

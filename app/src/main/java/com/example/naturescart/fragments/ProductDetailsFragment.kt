@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -50,9 +51,13 @@ class ProductDetailsFragment(private val product: Product) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         loggedUser = NatureDb.getInstance(requireContext()).userDao().getLoggedUser()
         mBinding.product = product
+        setViews()
         setListeners()
     }
 
+    private fun setViews() {
+        mBinding.longDescriptionTv.text = HtmlCompat.fromHtml(product.long_description!!, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    }
     private fun setListeners() {
         mBinding.backBtn.setOnClickListener {
             requireActivity().onBackPressed()

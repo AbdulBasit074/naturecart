@@ -307,7 +307,6 @@
                                 android:paddingBottom="@dimen/_10sdp"
                                 android:scrollbars="vertical"
                                 android:singleLine="false"
-                                android:text="@{product.long_description}"
                                 android:textColor="@color/transparent_black2"
                                 android:textSize="@dimen/_10ssp"
                                 app:layout_constraintStart_toStartOf="parent"

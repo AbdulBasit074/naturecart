@@ -58,11 +58,21 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         latLng = intent.getParcelableExtra(Constants.dataPassKey)
         mapFragment.getMapAsync(this)
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        isGpsEnabled = locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == true
         if (latLng == null) {
-            val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-            isGpsEnabled = locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == true
             if (!isGpsEnabled)
                 askToEnableGPS { requestCode, resultCode, data -> onActivityResult(requestCode, resultCode, data) }
+        }
+        mBinding.currentBtn.setOnClickListener {
+            latLng = null
+            if (!isGpsEnabled)
+                askToEnableGPS { requestCode, resultCode, data -> onActivityResult(requestCode, resultCode, data) }
+            else
+                onMapReady(mMap)
+
+            showToast(Constants.getTranslate(this, "loading_map"))
+
         }
         mBinding.searchEtContainer.setOnClickListener {
             val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
@@ -79,13 +89,11 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             } else {
                 showToast(Constants.getTranslate(this, "loading_map"))
             }
-
         }
         mBinding.backBtn.setOnClickListener {
             onBackPressed()
         }
     }
-
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0
         if (isGpsEnabled && latLng == null) {
@@ -95,20 +103,15 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
                     override fun onPermissionGranted(response: PermissionGrantedResponse) {
                         getCurrentLocation(fields) { place -> onLocationAvailable(place) }
                     }
-
                     override fun onPermissionDenied(response: PermissionDeniedResponse) {
                         if (response.isPermanentlyDenied) {
                             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null))
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        }
-                    }
-
+                            startActivity(intent) } }
                     override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest, token: PermissionToken) {
                         token.continuePermissionRequest()
                     }
                 }).check()
-
         } else {
             mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
         }
@@ -122,7 +125,6 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             mBinding.markerPinElevated.visibility = View.GONE
         }
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.locationDialogRequestKey && resultCode == Activity.RESULT_OK) {
@@ -137,7 +139,6 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
-
     private fun onLocationAvailable(place: Place) {
         latLng = LatLng(place.latLng!!.latitude, place.latLng!!.longitude)
         mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))

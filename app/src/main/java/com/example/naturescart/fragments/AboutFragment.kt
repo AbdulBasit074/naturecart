@@ -48,6 +48,11 @@ class AboutFragment : Fragment() {
                 startActivity(Intent.createChooser(intent, "Send Email"))
             }
         }
+        mBinding.whatsAppBtn.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(Constants.getWhatsAppUrl(requireContext()))
+            startActivity(intent)
+        }
         mBinding.phoneBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse(StringBuilder().append("tel:").append(phone).toString())
@@ -60,10 +65,12 @@ class AboutFragment : Fragment() {
             openLink(insta)
         }
     }
+
     private fun setTranslationForMissionSection() {
         mBinding.ourMissionContainer.aboutTitleMission.text = Constants.getTranslate(requireContext(), "our_mission")
         mBinding.ourMissionContainer.aboutLabelMission.text = Constants.getTranslate(requireContext(), "our_mission_detail")
     }
+
     private fun openLink(link: String) {
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(link)

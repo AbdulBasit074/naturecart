@@ -79,7 +79,7 @@
 
             <TextView
                 android:id="@+id/descriptionEmptyCart"
-                translationText='@{"we_are_processing_order"}'
+                translationText='@{"empty_cart_msg"}'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"

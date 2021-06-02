@@ -305,7 +305,7 @@
                     <View
                         android:id="@+id/dividerView"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_290sdp"
+                        android:layout_height="@dimen/_310sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/specialInstruction" />
 
@@ -316,7 +316,7 @@
         <include
             android:id="@+id/bottomSheetCO"
             layout="@layout/checkout_bottom_sheet"
-            app:behavior_peekHeight="@dimen/_230sdp"
+            app:behavior_peekHeight="@dimen/_250sdp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

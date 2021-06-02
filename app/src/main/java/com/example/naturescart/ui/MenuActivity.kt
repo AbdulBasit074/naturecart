@@ -428,9 +428,11 @@ class MenuActivity : AppCompatActivity(), Results {
 
     private fun getCountryFromLocale() {
         /**get Countries from local*/
+        var localeLanguage: Locale? = Locale.Builder().setLanguage(TranslationsHelper.getInstance(this).getLocale()).build()
+
         val locales = Locale.getAvailableLocales()
         for (locale in locales) {
-            val country = locale.displayCountry
+            val country = locale.getDisplayCountry(localeLanguage!!)
             if (country.trim { it <= ' ' }.isNotEmpty() && !countries.contains(country)) {
                 countries.add(country)
             }

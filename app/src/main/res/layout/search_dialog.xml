@@ -91,7 +91,6 @@
                 android:layout_gravity="left"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:fadingEdgeLength="@dimen/_5sdp"
-
                 android:minHeight="@dimen/_100sdp"
                 android:requiresFadingEdge="vertical" />
         </LinearLayout>

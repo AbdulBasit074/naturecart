@@ -34,6 +34,7 @@ class Constants {
         const val fcmTokenPersistenceKey = "fcmTokenPersistenceKey"
         const val baseUrl: String = "https://app.naturescart.ae/api/"
         const val cartPersistenceKey = "cartPersistenceKey"
+        var orderPlace: Boolean = false
         const val onBoardingPersistenceKey = "onBoardingPersistenceKey"
         const val locationDialogRequestKey = 6518
         const val categoryDetailsActivityRc = 4245
@@ -53,9 +54,10 @@ class Constants {
         fun getTranslate(context: Context, key: String): String {
             return TranslationsHelper.getInstance(context).getTranslation(key)
         }
-        fun getWhatsAppUrl(context: Context):String{
-            var phoneNumber = getTranslate(context,"about_phone")
-            var textMsg = getTranslate(context,"whatsapp_message")
+
+        fun getWhatsAppUrl(context: Context): String {
+            var phoneNumber = getTranslate(context, "about_phone")
+            var textMsg = getTranslate(context, "whatsapp_message")
             return "https://api.whatsapp.com/send?phone=$phoneNumber&text=$textMsg"
         }
 

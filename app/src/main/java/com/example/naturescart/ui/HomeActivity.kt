@@ -288,4 +288,10 @@ class HomeActivity : AppCompatActivity(), Results {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshEvent(){
+        finish()
+        startActivity(Intent(this, SplashActivity::class.java))
+    }
+
 }

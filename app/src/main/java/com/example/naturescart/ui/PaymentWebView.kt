@@ -45,7 +45,6 @@ class PaymentWebView : AppCompatActivity() {
         userID = intent.getIntExtra(Constants.userID, 0)
         addressID = intent.getIntExtra(Constants.addressID, 0)
         contactLess = intent.getBooleanExtra(Constants.contactLess,false)
-
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }

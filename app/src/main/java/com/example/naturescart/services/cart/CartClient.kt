@@ -49,6 +49,15 @@ interface CartClient {
         @Field("cart_id") cartId: Long?
     ): Call<ResponseBody>
 
+
+    @FormUrlEncoded
+    @POST("instructions")
+    fun addInstruction(
+        @Field("cart_id") cartId: Long,
+        @Field("instructions") instruction: String,
+    ): Call<ResponseBody>
+
+
     @DELETE("carts/{productId}/")
     fun removeFromCart(@Path("productId") productId: Long): Call<ResponseBody>
 

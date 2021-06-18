@@ -476,6 +476,42 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/cash"
                         tools:ignore="RtlSymmetry" />
+                    <TextView
+                        android:id="@+id/instructionTitle"
+                        translationText='@{"delivery_instructions"}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_slab_regular"
+                        android:textColor="@color/black"
+                        android:visibility="gone"
+                        android:textSize="@dimen/_15ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/online" />
+                    <TextView
+                        android:id="@+id/specialInstruction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:background="@drawable/border_white_round"
+                        android:fontFamily="@font/roboto_slab_regular"
+                        android:gravity="start"
+                        android:inputType="textMultiLine"
+                        android:visibility="gone"
+                        android:minHeight="@dimen/_80sdp"
+                        android:padding="@dimen/_10sdp"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/divider"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/instructionTitle"
+                        tools:ignore="LabelFor,TextViewEdits" />
+
 
                     <TextView
                         android:id="@+id/cancleOrder"
@@ -496,7 +532,7 @@
                         android:visibility="gone"
                         app:drawableStartCompat="@drawable/cancel"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/online" />
+                        app:layout_constraintTop_toBottomOf="@id/specialInstruction" />
 
                     <View
                         android:layout_width="match_parent"

@@ -27,6 +27,10 @@ class OrderDetail
     @Expose
     var subtotal: Float? = null,
 
+    @SerializedName("instructions")
+    @Expose
+    var instructions: String = "",
+
     @SerializedName("total")
     @Expose
     var total: Float? = null,
@@ -53,6 +57,7 @@ class OrderDetail
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Float::class.java.classLoader) as? Float,
+        parcel.readString()!!,
         parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readString(),
         parcel.readString(),
@@ -71,6 +76,7 @@ class OrderDetail
         parcel.writeString(orderId)
         parcel.writeValue(userId)
         parcel.writeValue(subtotal)
+        parcel.writeString(instructions)
         parcel.writeValue(total)
         parcel.writeString(paymentType)
         parcel.writeString(status)

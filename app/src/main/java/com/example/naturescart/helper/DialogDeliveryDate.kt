@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import com.example.naturescart.R
 import com.example.naturescart.databinding.DeliveryDateDailogBinding
@@ -16,8 +15,6 @@ import com.example.naturescart.model.DeliveryDateTime
 import com.example.naturescart.services.Results
 import com.example.naturescart.services.cart.CartService
 import com.google.gson.Gson
-import com.skydoves.powerspinner.OnSpinnerItemSelectedListener
-import com.skydoves.powerspinner.PowerSpinnerPreference
 
 class DialogDeliveryDate(context: Context, private var cartId: Long?, private var dataDateTime: String, private var callBack: (DeliveryDateTime.Date, DeliveryDateTime.TimeSlot, String) -> Unit) :
     Dialog(context), Results {
@@ -44,6 +41,7 @@ class DialogDeliveryDate(context: Context, private var cartId: Long?, private va
     private fun setListeners() {
 
         binding.okBtn.setOnClickListener {
+           timeSelect!!.time =  timeSelect?.time?.replace("Between", "")
             CartService(addDateTimeRequest, this).addDeliveryDateTime(dateSelect?.dateKey!!, timeSelect?.time!!, cartId!!)
         }
         binding.cancleBtn.setOnClickListener {
@@ -51,7 +49,6 @@ class DialogDeliveryDate(context: Context, private var cartId: Long?, private va
         }
 
     }
-
     private fun initView() {
         onSuccess(startSetRequest, dataDateTime)
     }

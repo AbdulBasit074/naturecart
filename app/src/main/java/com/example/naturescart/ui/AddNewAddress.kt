@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -44,6 +45,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
     private val areaRequest: Int = 1222
     private val addressAddRequest: Int = 1412
     private val addressUpdateRequest: Int = 4412
+    private lateinit var dialog: DialogErrorCustom
     private val markAddressOnMapRc = 3894
     private var positionNickKey: String = ""
     private var addressTypeSelect: String? = null
@@ -157,6 +159,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
         binding.addressAddBtn.setOnClickListener {
             if (isInputOk()) {
+
                 addressSave.addressNick = addressTypeSelect
                 addressSave.city = binding.cityEt.text.toString()
                 addressSave.firstName = binding.firstNameEt.text.toString()
@@ -173,10 +176,16 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 } else {
                     addressSave.latitude = latLng!!.latitude
                     addressSave.longitude = latLng!!.longitude
-                    if (isUpdate)
-                        AddressService(addressUpdateRequest, this).updateAddress(loggedUser?.accessToken ?: "", addressSave, addressSave.id!!)
-                    else
-                        AddressService(addressAddRequest, this).addAddress(loggedUser?.accessToken ?: "", addressSave)
+                    if (Constants.checkLocality(latLng!!.latitude, latLng!!.longitude,this).toLowerCase()!=Constants.dubai) {
+                        dialog  = DialogErrorCustom(this,R.drawable.ic_error,Constants.getTranslate(this, "out_of_range")){onOkClick()}
+                        dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+                        dialog.show()
+                    } else {
+                        if (isUpdate)
+                            AddressService(addressUpdateRequest, this).updateAddress(loggedUser?.accessToken ?: "", addressSave, addressSave.id!!)
+                        else
+                            AddressService(addressAddRequest, this).addAddress(loggedUser?.accessToken ?: "", addressSave)
+                    }
                 }
             }
         }
@@ -184,7 +193,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             binding.cityEt.showOrDismiss()
         }
     }
-
+    private fun onOkClick() {}
     private fun setAddressTypeSelector(textView: TextView) {
         resetAddressTypeView()
         addressTypeSelect = textView.text.toString()

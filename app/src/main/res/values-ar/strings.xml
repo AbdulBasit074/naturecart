@@ -13,6 +13,7 @@
     <string name="retry">أعد المحاولة</string>
     <string name="about">حول</string>
     <string name="order_no">%1$s :رقم الطلب</string>
+    <string name="ok">نعم</string>
     <string name="total_cart"> %1$s :إجمالي العناصر</string>
     <string name="no_internet">بدون انترنت!</string>
     <string name="no_items">العناصر %1$s  </string>

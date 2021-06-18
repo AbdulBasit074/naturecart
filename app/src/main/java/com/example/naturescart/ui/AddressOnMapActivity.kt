@@ -4,9 +4,12 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
@@ -29,6 +33,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
+import java.util.*
 
 class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -38,6 +43,9 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
     private var latLng: LatLng? = null
     private var isGpsEnabled = false
     private lateinit var mBinding: ActivityAddressOnMapBinding
+    private lateinit var dialog: DialogErrorCustom
+
+
 
     companion object {
         fun newInstance(context: Context, latLng: LatLng?): Intent {
@@ -83,9 +91,16 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
         mBinding.confirmBtn.setOnClickListener {
             val intent = Intent()
             if (latLng != null) {
-                intent.putExtra(Constants.dataPassKey, latLng)
-                setResult(RESULT_OK, intent)
-                onBackPressed()
+
+                if (Constants.checkLocality(latLng!!.latitude, latLng!!.longitude, this).toLowerCase(Locale.getDefault()) == Constants.dubai) {
+                    intent.putExtra(Constants.dataPassKey, latLng)
+                    setResult(RESULT_OK, intent)
+                    onBackPressed()
+                } else {
+                    dialog = DialogErrorCustom(this, R.drawable.ic_error, Constants.getTranslate(this, "out_of_range")){onOKClick()}
+                    dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+                    dialog.show()
+                }
             } else {
                 showToast(Constants.getTranslate(this, "loading_map"))
             }
@@ -94,7 +109,13 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             onBackPressed()
         }
     }
+
+    private fun onOKClick() {}
+
     override fun onMapReady(p0: GoogleMap?) {
+        if (!Places.isInitialized())
+            Places.initialize(applicationContext, getString(R.string.google_maps_api), Locale.getDefault())
+        
         mMap = p0
         if (isGpsEnabled && latLng == null) {
             Dexter.withActivity(this)
@@ -103,11 +124,15 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
                     override fun onPermissionGranted(response: PermissionGrantedResponse) {
                         getCurrentLocation(fields) { place -> onLocationAvailable(place) }
                     }
+
                     override fun onPermissionDenied(response: PermissionDeniedResponse) {
                         if (response.isPermanentlyDenied) {
                             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null))
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent) } }
+                            startActivity(intent)
+                        }
+                    }
+
                     override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest, token: PermissionToken) {
                         token.continuePermissionRequest()
                     }
@@ -125,6 +150,7 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             mBinding.markerPinElevated.visibility = View.GONE
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.locationDialogRequestKey && resultCode == Activity.RESULT_OK) {
@@ -139,6 +165,7 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
+
     private fun onLocationAvailable(place: Place) {
         latLng = LatLng(place.latLng!!.latitude, place.latLng!!.longitude)
         mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))

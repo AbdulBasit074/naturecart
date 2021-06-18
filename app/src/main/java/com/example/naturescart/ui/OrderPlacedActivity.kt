@@ -13,10 +13,10 @@ import org.greenrobot.eventbus.EventBus
 
 class OrderPlacedActivity : AppCompatActivity() {
 
-
     private lateinit var binding: ActivityOrderPlacedBinding
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,6 @@ class OrderPlacedActivity : AppCompatActivity() {
             moveTo(HomeActivity::class.java)
             Constants.orderPlace = true
             finishAffinity()
-
         }
         handler.postDelayed(runnable, 2000)
         binding.Btn.setOnClickListener {
@@ -38,7 +37,6 @@ class OrderPlacedActivity : AppCompatActivity() {
             finishAffinity()
         }
     }
-
     override fun onDestroy() {
         handler.removeCallbacks(runnable)
         super.onDestroy()

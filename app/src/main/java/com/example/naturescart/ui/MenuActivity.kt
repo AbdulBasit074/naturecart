@@ -208,6 +208,9 @@ class MenuActivity : AppCompatActivity(), Results {
             custom.show()
 
         }
+        binding.termsBtn.setOnClickListener {
+            startActivity(WebViewActivity.newInstance(this@MenuActivity, Constants.getTranslate(this@MenuActivity, "terms"), Constants.termsUrl))
+        }
 
 
         binding.signInBottomSheet.loginBtn.setOnClickListener {
@@ -288,6 +291,7 @@ class MenuActivity : AppCompatActivity(), Results {
                 ds.color = textColor
             }
         }, 22, privacyPolicyText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
         binding.registerBottomSheet.termsAndConditionTv.text = privacyPolicyText
         binding.registerBottomSheet.termsAndConditionTv.movementMethod = LinkMovementMethod.getInstance()
     }

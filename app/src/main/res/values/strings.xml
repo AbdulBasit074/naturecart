@@ -18,6 +18,7 @@
     <string name="unit_text">/ %1$s</string>
     <string name="order_no">OrderNo: %1$s</string>
     <string name="all">All</string>
+    <string name="ok">ok</string>
     <string name="total_cart">Total Items: %1$s</string>
     <string-array name="gender">
         <item>Male</item>

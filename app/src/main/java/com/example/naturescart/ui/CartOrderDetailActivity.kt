@@ -3,6 +3,7 @@ package com.example.naturescart.ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -28,10 +29,9 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
     private val paymentMethodRequest: Int = 1122
     private val couponApplyRequest: Int = 1342
     private val couponRemoveRequest: Int = 1142
-
     private var cartDetail: CartDetail? = null
     private var startSetRequest: Int = 2211
-
+    private var addInstructionReq: Int = 1122
     private lateinit var binding: ActivityCartOrderDetailBinding
     private var listAddress: ArrayList<Address> = ArrayList()
     private var addressSelect: Address? = null
@@ -39,6 +39,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
     private var date: DeliveryDateTime.Date? = null
     private var dateSelect: DeliveryDateTime.Date? = DeliveryDateTime.Date()
     private var time: DeliveryDateTime.TimeSlot? = null
+    private lateinit var dialog: DialogErrorCustom
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +53,11 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
         loading!!.show()
         AddressService(addressList, this).getAddress(loggedUser!!.accessToken)
         setListener()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     private fun setCartDetail() {
@@ -102,10 +108,21 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
         }
         binding.bottomSheetCO.Btn.setOnClickListener {
             if (allIsOk()) {
-                moveForResult(PaymentWebView.newInstance(this, cartDetail?.id!!, loggedUser!!.id, addressSelect!!.id!!, binding.bottomSheetCO.contactLess.isChecked), paymentMethodRequest)
+                if (cartDetail!!.summary!!.total!! > 25f) {
+                    if (!binding.specialInstruction.text.isNullOrEmpty()) {
+                        CartService(addInstructionReq, this).addAddInstruction(binding.specialInstruction.text.toString(), cartDetail?.id!!)
+                    } else
+                        moveForResult(PaymentWebView.newInstance(this, cartDetail?.id!!, loggedUser!!.id, addressSelect!!.id!!, binding.bottomSheetCO.contactLess.isChecked), paymentMethodRequest)
+                } else {
+                    dialog = DialogErrorCustom(this, R.drawable.ic_error, Constants.getTranslate(this, "minimum_order_amount")){onOkClick()}
+                    dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+                    dialog.show()
+                }
             }
         }
     }
+
+    private fun onOkClick() {}
 
     private fun allIsOk(): Boolean {
         return when {
@@ -131,7 +148,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
                 if (data != null) {
                     addressSelect = data.getParcelableExtra(Constants.selectionAddress)!!
                     binding.addressTitle.text = addressSelect!!.addressNick
-                    binding.addressDetail.text = addressSelect!!.area + ", " +addressSelect!!.street+", "+ addressSelect!!.apartment
+                    binding.addressDetail.text = addressSelect!!.area + ", " + addressSelect!!.street + ", " + addressSelect!!.apartment
                 }
             }
             paymentMethodRequest -> {
@@ -157,10 +174,10 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
                 }
                 Constants.selectAddressId = addressSelect!!.id!!
                 binding.addressTitle.text = addressSelect!!.addressNick
-                binding.addressDetail.text = addressSelect!!.area + ", " +addressSelect!!.street+", "+ addressSelect!!.apartment
+                binding.addressDetail.text = addressSelect!!.area + ", " + addressSelect!!.street + ", " + addressSelect!!.apartment
             }
             startSetRequest -> {
-                var dialog = DialogDeliveryDate(this, cartDetail?.id, data) { dateSelect, timeSlot, s ->
+                val dialog = DialogDeliveryDate(this, cartDetail?.id, data) { dateSelect, timeSlot, s ->
                     binding.setDeliveryDateTime.text = dateSelect.date + "\n" + timeSlot.time
                     date = dateSelect
                     time = timeSlot
@@ -181,6 +198,9 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
                 binding.couponCodeText.text.clear()
                 setCartDetail()
             }
+            addInstructionReq -> {
+                moveForResult(PaymentWebView.newInstance(this, cartDetail?.id!!, loggedUser!!.id, addressSelect!!.id!!, binding.bottomSheetCO.contactLess.isChecked), paymentMethodRequest)
+            }
         }
     }
 
@@ -188,8 +208,6 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
         loading?.dismiss()
         showToast(data)
     }
-
-
     override fun finish() {
         Constants.selectAddressId = 0
         super.finish()

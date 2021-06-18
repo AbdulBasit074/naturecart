@@ -170,8 +170,8 @@
                     <TextView
                         android:id="@+id/paymenttitle"
                         translationText='@{"payment"}'
-                        android:layout_width="0dp"
-                        android:layout_height="23dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/roboto_slab_regular"
@@ -277,6 +277,20 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <TextView
+                        android:id="@+id/deliveryInstruction"
+                        translationText='@{"delivery_instructions"}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_slab_regular"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_15ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/dicountContainer" />
+
+
                     <EditText
                         android:id="@+id/specialInstruction"
                         translationEditTextHint='@{"add_instruction"}'
@@ -289,17 +303,15 @@
                         android:background="@drawable/border_white_round"
                         android:fontFamily="@font/roboto_slab_regular"
                         android:gravity="start"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:minHeight="@dimen/_80sdp"
                         android:padding="@dimen/_10sdp"
-                        android:singleLine="true"
                         android:textAlignment="textStart"
                         android:textColor="@color/black"
-                        android:textColorHint="@color/divider"
+                        android:textColorHint="@color/transparent_black"
                         android:textSize="@dimen/_12ssp"
-                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/dicountContainer"
+                        app:layout_constraintTop_toBottomOf="@id/deliveryInstruction"
                         tools:ignore="LabelFor" />
 
                     <View

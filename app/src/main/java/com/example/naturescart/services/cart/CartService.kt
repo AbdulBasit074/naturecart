@@ -40,6 +40,11 @@ class CartService(requestCode: Int, callBack: Results) : BaseService(requestCode
             .addDeliveryDateTime(date,time,cartId)
             .enqueue(this)
     }
+    fun addAddInstruction(instruction: String,cartId: Long) {
+        RetrofitClient.getInstance().create(CartClient::class.java)
+            .addInstruction(cartId,instruction)
+            .enqueue(this)
+    }
 
 
 

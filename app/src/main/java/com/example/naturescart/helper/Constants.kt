@@ -23,7 +23,7 @@ class Constants {
         const val titlePassKey = "titlePassKey"
         const val addressID: String = "addressID"
         const val contactLess: String = "contactLess"
-
+        const val dubai: String = "dubai"
         const val orderDetail: String = "orderDetail"
         const val onBoardingShow: String = "onBoardingShow"
         const val localeKey = "localeKey"
@@ -87,6 +87,17 @@ class Constants {
             }
             return address
         }
+        fun checkLocality(latitude: Double, longitude: Double, context: Context): String {
+            val addresses: List<Address>
+            val geoCoder = Geocoder(context, Locale.getDefault())
+            addresses = geoCoder.getFromLocation(latitude, longitude, 4)
+            var address: String = ""
+            if (addresses != null && addresses.isNotEmpty() && addresses[0].locality != null) {
+                address = addresses[0].locality
+            }
+            return address
+        }
+
 
 
         fun setCircularImage(imageView: CircularImageView, src: String, shimmerFrameLayout: ShimmerFrameLayout) {

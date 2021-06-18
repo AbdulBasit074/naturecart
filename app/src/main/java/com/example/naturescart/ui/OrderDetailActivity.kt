@@ -64,6 +64,15 @@ class OrderDetailActivity : AppCompatActivity() {
         binding.bottomSheetTotal.total.text = getString(R.string.aed_price, String.format("%.2f", orderDetail.summary!!.total))
         binding.contactLess.isChecked = orderDetail.contactLessDelivery
         binding.contactLess.isClickable = false
+        if(!orderDetail.instructions.isNullOrEmpty()){
+            binding.instructionTitle.visibility = View.VISIBLE
+            binding.specialInstruction.visibility = View.VISIBLE
+            binding.specialInstruction.text = orderDetail.instructions
+        }
+
+
+
+
     }
 
     private fun setListeners() {

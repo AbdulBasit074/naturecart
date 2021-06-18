@@ -143,6 +143,7 @@ class ItemAdapterRv(
                                 val dialog = DialogCustom(context, R.drawable.ic_add_fav, data)
                                 dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
                                 dialog.showDialog()
+
                             }
                         }).addToFavourite(loggedUser.accessToken, item.id!!)
                     } else {

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "958959807097",
+    "project_id": "natures-cart-52c14",
+    "storage_bucket": "natures-cart-52c14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958959807097:android:37fd39b90e507b72f682a8",
+        "android_client_info": {
+          "package_name": "com.ae.naturescart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "958959807097-a3vsehtb8sj8e5p22b5kf2nk1v17qtsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX6HemONrS-gZg0-fYzKSm3F1FWbIrd_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "958959807097-a3vsehtb8sj8e5p22b5kf2nk1v17qtsn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "958959807097-fb3rmh2u558s9d0b0t458nague02d75p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ae.natures-cart"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

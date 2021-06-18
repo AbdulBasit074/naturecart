@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        tools:ignore="HardcodedText">
+
+        <TextView
+            android:id="@+id/signIntitle"
+            translationText='@{"register_new_user"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:fontFamily="@font/roboto_slab_semi_bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/firstNameLabel"
+            translationText='@{"first_name"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signIntitle" />
+
+        <EditText
+            android:id="@+id/firstName"
+            translationEditTextHint='@{"enter_here"}'
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:autofillHints="Search"
+            android:backgroundTint="@color/divider"
+            android:fontFamily="@font/nunito_regular"
+            android:inputType="textPersonName"
+            android:paddingTop="@dimen/_5sdp"
+            android:singleLine="true"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/firstNameLabel"
+            tools:ignore="LabelFor,MissingConstraints" />
+
+        <TextView
+            android:id="@+id/lastNameLabel"
+            translationText='@{"last_name"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toEndOf="@id/firstName"
+            app:layout_constraintTop_toBottomOf="@id/signIntitle" />
+
+        <EditText
+            android:id="@+id/lastName"
+            translationEditTextHint='@{"enter_here"}'
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:autofillHints="Search"
+            android:backgroundTint="@color/divider"
+            android:fontFamily="@font/nunito_regular"
+            android:inputType="textPersonName"
+            android:paddingTop="@dimen/_5sdp"
+            android:singleLine="true"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toEndOf="@id/firstName"
+            app:layout_constraintTop_toBottomOf="@id/lastNameLabel"
+            tools:ignore="LabelFor,MissingConstraints" />
+
+        <TextView
+            android:id="@+id/emailLabel"
+            translationText='@{"email"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lastName" />
+
+        <EditText
+            android:id="@+id/emailEtRegister"
+            translationEditTextHint='@{"email_hint"}'
+            android:layout_width="@dimen/_280sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:autofillHints="Search"
+            android:backgroundTint="@color/divider"
+            android:fontFamily="@font/nunito_regular"
+            android:inputType="textEmailAddress"
+            android:paddingTop="@dimen/_5sdp"
+            android:singleLine="true"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emailLabel"
+            tools:ignore="LabelFor,MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/passwordLabel"
+            translationText='@{"password"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emailEtRegister" />
+
+        <EditText
+            android:id="@+id/passwordEtRegister"
+            translationEditTextHint='@{"password_hint"}'
+            android:layout_width="@dimen/_280sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:autofillHints="Search"
+            android:backgroundTint="@color/divider"
+            android:fontFamily="@font/nunito_regular"
+            android:inputType="textPassword"
+            android:paddingTop="@dimen/_5sdp"
+            android:textAlignment="viewStart"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/passwordLabel"
+            tools:ignore="LabelFor" />
+
+        <ImageView
+            android:id="@+id/hideSHowPassword"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:contentDescription="@string/icon"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_password_hide"
+            app:layout_constraintBottom_toBottomOf="@id/passwordEtRegister"
+            app:layout_constraintEnd_toEndOf="@id/passwordEtRegister"
+            app:layout_constraintTop_toBottomOf="@id/emailEtRegister" />
+
+        <TextView
+            android:id="@+id/phoneLabel"
+            translationText='@{"phone"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/passwordEtRegister" />
+
+        <ImageView
+            android:id="@+id/flagLabel"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:contentDescription="@string/icon"
+            android:src="@drawable/ic_flag"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
+
+        <TextView
+            android:id="@+id/countryCodeLabel"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:text="+971"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toEndOf="@id/flagLabel"
+            app:layout_constraintTop_toBottomOf="@id/phoneLabel" />
+
+        <EditText
+            android:id="@+id/phoneNo"
+            android:layout_width="@dimen/_210sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:autofillHints="Search"
+            android:backgroundTint="@color/divider"
+            android:fontFamily="@font/nunito_regular"
+
+            android:inputType="phone"
+            android:maxLength="11"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toEndOf="@id/countryCodeLabel"
+            app:layout_constraintTop_toBottomOf="@id/phoneLabel"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/genderLabel"
+            translationText='@{"gender"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phoneNo" />
+
+        <TextView
+            android:id="@+id/male"
+            translationText='@{"male"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/border_grey"
+            android:fontFamily="@font/nunito_regular"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/genderLabel" />
+
+        <TextView
+            android:id="@+id/female"
+            translationText='@{"female"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/border_grey"
+            android:fontFamily="@font/nunito_regular"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toEndOf="@id/male"
+            app:layout_constraintTop_toBottomOf="@id/genderLabel" />
+
+
+        <TextView
+            android:id="@+id/ratherGender"
+            translationText='@{"rater_not_say"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/border_grey"
+            android:fontFamily="@font/nunito_regular"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toEndOf="@id/female"
+            app:layout_constraintTop_toBottomOf="@id/genderLabel" />
+
+        <TextView
+            android:id="@+id/countryLabel"
+            translationText='@{"country"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/male" />
+
+
+        <TextView
+            android:id="@+id/countrySelectionSpinner"
+            android:layout_width="@dimen/_280sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:autofillHints="Search"
+            android:backgroundTint="@color/divider"
+            android:fontFamily="@font/nunito_regular"
+            android:paddingStart="@dimen/_4sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/countryLabel" />
+
+        <View
+            android:id="@+id/countryDivider"
+            android:layout_width="@dimen/_280sdp"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@color/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/countrySelectionSpinner" />
+
+        <TextView
+            android:id="@+id/phoneWhatsappLabel"
+            translationText='@{"phone_whatsapp"}'
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_regular"
+
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/countryDivider" />
+
+        <ImageView
+            android:id="@+id/flagLabelWhatss"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+
+            android:contentDescription="@string/icon"
+            android:src="@drawable/ic_flag"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phoneWhatsappLabel" />
+
+        <TextView
+            android:id="@+id/countryCodeWhatsLabel"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:text="+971"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/flagLabel"
+            app:layout_constraintTop_toBottomOf="@id/phoneWhatsappLabel" />
+
+        <EditText
+            android:id="@+id/phoneNoWhatsApp"
+            android:layout_width="@dimen/_210sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:autofillHints="Search"
+            android:backgroundTint="@color/divider"
+            android:fontFamily="@font/nunito_regular"
+            android:inputType="phone"
+
+            android:maxLength="11"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/countryCodeWhatsLabel"
+            app:layout_constraintTop_toBottomOf="@id/phoneWhatsappLabel"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/privacyLabel1"
+            translationText='@{"by_proceeding"}'
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_semi_bold"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintTop_toBottomOf="@id/phoneNoWhatsApp" />
+
+        <TextView
+            android:id="@+id/termsAndConditionTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_regular"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintTop_toBottomOf="@id/privacyLabel1" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/registerBtn"
+            translationTextButton='@{"sign_up"}'
+            android:layout_width="@dimen/_110sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:background="@drawable/button_orange"
+            android:fontFamily="@font/nunito_semi_bold"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/privacyLabel1" />
+
+        <TextView
+            android:id="@+id/loginBtn"
+            translationText='@{"sign_instead"}'
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:drawablePadding="@dimen/_5sdp"
+            android:fontFamily="@font/nunito_semi_bold"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11ssp"
+            app:drawableEndCompat="@drawable/ic_next_black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/registerBtn" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

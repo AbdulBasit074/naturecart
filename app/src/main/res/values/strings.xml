@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Nature\'s Cart</string>
+    <string name="icon">icon</string>
+    <string name="connection_error">Connection Error</string>
+    <string name="retry">Retry</string>
+    <string name="not_connected">Your device is not connected to internet!</string>
+    <string name="no_internet">No Internet!</string>
+    <string name="email_contact"><u>Customercare@naturescart.ae</u></string>
+    <string name="intro_second_title">Organic &amp; Fresh</string>
+    <string name="intro_second_detail">Fresh &amp; Organic food as your fingertips</string>
+    <string name="country_phone_code">+971</string>
+    <string name="aed_price">AED %1$s</string>
+
+
+
+    <string name="aed_total_price">Total Price AED %1$s</string>
+
+    <string name="unit_text">/ %1$s</string>
+    <string name="order_no">OrderNo: %1$s</string>
+    <string name="all">All</string>
+    <string name="ok">ok</string>
+    <string name="total_cart">Total Items: %1$s</string>
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="country">
+        <item>Dubai</item>
+    </string-array>
+
+
+    <string name="no_items">%1$s Items</string>
+    <string name="intro_third_title">Fast &amp; Reliable Delivery</string>
+    <string name="intro_third_detail">Get it Delivered it to anywhere in the UAE</string>
+
+    <string name="intro_first_title">We are one with the nature</string>
+    <string name="intro_first_detail">Skip the store and enjoy farm-fresh fruit &amp; vegetable delivered at your home</string>
+
+
+    <string name="home">Home</string>
+    <string name="favourite">Favourite</string>
+    <string name="cart">Cart</string>
+    <string name="arabic">Arabic</string>
+    <string name="select_app_language">Select app Language</string>
+    <string name="orders">Orders</string>
+    <string name="about">About</string>
+    <string name="save">AED %1$s OFF</string>
+
+    <string name="strike">%1$s</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="google_maps_api">AIzaSyALQ4yq5lKp_ZS4OTSsaq0QNdxcHop3DrI</string>
+    <string name="otp">OTP</string>
+
+
+</resources>

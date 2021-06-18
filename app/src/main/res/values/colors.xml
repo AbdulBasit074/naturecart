@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#252424</color>
+    <color name="black_full">#000000</color>
+
+    <color name="red">#D80404</color>
+    <color name="new_light_green">#81CDEDCB</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_dark">#23A5A1A1</color>
+    <color name="switchTrackDisable">#FFFFFF</color>
+    <color name="switchTrackActive">#1A804D</color>
+    <color name="switchTrackNormal">#FFFFFF</color>
+
+    <color name="white_full">#8BB3B2B2</color>
+
+    <color name="fresh_warm">#EDF9E4</color>
+    <color name="fresh_warm_text">#347B15</color>
+
+
+    <color name="pick_image">#F8F7F7</color>
+
+    <color name="whole_sale">#FFEBC6</color>
+    <color name="whole_sale_text">#363636</color>
+
+    <color name="customer_love">#FDDFE9</color>
+    <color name="customer_love_text">#363637</color>
+
+
+    <color name="saleem_green">#1A804D</color>
+    <color name="saleem_green2">#108148</color>
+    <color name="otp_green">#4F108148</color>
+    <color name="text_color_green">#0CB400</color>
+
+
+    <color name="down_well_black">#021001</color>
+    <color name="transparent_black">#60000000</color>
+    <color name="transparent_black2">#BF000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="button_transparent">#F4F4F4</color>
+    <color name="button_color_orange">#E32E00</color>
+    <color name="background_silver">#85EBEEF0</color>
+    <color name="light_pink">#F9F4E4</color>
+    <color name="light_pink_back">#FAF1D2</color>
+    <color name="border_button_grey">#D3D3D3</color>
+    <color name="divider">#40707070</color>
+
+    <color name="confirm">#FFFDC9</color>
+
+    <color name="cart_green">#74a471</color>
+
+    <color name="cart_green_light">#cdedcb</color>
+
+
+
+
+</resources>

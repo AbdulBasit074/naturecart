@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="collectionItem"
+            type="com.example.naturescart.model.CollectionModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerEffect"
+            android:layout_width="@dimen/_56sdp"
+            android:layout_height="@dimen/_56sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shimmer_auto_start="true"
+            app:shimmer_base_alpha="1"
+            app:shimmer_duration="1500"
+            app:shimmer_highlight_alpha="0.4"
+            >
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/_56sdp"
+                android:layout_height="@dimen/_56sdp"
+                android:backgroundTint="@color/white_dark"
+                android:contentDescription="@string/icon"
+                app:cardCornerRadius="@dimen/_260sdp"
+                app:cardElevation="0dp"
+                app:civ_border_width="@dimen/_1sdp" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imageBatch"
+            android:layout_width="@dimen/_56sdp"
+            android:layout_height="@dimen/_56sdp"
+            android:contentDescription="@string/icon"
+            app:civ_border_width="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

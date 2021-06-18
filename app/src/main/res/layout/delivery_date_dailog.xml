@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/_280sdp"
+            android:layout_height="@dimen/_280sdp"
+            android:layout_gravity="center"
+            android:minWidth="@dimen/_200sdp"
+            android:minHeight="@dimen/_200sdp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/deliverySetTitle"
+                    translationText='@{"choose_delivery_time"}'
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_slab_semi_bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_16ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/deliverDayLabel"
+                    translationText='@{"delivery_day"}'
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="@font/nunito_regular"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintStart_toStartOf="@id/deliveryDayDropDown"
+                    app:layout_constraintTop_toBottomOf="@id/deliverySetTitle" />
+
+                <Spinner
+                    android:id="@+id/deliveryDayDropDown"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
+                    android:fontFamily="@font/nunito_regular"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:shadowColor="@color/background_silver"
+                    android:spinnerMode="dropdown"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/deliverDayLabel" />
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:background="@color/divider"
+                    android:paddingStart="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="@id/deliveryDayDropDown"
+                    app:layout_constraintStart_toStartOf="@id/deliveryDayDropDown"
+                    app:layout_constraintTop_toBottomOf="@id/deliveryDayDropDown"
+                    tools:ignore="RtlSymmetry" />
+
+
+                <TextView
+                    android:id="@+id/deliverTimeLabel"
+                    translationText='@{"delivery_time"}'
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:fontFamily="@font/nunito_regular"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintStart_toStartOf="@id/deliveryTimeDropDown"
+                    app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+
+                <Spinner
+                    android:id="@+id/deliveryTimeDropDown"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fontFamily="@font/nunito_regular"
+                    android:gravity="start"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:shadowColor="@color/background_silver"
+                    android:spinnerMode="dropdown"
+
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/deliverTimeLabel" />
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:background="@color/divider"
+                    android:paddingStart="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="@id/deliveryTimeDropDown"
+                    app:layout_constraintStart_toStartOf="@id/deliveryTimeDropDown"
+                    app:layout_constraintTop_toBottomOf="@id/deliveryTimeDropDown"
+                    tools:ignore="RtlSymmetry" />
+
+
+                <TextView
+                    android:id="@+id/okBtn"
+                    translationText='@{"ok"}'
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:fontFamily="@font/nunito_regular"
+                    android:padding="@dimen/_10sdp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/saleem_green"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/cancleBtn"
+                    translationText='@{"cancle"}'
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:fontFamily="@font/nunito_regular"
+                    android:padding="@dimen/_10sdp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/saleem_green"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/okBtn" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

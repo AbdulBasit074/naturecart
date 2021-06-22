@@ -103,7 +103,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             binding.cityEt.text = addressSave.city
             binding.firstNameEt.setText(addressSave.firstName.toString())
             binding.lastNameEt.setText(addressSave.lastName.toString())
-            binding.streetEt.text = addressSave.street
+            binding.streetEt.setText(addressSave.street)
             binding.addressAddBtn.text = Constants.getTranslate(this, "update")
             positionNickKey = addressSave.addressNick.toString().toLowerCase()
             binding.areaEt.text = addressSave.area
@@ -127,19 +127,20 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
 
 
         binding.areaEt.setOnClickListener {
-//
-//            var custom = com.example.naturescart.helper.SimpleSearchDialogCompat(
-//                this,
-//                Constants.getTranslate(this, "select_area"),
-//                Constants.getTranslate(this, "search"),
-//                null,
-//                areaSearchList
-//            ) { dialog, item, position ->
-//                binding.areaEt.text = item.title
-//                dialog.dismiss()
-//            }
-//            custom.show()
-//
+
+            var custom = com.example.naturescart.helper.SimpleSearchDialogCompat(
+                this,
+                Constants.getTranslate(this, "select_area"),
+                Constants.getTranslate(this, "search"),
+                null,
+                areaSearchList
+            ) { dialog, item, position ->
+                binding.areaEt.text = item.title
+                dialog.dismiss()
+            }
+            custom.show()
+
+
         }
         binding.work.setOnClickListener {
             setAddressTypeSelector(binding.work)
@@ -176,16 +177,16 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 } else {
                     addressSave.latitude = latLng!!.latitude
                     addressSave.longitude = latLng!!.longitude
-                    if (Constants.checkLocality(latLng!!.latitude, latLng!!.longitude,this).toLowerCase()!=Constants.dubai) {
-                        dialog  = DialogErrorCustom(this,R.drawable.ic_error,Constants.getTranslate(this, "out_of_range")){onOkClick()}
-                        dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
-                        dialog.show()
-                    } else {
-                        if (isUpdate)
-                            AddressService(addressUpdateRequest, this).updateAddress(loggedUser?.accessToken ?: "", addressSave, addressSave.id!!)
-                        else
-                            AddressService(addressAddRequest, this).addAddress(loggedUser?.accessToken ?: "", addressSave)
-                    }
+//                    if (Constants.checkLocality(latLng!!.latitude, latLng!!.longitude,this).toLowerCase()!=Constants.dubai) {
+//                        dialog  = DialogErrorCustom(this,R.drawable.ic_error,Constants.getTranslate(this, "out_of_range")){onOkClick()}
+//                        dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+//                        dialog.show()
+//                    }
+                    if (isUpdate)
+                        AddressService(addressUpdateRequest, this).updateAddress(loggedUser?.accessToken ?: "", addressSave, addressSave.id!!)
+                    else
+                        AddressService(addressAddRequest, this).addAddress(loggedUser?.accessToken ?: "", addressSave)
+
                 }
             }
         }
@@ -193,6 +194,7 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             binding.cityEt.showOrDismiss()
         }
     }
+
     private fun onOkClick() {}
     private fun setAddressTypeSelector(textView: TextView) {
         resetAddressTypeView()
@@ -268,8 +270,10 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
             latLng = data?.getParcelableExtra(Constants.dataPassKey)
             if (latLng != null) {
                 mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
-                binding.areaEt.text = Constants.geoSubLocale(latLng!!.latitude, latLng!!.longitude, this)
-                binding.streetEt.text = Constants.geoCoding(latLng!!.latitude, latLng!!.longitude, this)
+//                binding.areaEt.text = Constants.geoSubLocale(latLng!!.latitude, latLng!!.longitude, this)
+                binding.streetEt.setText(Constants.geoCoding(latLng!!.latitude, latLng!!.longitude, this))
+
+
             }
         }
     }
@@ -318,8 +322,8 @@ class AddNewAddress : AppCompatActivity(), OnMapReadyCallback, Results {
                 mMap?.clear()
             }
         }
-        binding.areaEt.text = Constants.geoSubLocale(latLng!!.latitude, latLng!!.longitude, this)
-        binding.streetEt.text = Constants.geoCoding(latLng!!.latitude, latLng!!.longitude, this)
+//        binding.areaEt.text = Constants.geoSubLocale(latLng!!.latitude, latLng!!.longitude, this)
+        binding.streetEt.setText(Constants.geoCoding(latLng!!.latitude, latLng!!.longitude, this))
     }
 
     override fun onSuccess(requestCode: Int, data: String) {

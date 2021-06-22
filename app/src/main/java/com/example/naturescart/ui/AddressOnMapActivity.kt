@@ -46,7 +46,6 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var dialog: DialogErrorCustom
 
 
-
     companion object {
         fun newInstance(context: Context, latLng: LatLng?): Intent {
             val intent = Intent(context, AddressOnMapActivity::class.java)
@@ -92,15 +91,9 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent()
             if (latLng != null) {
 
-                if (Constants.checkLocality(latLng!!.latitude, latLng!!.longitude, this).toLowerCase(Locale.getDefault()) == Constants.dubai) {
-                    intent.putExtra(Constants.dataPassKey, latLng)
-                    setResult(RESULT_OK, intent)
-                    onBackPressed()
-                } else {
-                    dialog = DialogErrorCustom(this, R.drawable.ic_error, Constants.getTranslate(this, "out_of_range")){onOKClick()}
-                    dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
-                    dialog.show()
-                }
+                intent.putExtra(Constants.dataPassKey, latLng)
+                setResult(RESULT_OK, intent)
+                onBackPressed()
             } else {
                 showToast(Constants.getTranslate(this, "loading_map"))
             }
@@ -115,7 +108,7 @@ class AddressOnMapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap?) {
         if (!Places.isInitialized())
             Places.initialize(applicationContext, getString(R.string.google_maps_api), Locale.getDefault())
-        
+
         mMap = p0
         if (isGpsEnabled && latLng == null) {
             Dexter.withActivity(this)

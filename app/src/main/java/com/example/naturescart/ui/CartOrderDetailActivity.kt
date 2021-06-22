@@ -108,7 +108,7 @@ class CartOrderDetailActivity : AppCompatActivity(), Results {
         }
         binding.bottomSheetCO.Btn.setOnClickListener {
             if (allIsOk()) {
-                if (cartDetail!!.summary!!.total!! > 25f) {
+                if (cartDetail!!.summary!!.total!! > 35f) {
                     if (!binding.specialInstruction.text.isNullOrEmpty()) {
                         CartService(addInstructionReq, this).addAddInstruction(binding.specialInstruction.text.toString(), cartDetail?.id!!)
                     } else

@@ -32,7 +32,7 @@ class Constants {
         const val categoryName = "categoryName"
         const val cartDetail: String = "cartDetail"
         const val fcmTokenPersistenceKey = "fcmTokenPersistenceKey"
-        const val baseUrl: String = "https://staging-app.naturescart.ae/api/"
+        const val baseUrl: String = "https://app.naturescart.ae/api/"
         const val cartPersistenceKey = "cartPersistenceKey"
         var orderPlace: Boolean = false
         const val onBoardingPersistenceKey = "onBoardingPersistenceKey"
@@ -43,7 +43,7 @@ class Constants {
         var selectAddressId: Int = 0
         const val isAddressSelection = "isAddressSelection"
         const val isUpdate = "isUpdate"
-        const val paymentMethodUrl = "https://staging-app.naturescart.ae/paytabs_payment/"
+        const val paymentMethodUrl = "https://app.naturescart.ae/paytabs_payment/"
         const val termsUrl = "https://naturescart.ae/terms.html"
         const val privacyPolicyUrl = "https://naturescart.ae/privacy.html"
         const val selectionAddress = "selectionAddress"
